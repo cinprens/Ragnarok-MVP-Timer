@@ -1,38 +1,18 @@
-<!DOCTYPE html>
-<html lang="tr">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>MVP Sayaç</title>
-<link rel="stylesheet" href="style.css">
-</head>
 <body>
-<div id="app">
-<div id="left-panel">
-<div id="fetchError" style="display:none;color:red"></div>
-<div id="left-panel">
-<section id="mvpList"></section>
-<section id="controls">
-<input id="name" placeholder="MVP"/>
-<input id="minutes" type="number" placeholder="Dakika"/>
-<input id="tomb" type="number" placeholder="Tomb"/>
-<button id="addBtn">Ekle</button>
-<input id="soundFile" type="file" accept="audio/*"/>
-<audio id="alertSound"></audio>
-<select id="timezone"></select>
-</section>
-</div>
-<div id="mid-panel">
-<section id="enYakin"></section>
-<section id="yaklasanlar"></section>
-</div>
-<div id="right-panel">
-<section id="bitenler"></section>
-</div>
-<div id="right-panel">
-<section id="history"></section>
-</div>
-</div>
-<script src="script.js"></script>
+  <div id="app">
+    <!-- SOL PANEL -->
+    <div id="left-panel">
+      <section id="mvpList"></section><!-- tüm MVP’ler -->
+    </div>
+
+    <!-- ORTA PANEL -->
+    <div id="mid-panel">
+      <section id="enYakin"></section><!-- yalnız 1 aktif -->
+    </div>
+
+    <!-- SAĞ PANEL -->
+    <div id="right-panel">
+      <section id="bitenler"></section><!-- bitenler -->
+    </div>
+  </div>
 </body>
-</html>

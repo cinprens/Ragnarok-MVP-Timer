@@ -1,48 +1,57 @@
-function renderMvpList() {
-  listEl.innerHTML = '';
+const started = {};              // Yalnızca 1 tane!
+function renderMvpList(){
+  listEl.innerHTML='';
+  [...mvpData]
+   .sort((a,b)=> (started[a.name]?-1:1) - (started[b.name]?-1:1) )
+   .forEach(m=>{
+      const c = document.createElement('div');
+      c.className='mvp-card'+(started[m.name]?' aktif':'');
+      const g = img(m.img);       // yardımcı basit fonksiyon aşağıda
+      const mp= img(m.mapImg);
+      const inpt = numInput('Dakika');
+      const btn  = button('Başlat',()=>{
+          addTimer(m.name, parseInt(inpt.value)||m.respawn/60);
+          c.scrollIntoView({behavior:'smooth',block:'center'});
+      });
+      c.append(g,mp,inpt,btn);    listEl.append(c);
+   });
+}
+// 1 aktif en öne:
+if(aktif[0]){
+  nearestEl.innerHTML='';
+  nearestEl.appendChild(ortaKart(aktif[0]));
+}
 
-  const sirali = [...mvpData].sort((a, b) => {
-    const aStarted = !!started[a.name];
-    const bStarted = !!started[b.name];
-    if (aStarted && !bStarted) return -1;
-    if (!aStarted && bStarted) return 1;
-    return a.name.localeCompare(b.name);
-  });
+// süresi dolan -> sağ panele:
+bitti.forEach(t=>{
+  const kc = minimalBittiKart(t);
+  completedEl.appendChild(kc);
+});
+const img = src=>{const i=new Image();i.src='./'+src;i.width=48;return i;}
+const numInput=ph=>{const i=document.createElement('input');i.placeholder=ph;return i;}
+const button=(txt,fn)=>{const b=document.createElement('button');b.textContent=txt;b.onclick=fn;return b;}
 
-  sirali.forEach(m => {
-    const card = document.createElement('div');
-    card.className = 'mvp-card';
-    if (started[m.name]) card.classList.add('aktif');
+// orta panel kartı
+function ortaKart(timer){
+  const k = document.createElement('div');k.className='card';
+  const mvp = mvpData.find(x=>x.name===timer.name);
+  k.append( img(mvp.img), img(mvp.mapImg), zamanEtiketi(timer,'time-display') );
+  return k;
+}
 
-    const gif = document.createElement('img');
-    gif.src = `./${m.img}`;
-    gif.alt = `${m.name} gif`;
+// sağ panel minimal kart
+function minimalBittiKart(timer){
+  const k=document.createElement('div');k.className='bitti-card';
+  const mvp=mvpData.find(x=>x.name===timer.name);
+  k.append( img(mvp.img), img(mvp.mapImg), zamanEtiketi(timer,'bitti-time',true) );
+  return k;
+}
 
-    const map = document.createElement('img');
-    map.src = `./${m.mapImg}`;
-    map.alt = `${m.map} harita`;
-
-    const time = document.createElement('input');
-    time.type = 'number';
-    time.placeholder = 'Dakika';
-
-    const btn = document.createElement('button');
-    btn.textContent = 'Başlat';
-    btn.onclick = () => {
-      const val = parseInt(time.value, 10);
-      addTimer(m.name, isNaN(val) ? m.respawn / 60 : val);
-
-      // Kaydır: başlatınca bu kartı ortaya getir
-      setTimeout(() => {
-        card.scrollIntoView({ behavior: 'smooth', block: 'center' });
-      }, 300);
-    };
-
-    card.appendChild(gif);
-    card.appendChild(map);
-    card.appendChild(time);
-    card.appendChild(btn);
-
-    listEl.appendChild(card);
-  });
+// ileri/geri sayım etiketi
+function zamanEtiketi(t,cls,geri=false){
+  const d=document.createElement('div');d.className=cls;
+  const left = (geri? Date.now()-t.end : t.end-Date.now());
+  const mm=Math.floor(Math.abs(left)/60000).toString().padStart(2,'0');
+  const ss=Math.floor(Math.abs(left)%60000/1000).toString().padStart(2,'0');
+  d.textContent = (geri?'-':'')+`${mm}:${ss}`; return d;
 }
