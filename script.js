@@ -7,6 +7,7 @@ const historyEl = document.getElementById('history');
 const soundInput = document.getElementById('soundFile');
 const alertSound = document.getElementById('alertSound');
 const timezoneSelect = document.getElementById('timezone');
+const listEl = document.getElementById('mvpList');
 
 const savedZone = localStorage.getItem('timezone') || Intl.DateTimeFormat().resolvedOptions().timeZone;
 const zones = typeof Intl.supportedValuesOf === 'function' ? Intl.supportedValuesOf('timeZone') : [savedZone];
@@ -29,6 +30,23 @@ const mvpData = [
   { id: 1785, name: 'Phreeoni', respawn: 3600 }
 ];
 
+function renderMvpList() {
+  listEl.innerHTML = '';
+  const ol = document.createElement('ol');
+  mvpData.forEach(m => {
+    const li = document.createElement('li');
+    li.textContent = m.name;
+    li.onclick = () => addTimer(m.name, m.respawn / 60);
+    li.oncontextmenu = e => {
+      e.preventDefault();
+      const val = parseInt(prompt('Dakika?') || '', 10);
+      if (!isNaN(val)) addTimer(m.name, val);
+    };
+    ol.appendChild(li);
+  });
+  listEl.appendChild(ol);
+}
+
 let timers = JSON.parse(localStorage.getItem('mvpTimers') || '[]');
 let history = JSON.parse(localStorage.getItem('mvpHistory') || '[]');
 
@@ -38,6 +56,13 @@ function saveTimers() {
 
 function saveHistory() {
   localStorage.setItem('mvpHistory', JSON.stringify(history));
+}
+
+function addTimer(name, minutes) {
+  const end = Date.now() + minutes * 60000;
+  timers.push({ name, end });
+  saveTimers();
+  renderTimers();
 }
 
 function removeTimer(index) {
@@ -108,10 +133,7 @@ addBtn.onclick = () => {
   const minutes = parseInt(minutesInput.value, 10);
   const tomb = parseInt(tombInput.value, 10) || 0;
   if (!name || isNaN(minutes)) return;
-  const end = Date.now() + (minutes + tomb) * 60000;
-  timers.push({ name, end });
-  saveTimers();
-  renderTimers();
+  addTimer(name, minutes + tomb);
 };
 
 soundInput.onchange = e => {
@@ -129,3 +151,4 @@ soundInput.onchange = e => {
 setInterval(renderTimers, 1000);
 renderTimers();
 renderHistory();
+renderMvpList();
