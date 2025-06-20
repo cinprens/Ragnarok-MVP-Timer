@@ -24,8 +24,13 @@ const started={};
 const started={};
 
 const savedZone = localStorage.getItem('timezone') || Intl.DateTimeFormat().resolvedOptions().timeZone;
-const zones = typeof Intl.supportedValuesOf === 'function' ? Intl.supportedValuesOf('timeZone') : [savedZone];
-zones.forEach(z => {
+  const sirali=[...mvpData].sort((a,b)=>{
+    if(started[a.name]&&!started[b.name])return -1;
+    if(!started[a.name]&&started[b.name])return 1;
+    return a.name.localeCompare(b.name);
+  });
+  sirali.forEach(m => {
+    if(started[m.name])c.classList.add('aktif');
   const opt = document.createElement('option');
   opt.value = z;
   opt.textContent = z;

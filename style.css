@@ -1,3 +1,4 @@
+.mvp-card.aktif{background:#333}
 
 html,body{height:100%;margin:0;overflow:hidden;background:#111;color:#eee;font-family:sans-serif}
 #app{display:flex;height:100%}
