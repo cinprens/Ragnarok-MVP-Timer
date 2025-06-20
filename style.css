@@ -10,7 +10,7 @@ section{padding:10px}
 #controls{flex-basis:100%}
 input,button,select{margin:5px;background:#222;color:#eee;border:1px solid #555;padding:5px}
 button{cursor:pointer}
-#enYakin,#yaklasanlar,#bitenler{flex:2 1 45%;min-width:300px}
-#yaklasanlar,#bitenler{display:flex;overflow-x:auto}
+#enYakin{flex:3 1 60%;min-width:400px}
+#yaklasanlar,#bitenler{flex:1 1 20%;min-width:200px;display:flex;overflow-x:auto}
 .card img{width:64px;height:64px}
 @media(max-width:600px){#mvpList,#enYakin,#yaklasanlar,#bitenler,#history{flex-basis:100%}}
