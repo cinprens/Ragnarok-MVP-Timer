@@ -1,3 +1,4 @@
+
 html,body{height:100%;margin:0;overflow:hidden;background:#111;color:#eee;font-family:sans-serif}
 #app{display:flex;height:100%}
 #left-panel,#mid-panel,#right-panel{flex:1;overflow-y:auto;display:flex;flex-direction:column}
@@ -5,6 +6,14 @@ html,body{height:100%;margin:0;overflow:hidden;background:#111;color:#eee;font-f
 #controls{width:100%}
 #mvpList{display:flex;flex-wrap:wrap;overflow-x:auto;overflow-y:hidden}
 .mvp-card{display:flex;align-items:center;background:#222;border:1px solid #555;padding:5px;margin:5px}
+
+body{background:#111;color:#eee;font-family:sans-serif;margin:0;height:100vh;overflow:hidden}
+#app{display:flex;flex-direction:row}
+#left-panel,#mid-panel,#right-panel{flex:0 0 33.33%;overflow-x:auto;overflow-y:hidden}
+section{padding:10px}
+#mvpList{flex:1 1 30%;min-width:200px;max-height:80vh;overflow-y:auto;display:flex;flex-wrap:nowrap}
+.mvp-card{display:flex;align-items:center;background:#222;border:1px solid #555;padding:5px;margin-bottom:5px}
+ main
 .mvp-card img{width:48px;height:48px;margin-right:5px}
 .mvp-card input{width:60px;margin-left:auto;margin-right:5px}
 .card{background:#222;border:1px solid #555;padding:5px;display:flex;justify-content:space-between;align-items:center;transition:transform .3s,opacity .3s}
@@ -12,5 +21,14 @@ html,body{height:100%;margin:0;overflow:hidden;background:#111;color:#eee;font-f
 .card.active{border-color:#0f0}
 .card.respawning{border-color:#f00}
 .respawn-text{color:#f00;font-weight:bold}
+
 #yaklasanlar{display:none}
+
+#history{flex:1 1 25%;min-width:200px;max-height:80vh;overflow-y:auto;display:flex;flex-wrap:nowrap}
+#controls{flex-basis:100%}
+input,button,select{margin:5px;background:#222;color:#eee;border:1px solid #555;padding:5px}
+button{cursor:pointer}
+#enYakin{flex:3 1 60%;min-width:400px}
+#yaklasanlar,#bitenler{flex:1 1 20%;min-width:200px;display:flex;flex-wrap:nowrap;overflow-y:auto}
+ main
 .card img{width:64px;height:64px}
