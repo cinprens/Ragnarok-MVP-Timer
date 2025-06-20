@@ -6,6 +6,7 @@ const timersEl = document.getElementById('timers');
 const historyEl = document.getElementById('history');
 const soundInput = document.getElementById('soundFile');
 const alertSound = document.getElementById('alertSound');
+alertSound.src = 'Sound/sound.wav';
 const timezoneSelect = document.getElementById('timezone');
 const listEl = document.getElementById('mvpList');
 
