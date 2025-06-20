@@ -2,15 +2,15 @@ body{background:#111;color:#eee;font-family:sans-serif;margin:0}
 #app{display:flex;flex-wrap:wrap}
 section{padding:10px}
 #mvpList{flex:1 1 30%;min-width:200px;max-height:80vh;overflow-y:auto}
-#timers{flex:2 1 45%;min-width:300px}
-#timers.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:10px}
-.card{background:#222;border:1px solid #555;padding:5px;display:flex;flex-direction:column;align-items:center}
-.card img{width:100%;height:auto}
 .card.active{border-color:#0f0}
+.card{background:#222;border:1px solid #555;padding:5px;display:flex;justify-content:space-between;align-items:center}
 .card.respawning{border-color:#f00}
 .respawn-text{color:#f00;font-weight:bold}
 #history{flex:1 1 25%;min-width:200px;max-height:80vh;overflow-y:auto}
 #controls{flex-basis:100%}
 input,button,select{margin:5px;background:#222;color:#eee;border:1px solid #555;padding:5px}
 button{cursor:pointer}
-@media(max-width:600px){#mvpList,#timers,#history{flex-basis:100%}}
+#enYakin,#yaklasanlar,#bitenler{flex:2 1 45%;min-width:300px}
+#yaklasanlar,#bitenler{display:flex;overflow-x:auto}
+.card img{width:64px;height:64px}
+@media(max-width:600px){#mvpList,#enYakin,#yaklasanlar,#bitenler,#history{flex-basis:100%}}
