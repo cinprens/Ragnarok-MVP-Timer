@@ -1,4 +1,7 @@
-
+#mvpList{display:flex;flex-direction:column;overflow-y:auto;overflow-x:hidden}
+#enYakin .card{flex-direction:column-reverse;align-items:center}
+#enYakin .card button{display:none}
+#enYakin .card input{width:auto;margin:5px 0}
 html,body{height:100%;margin:0;overflow:hidden;background:#111;color:#eee;font-family:sans-serif}
 #app{display:flex;height:100%}
 #left-panel,#mid-panel,#right-panel{flex:1;overflow-y:auto;display:flex;flex-direction:column}
