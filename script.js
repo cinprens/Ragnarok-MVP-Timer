@@ -23,6 +23,8 @@ const started={};
 
 const started={};
 
+const started={};
+
 const savedZone = localStorage.getItem('timezone') || Intl.DateTimeFormat().resolvedOptions().timeZone;
 const zones = typeof Intl.supportedValuesOf === 'function' ? Intl.supportedValuesOf('timeZone') : [savedZone];
 zones.forEach(z => {
@@ -54,10 +56,20 @@ function loadMvpData(cb){
 
 function renderMvpList() {
   listEl.innerHTML = '';
+
+  const sirali=[...mvpData].sort((a,b)=>{
+    if(started[a.name]&&!started[b.name])return -1;
+    if(!started[a.name]&&started[b.name])return 1;
+    return a.name.localeCompare(b.name);
+  });
+  sirali.forEach(m => {
+
   mvpData.forEach(m => {
     if(started[m.name])return;
+main
     const c=document.createElement('div');
     c.className='mvp-card';
+    if(started[m.name])c.classList.add('aktif');
     const img=document.createElement('img');
     img.src=m.img||'';
     img.alt=(m.name||'')+' görseli';

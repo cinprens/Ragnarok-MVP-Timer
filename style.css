@@ -1,9 +1,12 @@
-
 html,body{height:100%;margin:0;overflow:hidden;background:#111;color:#eee;font-family:sans-serif}
 #app{display:flex;height:100%}
 #left-panel,#mid-panel,#right-panel{flex:1;overflow-y:auto;display:flex;flex-direction:column}
 #mid-panel{align-items:center;justify-content:center}
 #controls{width:100%}
+
+#mvpList{display:flex;flex-direction:column;overflow-y:auto;overflow-x:hidden}
+.mvp-card{display:flex;align-items:center;background:#222;border:1px solid #555;padding:5px;margin:5px}
+.mvp-card.aktif{background:#333}
 
 #mvpList{display:flex;flex-direction:column;overflow-y:auto;overflow-x:hidden}
 .mvp-card{display:flex;align-items:center;background:#222;border:1px solid #555;padding:5px;margin:5px}
@@ -25,6 +28,12 @@ section{padding:10px}
 .card.respawning{border-color:#f00}
 .respawn-text{color:#f00;font-weight:bold}
 #yaklasanlar{display:none}
+
+.card img{width:64px;height:64px}
+#enYakin .card{flex-direction:column-reverse;align-items:center}
+#enYakin .card button{display:none}
+#enYakin .card input{width:auto;margin:5px 0}
+
 .card img{width:64px;height:64px}
 #enYakin .card{flex-direction:column-reverse;align-items:center}
 #enYakin .card button{display:none}
