@@ -21,6 +21,8 @@ const listEl = leftPanel.querySelector('#mvpList');
 
 const started={};
 
+const started={};
+
 const savedZone = localStorage.getItem('timezone') || Intl.DateTimeFormat().resolvedOptions().timeZone;
 const zones = typeof Intl.supportedValuesOf === 'function' ? Intl.supportedValuesOf('timeZone') : [savedZone];
 zones.forEach(z => {
