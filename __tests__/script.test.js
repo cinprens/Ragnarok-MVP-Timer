@@ -52,5 +52,13 @@ test('renderTimers DOM elemanlarini olusturur', () => {
   const { addTimer } = require('../script');
   addTimer('A', 1);
   jest.runOnlyPendingTimers();
-  expect(document.getElementById('yaklasanlar').children.length).toBe(1);
+  expect(document.getElementById('enYakin').children.length).toBe(1);
+});
+
+test('kartlarda alt niteliği bulunur', () => {
+  const { addTimer } = require('../script');
+  addTimer('A', 1);
+  jest.runOnlyPendingTimers();
+  const img=document.querySelector('#enYakin img');
+  expect(img.alt).toMatch('görseli');
 });
