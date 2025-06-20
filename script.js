@@ -2,7 +2,9 @@ const nameInput = document.getElementById('name');
 const minutesInput = document.getElementById('minutes');
 const tombInput = document.getElementById('tomb');
 const addBtn = document.getElementById('addBtn');
-const timersEl = document.getElementById('timers');
+const nearestEl=document.getElementById("enYakin");
+const upcomingEl=document.getElementById("yaklasanlar");
+const completedEl=document.getElementById("bitenler");
 const historyEl = document.getElementById('history');
 const soundInput = document.getElementById('soundFile');
 const alertSound = document.getElementById('alertSound');
@@ -103,61 +105,60 @@ function moveTimer(index, dir) {
   renderTimers();
 }
 
-function renderTimers() {
-  const now = Date.now();
-  timers = timers.filter(tt => !(tt.removeAt && tt.removeAt <= now));
-  timersEl.innerHTML = '';
-  timers.forEach((t, i) => {
-    const left = t.end - now;
-    const mvp = mvpData.find(m => m.name === t.name);
-    if (left <= 0 && !t.done) {
-      history.unshift({ name: t.name, time: t.end });
-      t.done = true;
-      t.removeAt = now + REMOVE_DELAY;
+function kartOlustur(t,i){
+  const mvp=mvpData.find(m=>m.name===t.name)||{};
+  const kart=document.createElement("div");
+  kart.className="card";
+  const sol=document.createElement("img");
+  sol.src=mvp.img||"";
+  const orta=document.createElement("img");
+  orta.src=mvp.mapImg||"";
+  const sag=document.createElement("div");
+  const dk=Math.ceil((t.end-Date.now())/60000);
+  sag.textContent=`Kalan: ${dk} dk`;
+  sag.style.fontWeight="bold";
+  const sil=document.createElement("button");
+  sil.textContent="Sil";
+  sil.onclick=()=>removeTimer(i);
+  const yukari=document.createElement("button");
+  yukari.textContent="▲";
+  yukari.onclick=()=>moveTimer(i,-1);
+  const asagi=document.createElement("button");
+  asagi.textContent="▼";
+  asagi.onclick=()=>moveTimer(i,1);
+  const ctrl=document.createElement("div");
+  ctrl.appendChild(sil);
+  ctrl.appendChild(yukari);
+  ctrl.appendChild(asagi);
+  kart.appendChild(sol);
+  kart.appendChild(orta);
+  kart.appendChild(sag);
+  kart.appendChild(ctrl);
+  return kart;
+}
+
+function renderTimers(){
+  const now=Date.now();
+  timers=timers.filter(tt=>!(tt.removeAt&&tt.removeAt<=now));
+  timers.sort((a,b)=>a.end-b.end);
+  nearestEl.innerHTML="";
+  upcomingEl.innerHTML="";
+  completedEl.innerHTML="";
+  timers.forEach((t,i)=>{
+    const left=t.end-now;
+    if(left<=0&&!t.done){
+      history.unshift({name:t.name,time:t.end});
+      t.done=true;
+      t.removeAt=now+REMOVE_DELAY;
       saveHistory();
-      if (alertSound.src) alertSound.play();
+      if(alertSound.src)alertSound.play();
     }
-    const card = document.createElement('div');
-    card.className = 'card';
-    card.classList.add(left > 0 ? 'active' : 'respawning');
-    if (mvp) {
-      const img = document.createElement('img');
-      img.src = mvp.img;
-      card.appendChild(img);
-      const map = document.createElement('img');
-      map.src = mvp.mapImg;
-      card.appendChild(map);
-    }
-    const info = document.createElement('div');
-    if (left > 0) {
-      const sec = Math.ceil(left / 1000);
-      const h = Math.floor(sec / 3600);
-      const m = Math.floor((sec % 3600) / 60);
-      const s = sec % 60;
-      const leftStr = `${h.toString().padStart(2,'0')}:${m.toString().padStart(2,'0')}:${s.toString().padStart(2,'0')}`;
-      const endStr = new Date(t.end).toLocaleString('tr-TR', { timeZone: timezoneSelect.value });
-      info.textContent = `${t.name} ${leftStr} ${endStr}`;
-    } else {
-      const endStr = new Date(t.end).toLocaleString('tr-TR', { timeZone: timezoneSelect.value });
-      info.innerHTML = `${t.name} <span class='respawn-text'>RESPAWNING...</span> ${endStr}`;
-    }
-    card.appendChild(info);
-    const removeBtn = document.createElement('button');
-    removeBtn.textContent = 'Sil';
-    removeBtn.onclick = () => removeTimer(i);
-    const upBtn = document.createElement('button');
-    upBtn.textContent = '▲';
-    upBtn.onclick = () => moveTimer(i, -1);
-    const downBtn = document.createElement('button');
-    downBtn.textContent = '▼';
-    downBtn.onclick = () => moveTimer(i, 1);
-    const ctrl = document.createElement('div');
-    ctrl.appendChild(removeBtn);
-    ctrl.appendChild(upBtn);
-    ctrl.appendChild(downBtn);
-    card.appendChild(ctrl);
-    timersEl.appendChild(card);
   });
+  const aktif=timers.filter(t=>t.end>now);
+  const bitti=timers.filter(t=>t.end<=now);
+  if(aktif[0])nearestEl.appendChild(kartOlustur(aktif[0],timers.indexOf(aktif[0])));
+  aktif.slice(1).forEach(t=>upcomingEl.appendChild(kartOlustur(t,timers.indexOf(t))));
+  bitti.forEach(t=>completedEl.appendChild(kartOlustur(t,timers.indexOf(t))));
   saveTimers();
   renderHistory();
 }

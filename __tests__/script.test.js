@@ -6,7 +6,9 @@ beforeEach(() => {
     <input id="minutes" />
     <input id="tomb" />
     <button id="addBtn"></button>
-    <div id="timers"></div>
+    <section id="enYakin"></section>
+    <section id="yaklasanlar"></section>
+    <section id="bitenler"></section>
     <div id="history"></div>
     <input id="soundFile" />
     <audio id="alertSound"></audio>
@@ -44,4 +46,11 @@ test('moveTimer fonksiyonu zamanlayıcı taşır', () => {
   addTimer('B', 1);
   moveTimer(1, -1);
   expect(timers[0].name).toBe('B');
+});
+
+test('renderTimers DOM elemanlarini olusturur', () => {
+  const { addTimer } = require('../script');
+  addTimer('A', 1);
+  jest.runOnlyPendingTimers();
+  expect(document.getElementById('enYakin').children.length).toBe(1);
 });
