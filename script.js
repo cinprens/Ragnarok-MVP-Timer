@@ -7,6 +7,7 @@ const historyEl = document.getElementById('history');
 const soundInput = document.getElementById('soundFile');
 const alertSound = document.getElementById('alertSound');
 alertSound.src = 'Sound/sound.wav';
+const REMOVE_DELAY = 10000;
 const timezoneSelect = document.getElementById('timezone');
 const listEl = document.getElementById('mvpList');
 
@@ -103,14 +104,16 @@ function moveTimer(index, dir) {
 }
 
 function renderTimers() {
-  timersEl.innerHTML = '';
   const now = Date.now();
+  timers = timers.filter(tt => !(tt.removeAt && tt.removeAt <= now));
+  timersEl.innerHTML = '';
   timers.forEach((t, i) => {
     const left = t.end - now;
     const mvp = mvpData.find(m => m.name === t.name);
     if (left <= 0 && !t.done) {
       history.unshift({ name: t.name, time: t.end });
       t.done = true;
+      t.removeAt = now + REMOVE_DELAY;
       saveHistory();
       if (alertSound.src) alertSound.play();
     }
@@ -136,7 +139,7 @@ function renderTimers() {
       info.textContent = `${t.name} ${leftStr} ${endStr}`;
     } else {
       const endStr = new Date(t.end).toLocaleString('tr-TR', { timeZone: timezoneSelect.value });
-      info.innerHTML = `<span class='respawn-text'>RESPAWNING...</span> ${t.name} ${endStr}`;
+      info.innerHTML = `${t.name} <span class='respawn-text'>RESPAWNING...</span> ${endStr}`;
     }
     card.appendChild(info);
     const removeBtn = document.createElement('button');
