@@ -11,6 +11,12 @@ Bu uygulama Ragnarok Online oyunundaki MVP canavarlarının doğma zamanlarını
 
 Zaman dolduğunda seçtiğiniz ses dosyası çalınır ve kart kırmızı renge döner.
 
+### Python ile Yerel Sunucu
+
+1. `npm install` komutunu çalıştırın.
+2. `npm start` yazarak `server.py` dosyasını çalıştırın.
+3. Tarayıcıda `http://localhost:8000` adresini açın.
+
 ## Geliştirici Talimatları
 
 - Testleri çalıştırmak için `npm test` komutunu kullanın.
