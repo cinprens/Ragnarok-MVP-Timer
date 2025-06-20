@@ -1,15 +1,106 @@
-const nameInput=document.getElementById('name');
-const minutesInput=document.getElementById('minutes');
-const addBtn=document.getElementById('addBtn');
-const timersEl=document.getElementById('timers');
-const historyEl=document.getElementById('history');
-let timers=JSON.parse(localStorage.getItem('mvpTimers')||'[]');
-let history=JSON.parse(localStorage.getItem('mvpHistory')||'[]');
-function saveTimers(){localStorage.setItem('mvpTimers',JSON.stringify(timers))}
-function saveHistory(){localStorage.setItem('mvpHistory',JSON.stringify(history))}
-function renderTimers(){timersEl.innerHTML='';const now=Date.now();timers.forEach((t,i)=>{const div=document.createElement('div');const left=t.end-now;if(left<=0){history.unshift({name:t.name,time:new Date(t.end).toLocaleString()});timers.splice(i,1);saveTimers();saveHistory();renderHistory();}else{div.textContent=t.name+' '+Math.ceil(left/1000);timersEl.appendChild(div);}})}
-function renderHistory(){historyEl.innerHTML='';history.slice(0,10).forEach(h=>{const div=document.createElement('div');div.textContent=h.name+' '+h.time;historyEl.appendChild(div);})}
-addBtn.onclick=()=>{const name=nameInput.value.trim();const minutes=parseInt(minutesInput.value,10);if(!name||isNaN(minutes))return;const end=Date.now()+minutes*60000;timers.push({name,end});saveTimers();renderTimers();};
-setInterval(renderTimers,1000);
+const nameInput = document.getElementById('name');
+const minutesInput = document.getElementById('minutes');
+const addBtn = document.getElementById('addBtn');
+const timersEl = document.getElementById('timers');
+const historyEl = document.getElementById('history');
+const soundInput = document.getElementById('soundFile');
+const alertSound = document.getElementById('alertSound');
+
+const mvpData = [
+  { id: 1511, name: 'Orc Lord', respawn: 3600 },
+  { id: 1115, name: 'Eddga', respawn: 7200 },
+  { id: 1785, name: 'Phreeoni', respawn: 3600 }
+];
+
+let timers = JSON.parse(localStorage.getItem('mvpTimers') || '[]');
+let history = JSON.parse(localStorage.getItem('mvpHistory') || '[]');
+
+function saveTimers() {
+  localStorage.setItem('mvpTimers', JSON.stringify(timers));
+}
+
+function saveHistory() {
+  localStorage.setItem('mvpHistory', JSON.stringify(history));
+}
+
+function removeTimer(index) {
+  timers.splice(index, 1);
+  saveTimers();
+  renderTimers();
+}
+
+function moveTimer(index, dir) {
+  const newIndex = index + dir;
+  if (newIndex < 0 || newIndex >= timers.length) return;
+  const [item] = timers.splice(index, 1);
+  timers.splice(newIndex, 0, item);
+  saveTimers();
+  renderTimers();
+}
+
+function renderTimers() {
+  timersEl.innerHTML = '';
+  const now = Date.now();
+  timers.forEach((t, i) => {
+    const div = document.createElement('div');
+    const left = t.end - now;
+    if (left <= 0) {
+      history.unshift({ name: t.name, time: new Date(t.end).toLocaleString() });
+      timers.splice(i, 1);
+      saveTimers();
+      saveHistory();
+      renderHistory();
+      if (alertSound.src) alertSound.play();
+    } else {
+      div.textContent = `${t.name} ${Math.ceil(left / 1000)}`;
+      const removeBtn = document.createElement('button');
+      removeBtn.textContent = 'Sil';
+      removeBtn.onclick = () => removeTimer(i);
+      const upBtn = document.createElement('button');
+      upBtn.textContent = '▲';
+      upBtn.onclick = () => moveTimer(i, -1);
+      const downBtn = document.createElement('button');
+      downBtn.textContent = '▼';
+      downBtn.onclick = () => moveTimer(i, 1);
+      div.appendChild(removeBtn);
+      div.appendChild(upBtn);
+      div.appendChild(downBtn);
+      timersEl.appendChild(div);
+    }
+  });
+}
+
+function renderHistory() {
+  historyEl.innerHTML = '';
+  history.slice(0, 10).forEach(h => {
+    const div = document.createElement('div');
+    div.textContent = `${h.name} ${h.time}`;
+    historyEl.appendChild(div);
+  });
+}
+
+addBtn.onclick = () => {
+  const name = nameInput.value.trim();
+  const minutes = parseInt(minutesInput.value, 10);
+  if (!name || isNaN(minutes)) return;
+  const end = Date.now() + minutes * 60000;
+  timers.push({ name, end });
+  saveTimers();
+  renderTimers();
+};
+
+soundInput.onchange = e => {
+  const file = e.target.files?.[0];
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = ev => {
+    if (typeof ev.target?.result === 'string') {
+      alertSound.src = ev.target.result;
+    }
+  };
+  reader.readAsDataURL(file);
+};
+
+setInterval(renderTimers, 1000);
 renderTimers();
 renderHistory();
