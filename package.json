@@ -2,7 +2,8 @@
   "name": "ragnarok-mvp-timer",
   "version": "1.0.0",
   "scripts": {
-    "test": "jest"
+    "test": "jest",
+    "start": "python server.py"
   },
   "devDependencies": {
     "jest": "^29.6.1",
