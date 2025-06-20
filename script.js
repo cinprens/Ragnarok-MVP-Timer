@@ -16,6 +16,8 @@ const REMOVE_DELAY = 10000;
 const timezoneSelect = document.getElementById('timezone');
 const listEl = document.getElementById('mvpList');
 
+const started={};
+
 const savedZone = localStorage.getItem('timezone') || Intl.DateTimeFormat().resolvedOptions().timeZone;
 const zones = typeof Intl.supportedValuesOf === 'function' ? Intl.supportedValuesOf('timeZone') : [savedZone];
 zones.forEach(z => {
@@ -31,42 +33,9 @@ timezoneSelect.onchange = () => {
   renderHistory();
 };
 
-const useEmbeddedData = false;
-const embeddedMvpData = [
-  {"name":"Beelzebub","map":"abbey03","respawn":43200,"img":"MVP Giff/BEELZEBUB_.gif","mapImg":"Maps/abbey03.gif"},
-  {"name":"Maya","map":"anthell02","respawn":7200,"img":"MVP Giff/MAYA.gif","mapImg":"Maps/anthell02.gif"},
-  {"name":"Tao Gunka","map":"beach_dun","respawn":3600,"img":"MVP Giff/TAO_GUNKA.gif","mapImg":"Maps/beach_dun.gif"},
-  {"name":"Dracula","map":"gef_dun01","respawn":3600,"img":"MVP Giff/DRACULA.gif","mapImg":"Maps/gef_dun01.gif"},
-  {"name":"Dracula","map":"gef_dun02","respawn":3600,"img":"MVP Giff/DRACULA.gif","mapImg":"Maps/gef_dun02.gif"},
-  {"name":"Orc Hero","map":"gef_fild03","respawn":3600,"img":"MVP Giff/ORK_HERO.gif","mapImg":"Maps/gef_fild03.gif"},
-  {"name":"Orc Lord","map":"gef_fild14","respawn":7200,"img":"MVP Giff/ORC_LORD.gif","mapImg":"Maps/gef_fild14.gif"},
-  {"name":"Doppelganger","map":"gl_cas01","respawn":7200,"img":"MVP Giff/DOPPELGANGER.gif","mapImg":"Maps/gl_cas01.gif"},
-  {"name":"Dark Lord","map":"gl_chyard","respawn":7200,"img":"MVP Giff/DARK_LORD.gif","mapImg":"Maps/gl_chyard.gif"},
-  {"name":"Evil Snake Lord","map":"gon_dun03","respawn":7200,"img":"MVP Giff/Evil Snake Lord.gif","mapImg":"Maps/gon_dun03.gif"},
-  {"name":"Amon Ra","map":"in_sphinx5","respawn":3600,"img":"MVP Giff/AMON_RA.gif","mapImg":"Maps/in_sphinx5.gif"},
-  {"name":"White Lady","map":"lou_dun03","respawn":7200,"img":"MVP Giff/White Lady.gif","mapImg":"Maps/lou_dun03.gif"},
-  {"name":"Mistress","map":"mjolnir_04","respawn":7200,"img":"MVP Giff/MISTRESS.gif","mapImg":"Maps/mjolnir_04.gif"},
-  {"name":"Phreeoni","map":"moc_fild17","respawn":3600,"img":"MVP Giff/PHREEONI.gif","mapImg":"Maps/moc_fild17.gif"},
-  {"name":"Osiris","map":"moc_pryd04","respawn":3600,"img":"MVP Giff/OSIRIS.gif","mapImg":"Maps/moc_pryd04.gif"},
-  {"name":"Randgris","map":"odin_tem03","respawn":10800,"img":"MVP Giff/RANDGRIS.gif","mapImg":"Maps/odin_tem03.gif"},
-  {"name":"Moonlight Flower","map":"pay_dun04","respawn":3600,"img":"MVP Giff/MOONLIGHT.gif","mapImg":"Maps/pay_dun04.gif"},
-  {"name":"Eddga","map":"pay_fild10","respawn":7200,"img":"MVP Giff/EDDGA.gif","mapImg":"Maps/pay_fild10.gif"},
-  {"name":"Baphomet","map":"prt_maze03","respawn":7200,"img":"MVP Giff/4_BAPHOMET.gif","mapImg":"Maps/prt_maze03.gif"},
-  {"name":"Golden Bug","map":"prt_sewb4","respawn":3600,"img":"MVP Giff/GOLDEN_BUG.gif","mapImg":"Maps/prt_sewb4.gif"},
-  {"name":"Drake","map":"treasure02","respawn":7200,"img":"MVP Giff/DRAKE.gif","mapImg":"Maps/treasure02.gif"},
-  {"name":"Turtle General","map":"tur_dun04","respawn":3600,"img":"MVP Giff/TURTLE_GENERAL.gif","mapImg":"Maps/tur_dun04.gif"},
-  {"name":"Stormy Knight","map":"xmas_dun02","respawn":7200,"img":"MVP Giff/4_STORMKNIGHT.gif","mapImg":"Maps/xmas_dun02.gif"},
-  {"name":"Garm","map":"xmas_fild01","respawn":7200,"img":"MVP Giff/GARM.gif","mapImg":"Maps/xmas_fild01.gif"}
-];
-
 let mvpData = [];
 
 function loadMvpData(cb){
-  if(useEmbeddedData){
-    mvpData=embeddedMvpData;
-    cb&&cb();
-    return;
-  }
   if(typeof window!=='undefined'&&window.fetch){
     fetch('mvpData.json').then(r=>r.json()).then(d=>{mvpData=d;cb&&cb();}).catch(()=>{
       const e=document.getElementById('fetchError');
@@ -80,15 +49,23 @@ function loadMvpData(cb){
 
 function renderMvpList() {
   listEl.innerHTML = '';
-  mvpData.forEach(m => {
+  const sirali=[...mvpData].sort((a,b)=>{
+    if(started[a.name]&&!started[b.name])return -1;
+    if(!started[a.name]&&started[b.name])return 1;
+    return a.name.localeCompare(b.name);
+  });
+  sirali.forEach(m => {
     const c=document.createElement('div');
     c.className='mvp-card';
+    if(started[m.name])c.classList.add('aktif');
     const img=document.createElement('img');
     img.src=m.img||'';
+    img.alt=(m.name||'')+' görseli';
     const name=document.createElement('div');
     name.textContent=m.name;
     const map=document.createElement('img');
     map.src=m.mapImg||'';
+    map.alt=(m.map||'')+' harita görseli';
     const inp=document.createElement('input');
     inp.type='number';
     inp.placeholder='Dakika';
@@ -108,6 +85,7 @@ function renderMvpList() {
 }
 
 let timers = JSON.parse(localStorage.getItem('mvpTimers') || '[]').map(t => ({...t, done:t.done||false}));
+timers.forEach(t=>{started[t.name]=true;});
 let history = [];
 let db=null;
 
@@ -149,14 +127,18 @@ function saveHistory(){
 
 function addTimer(name, minutes) {
   const end = Date.now() + minutes * 60000;
-  timers.push({ name, end, done:false });
+  timers.push({ name, end, done:false, transition:true });
+  started[name]=true;
   saveTimers();
+  renderMvpList();
   renderTimers();
 }
 
 function removeTimer(index) {
-  timers.splice(index, 1);
+  const t=timers.splice(index, 1)[0];
+  if(t)started[t.name]=false;
   saveTimers();
+  renderMvpList();
   renderTimers();
 }
 
@@ -173,10 +155,17 @@ function kartOlustur(t,i){
   const mvp=mvpData.find(m=>m.name===t.name)||{};
   const kart=document.createElement('div');
   kart.className='card';
+  if(t.transition){
+    kart.classList.add('enter');
+    requestAnimationFrame(()=>kart.classList.remove('enter'));
+    t.transition=false;
+  }
   const img=document.createElement('img');
   img.src=mvp.img||'';
+  img.alt=(t.name||'')+' görseli';
   const map=document.createElement('img');
   map.src=mvp.mapImg||'';
+  map.alt=(mvp.map||'')+' harita görseli';
   const inp=document.createElement('input');
   inp.type='number';
   inp.value=Math.ceil((t.end-Date.now())/60000);
@@ -213,7 +202,13 @@ function kartOlustur(t,i){
 
 function renderTimers(){
   const now=Date.now();
-  timers=timers.filter(tt=>!(tt.removeAt&&tt.removeAt<=now));
+  timers=timers.filter(tt=>{
+    if(tt.removeAt&&tt.removeAt<=now){
+      started[tt.name]=false;
+      return false;
+    }
+    return true;
+  });
   timers.sort((a,b)=>a.end-b.end);
   upcomingEl.innerHTML='';
   completedEl.innerHTML='';
@@ -223,6 +218,7 @@ function renderTimers(){
       history.unshift({name:t.name,time:t.end});
       t.done=true;
       t.removeAt=now+REMOVE_DELAY;
+      t.transition=true;
       saveHistory();
       if(alertSound.src)alertSound.play();
       if(typeof Notification!=='undefined'&&Notification.permission==='granted'){
@@ -233,9 +229,9 @@ function renderTimers(){
   const aktif=timers.filter(t=>t.end>now);
   const bitti=timers.filter(t=>t.end<=now);
   if(aktif[0]){
-    const dk=Math.ceil((aktif[0].end-now)/60000);
-    nearestEl.textContent=`En Yakın MVP: ${aktif[0].name} - ${dk} dk`;
-  }else{nearestEl.textContent='';}
+    nearestEl.innerHTML='';
+    nearestEl.appendChild(kartOlustur(aktif[0],timers.indexOf(aktif[0])));
+  }else{nearestEl.innerHTML='';}
   aktif.forEach(t=>upcomingEl.appendChild(kartOlustur(t,timers.indexOf(t))));
   bitti.forEach(t=>completedEl.appendChild(kartOlustur(t,timers.indexOf(t))));
   saveTimers();
