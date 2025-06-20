@@ -1,0 +1,8 @@
+body{background:#111;color:#eee;font-family:sans-serif;margin:0}
+#app{display:flex;flex-wrap:wrap}
+section{padding:10px}
+#timers{flex:2 1 60%;min-width:300px}
+#history{flex:1 1 40%;min-width:200px;max-height:80vh;overflow-y:auto}
+input,button{margin:5px;background:#222;color:#eee;border:1px solid #555;padding:5px}
+button{cursor:pointer}
+@media(max-width:600px){#timers,#history{flex-basis:100%}}
