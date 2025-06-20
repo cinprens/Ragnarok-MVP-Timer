@@ -1,25 +1,27 @@
 <!DOCTYPE html>
 <html lang="tr">
 <head>
-  <meta charset="UTF-8">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Ragnarok MVP Timer</title>
-  <link rel="stylesheet" href="style.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
 </head>
 <body>
   <div id="app">
-    <!-- SOL PANEL -->
-    <div id="left-panel">
-      <section id="mvpList"></section><!-- tüm MVP’ler -->
+    <div class="panel" id="left-panel">
+      <h2>Şu An Kesik Olan MVP’ler</h2>
+      <div class="content" id="left-content"></div>
     </div>
-
-    <!-- ORTA PANEL -->
-    <div id="mid-panel">
-      <section id="enYakin"></section><!-- yalnız 1 aktif -->
+    <div class="panel" id="mid-panel">
+      <h2>Yaklaşan Spawn</h2>
+      <div class="content" id="mid-content"></div>
     </div>
-
-    <!-- SAĞ PANEL -->
-    <div id="right-panel">
-      <section id="bitenler"></section><!-- bitenler -->
+    <div class="panel" id="right-panel">
+      <h2>MVP Arama / Detay</h2>
+      <div class="content" id="right-content"></div>
     </div>
   </div>
   <script src="script.js"></script>
