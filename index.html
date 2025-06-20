@@ -4,19 +4,20 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>MVP Sayaç</title>
+<link rel="stylesheet" href="style.css">
 </head>
 <body>
-<div>
+<div id="app">
+<section>
 <input id="name" placeholder="MVP"/>
 <input id="minutes" type="number" placeholder="Dakika"/>
 <button id="addBtn">Ekle</button>
-</div>
-<div>
 <input id="soundFile" type="file" accept="audio/*"/>
 <audio id="alertSound"></audio>
+</section>
+<section id="timers"></section>
+<section id="history"></section>
 </div>
-<div id="timers"></div>
-<div id="history"></div>
 <script src="script.js"></script>
 </body>
 </html>
