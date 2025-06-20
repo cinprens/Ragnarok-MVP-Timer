@@ -1,0 +1,11 @@
+{
+  "name": "ragnarok-mvp-timer",
+  "version": "1.0.0",
+  "scripts": {
+    "test": "jest"
+  },
+  "devDependencies": {
+    "jest": "^29.6.1",
+    "eslint": "^8.53.0"
+  }
+}

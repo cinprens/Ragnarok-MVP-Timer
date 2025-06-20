@@ -196,3 +196,7 @@ setInterval(renderTimers, 1000);
 renderTimers();
 renderHistory();
 renderMvpList();
+
+if (typeof module !== 'undefined') {
+  module.exports = { addTimer, removeTimer, moveTimer, timers };
+}
