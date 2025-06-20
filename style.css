@@ -1,8 +1,13 @@
+* {
+  box-sizing: border-box;
+}
+
 body {
   margin: 0;
   font-family: 'Inter', sans-serif;
   background: #0d0d0d;
   color: #e0e0e0;
+  overflow-x: hidden;
 }
 
 #app {
@@ -41,9 +46,17 @@ h2 {
   font-size: 1.2rem;
 }
 
-.item {
-  padding: 0.5rem;
+.row {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 0;
   border-bottom: 1px solid #3a3a3a;
+  cursor: pointer;
+}
+
+.row.ended {
+  opacity: 0.5;
 }
 
 .big-item {
@@ -52,16 +65,31 @@ h2 {
   text-align: center;
 }
 
+.big-img {
+  width: 200px;
+  height: 200px;
+  object-fit: contain;
+  display: block;
+  margin: 0 auto;
+}
+
+img.mvp {
+  width: 120px;
+  height: 120px;
+  object-fit: contain;
+}
+
 .timestamp {
   margin-top: 1rem;
   font-size: 0.8rem;
   opacity: 0.7;
 }
 
+
 .panel:hover {
-  filter: brightness(1.1);
+  filter: brightness(1.05);
 }
 
 .panel:active {
-  filter: brightness(1.2);
+  filter: brightness(1.1);
 }
