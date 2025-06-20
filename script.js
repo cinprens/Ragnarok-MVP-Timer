@@ -2,10 +2,13 @@ const nameInput = document.getElementById('name');
 const minutesInput = document.getElementById('minutes');
 const tombInput = document.getElementById('tomb');
 const addBtn = document.getElementById('addBtn');
-const nearestEl=document.getElementById("enYakin");
-const upcomingEl=document.getElementById("yaklasanlar");
-const completedEl=document.getElementById("bitenler");
-const historyEl = document.getElementById('history');
+const leftPanel=document.getElementById('left-panel')||document;
+const midPanel=document.getElementById('mid-panel')||document;
+const rightPanel=document.getElementById('right-panel')||document;
+const nearestEl=midPanel.querySelector('#enYakin');
+const upcomingEl=midPanel.querySelector('#yaklasanlar');
+const completedEl=midPanel.querySelector('#bitenler');
+const historyEl=rightPanel.querySelector('#history');
 const soundInput = document.getElementById('soundFile');
 const alertSound = document.getElementById('alertSound');
 alertSound.src = 'Sound/sound.wav';
@@ -14,7 +17,7 @@ if(typeof Notification!=='undefined'&&Notification.permission==='default'){
 }
 const REMOVE_DELAY = 10000;
 const timezoneSelect = document.getElementById('timezone');
-const listEl = document.getElementById('mvpList');
+const listEl = leftPanel.querySelector('#mvpList');
 
 const savedZone = localStorage.getItem('timezone') || Intl.DateTimeFormat().resolvedOptions().timeZone;
 const zones = typeof Intl.supportedValuesOf === 'function' ? Intl.supportedValuesOf('timeZone') : [savedZone];
