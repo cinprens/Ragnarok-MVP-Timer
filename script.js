@@ -16,6 +16,8 @@ const REMOVE_DELAY = 10000;
 const timezoneSelect = document.getElementById('timezone');
 const listEl = document.getElementById('mvpList');
 
+const started={};
+
 const savedZone = localStorage.getItem('timezone') || Intl.DateTimeFormat().resolvedOptions().timeZone;
 const zones = typeof Intl.supportedValuesOf === 'function' ? Intl.supportedValuesOf('timeZone') : [savedZone];
 zones.forEach(z => {
@@ -48,6 +50,7 @@ function loadMvpData(cb){
 function renderMvpList() {
   listEl.innerHTML = '';
   mvpData.forEach(m => {
+    if(started[m.name])return;
     const c=document.createElement('div');
     c.className='mvp-card';
     const img=document.createElement('img');
@@ -77,6 +80,7 @@ function renderMvpList() {
 }
 
 let timers = JSON.parse(localStorage.getItem('mvpTimers') || '[]').map(t => ({...t, done:t.done||false}));
+timers.forEach(t=>{started[t.name]=true;});
 let history = [];
 let db=null;
 
@@ -118,14 +122,18 @@ function saveHistory(){
 
 function addTimer(name, minutes) {
   const end = Date.now() + minutes * 60000;
-  timers.push({ name, end, done:false });
+  timers.push({ name, end, done:false, transition:true });
+  started[name]=true;
   saveTimers();
+  renderMvpList();
   renderTimers();
 }
 
 function removeTimer(index) {
-  timers.splice(index, 1);
+  const t=timers.splice(index, 1)[0];
+  if(t)started[t.name]=false;
   saveTimers();
+  renderMvpList();
   renderTimers();
 }
 
@@ -142,6 +150,11 @@ function kartOlustur(t,i){
   const mvp=mvpData.find(m=>m.name===t.name)||{};
   const kart=document.createElement('div');
   kart.className='card';
+  if(t.transition){
+    kart.classList.add('enter');
+    requestAnimationFrame(()=>kart.classList.remove('enter'));
+    t.transition=false;
+  }
   const img=document.createElement('img');
   img.src=mvp.img||'';
   img.alt=(t.name||'')+' görseli';
@@ -184,7 +197,13 @@ function kartOlustur(t,i){
 
 function renderTimers(){
   const now=Date.now();
-  timers=timers.filter(tt=>!(tt.removeAt&&tt.removeAt<=now));
+  timers=timers.filter(tt=>{
+    if(tt.removeAt&&tt.removeAt<=now){
+      started[tt.name]=false;
+      return false;
+    }
+    return true;
+  });
   timers.sort((a,b)=>a.end-b.end);
   upcomingEl.innerHTML='';
   completedEl.innerHTML='';
@@ -194,6 +213,7 @@ function renderTimers(){
       history.unshift({name:t.name,time:t.end});
       t.done=true;
       t.removeAt=now+REMOVE_DELAY;
+      t.transition=true;
       saveHistory();
       if(alertSound.src)alertSound.play();
       if(typeof Notification!=='undefined'&&Notification.permission==='granted'){
@@ -204,9 +224,9 @@ function renderTimers(){
   const aktif=timers.filter(t=>t.end>now);
   const bitti=timers.filter(t=>t.end<=now);
   if(aktif[0]){
-    const dk=Math.ceil((aktif[0].end-now)/60000);
-    nearestEl.textContent=`En Yakın MVP: ${aktif[0].name} - ${dk} dk`;
-  }else{nearestEl.textContent='';}
+    nearestEl.innerHTML='';
+    nearestEl.appendChild(kartOlustur(aktif[0],timers.indexOf(aktif[0])));
+  }else{nearestEl.innerHTML='';}
   aktif.forEach(t=>upcomingEl.appendChild(kartOlustur(t,timers.indexOf(t))));
   bitti.forEach(t=>completedEl.appendChild(kartOlustur(t,timers.indexOf(t))));
   saveTimers();
