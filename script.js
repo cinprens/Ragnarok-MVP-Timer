@@ -1,5 +1,6 @@
 const nameInput = document.getElementById('name');
 const minutesInput = document.getElementById('minutes');
+const tombInput = document.getElementById('tomb');
 const addBtn = document.getElementById('addBtn');
 const timersEl = document.getElementById('timers');
 const historyEl = document.getElementById('history');
@@ -69,7 +70,12 @@ function renderTimers() {
       if (alertSound.src) alertSound.play();
     } else {
       const endStr = new Date(t.end).toLocaleString('tr-TR', { timeZone: timezoneSelect.value });
-      div.textContent = `${t.name} ${Math.ceil(left / 1000)} ${endStr}`;
+      const sec = Math.ceil(left / 1000);
+      const h = Math.floor(sec / 3600);
+      const m = Math.floor((sec % 3600) / 60);
+      const s = sec % 60;
+      const leftStr = `${h.toString().padStart(2,'0')}:${m.toString().padStart(2,'0')}:${s.toString().padStart(2,'0')}`;
+      div.textContent = `${t.name} ${leftStr} ${endStr}`;
       const removeBtn = document.createElement('button');
       removeBtn.textContent = 'Sil';
       removeBtn.onclick = () => removeTimer(i);
@@ -100,8 +106,9 @@ function renderHistory() {
 addBtn.onclick = () => {
   const name = nameInput.value.trim();
   const minutes = parseInt(minutesInput.value, 10);
+  const tomb = parseInt(tombInput.value, 10) || 0;
   if (!name || isNaN(minutes)) return;
-  const end = Date.now() + minutes * 60000;
+  const end = Date.now() + (minutes + tomb) * 60000;
   timers.push({ name, end });
   saveTimers();
   renderTimers();
