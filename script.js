@@ -27,7 +27,7 @@ bitti.forEach(t=>{
   const kc = minimalBittiKart(t);
   completedEl.appendChild(kc);
 });
-const img = src=>{const i=new Image();i.src='./'+src;i.width=48;return i;}
+const img = src=>{const i=new Image();i.src='./'+src;i.width=48;i.alt=src+' görseli';return i;}
 const numInput=ph=>{const i=document.createElement('input');i.placeholder=ph;return i;}
 const button=(txt,fn)=>{const b=document.createElement('button');b.textContent=txt;b.onclick=fn;return b;}
 
