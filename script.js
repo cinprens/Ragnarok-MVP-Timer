@@ -5,6 +5,22 @@ const timersEl = document.getElementById('timers');
 const historyEl = document.getElementById('history');
 const soundInput = document.getElementById('soundFile');
 const alertSound = document.getElementById('alertSound');
+const timezoneSelect = document.getElementById('timezone');
+
+const savedZone = localStorage.getItem('timezone') || Intl.DateTimeFormat().resolvedOptions().timeZone;
+const zones = typeof Intl.supportedValuesOf === 'function' ? Intl.supportedValuesOf('timeZone') : [savedZone];
+zones.forEach(z => {
+  const opt = document.createElement('option');
+  opt.value = z;
+  opt.textContent = z;
+  timezoneSelect.appendChild(opt);
+});
+timezoneSelect.value = savedZone;
+timezoneSelect.onchange = () => {
+  localStorage.setItem('timezone', timezoneSelect.value);
+  renderTimers();
+  renderHistory();
+};
 
 const mvpData = [
   { id: 1511, name: 'Orc Lord', respawn: 3600 },
@@ -45,14 +61,15 @@ function renderTimers() {
     const div = document.createElement('div');
     const left = t.end - now;
     if (left <= 0) {
-      history.unshift({ name: t.name, time: new Date(t.end).toLocaleString() });
+      history.unshift({ name: t.name, time: t.end });
       timers.splice(i, 1);
       saveTimers();
       saveHistory();
       renderHistory();
       if (alertSound.src) alertSound.play();
     } else {
-      div.textContent = `${t.name} ${Math.ceil(left / 1000)}`;
+      const endStr = new Date(t.end).toLocaleString('tr-TR', { timeZone: timezoneSelect.value });
+      div.textContent = `${t.name} ${Math.ceil(left / 1000)} ${endStr}`;
       const removeBtn = document.createElement('button');
       removeBtn.textContent = 'Sil';
       removeBtn.onclick = () => removeTimer(i);
@@ -74,7 +91,8 @@ function renderHistory() {
   historyEl.innerHTML = '';
   history.slice(0, 10).forEach(h => {
     const div = document.createElement('div');
-    div.textContent = `${h.name} ${h.time}`;
+    const timeStr = new Date(h.time).toLocaleString('tr-TR', { timeZone: timezoneSelect.value });
+    div.textContent = `${h.name} ${timeStr}`;
     historyEl.appendChild(div);
   });
 }
