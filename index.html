@@ -1,29 +1,30 @@
 <!DOCTYPE html>
 <html lang="tr">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Ragnarok MVP Timer</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Inter&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="style.css" />
+<meta charset="UTF-8">
+<title>Ragnarok MVP Timer</title>
+<link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <div id="app">
-    <div class="panel" id="left-panel">
-      <h2>Şu An Kesik Olan MVP’ler</h2>
-      <div class="content" id="left-content"></div>
-    </div>
-    <div class="panel" id="mid-panel">
-      <h2>Yaklaşan Spawn</h2>
-      <div class="content" id="mid-content"></div>
-    </div>
-    <div class="panel" id="right-panel">
-      <h2>MVP Arama / Detay</h2>
-      <div class="content" id="right-content"></div>
-    </div>
-  </div>
-  <script src="script.js"></script>
+<div class="panel" id="left">
+<ul id="positiveList"></ul>
+</div>
+<div class="panel" id="center">
+<div id="currentSpawn">
+<img id="csImg" src="" alt="">
+<div id="csName"></div>
+<div id="csMap"></div>
+<div id="csTime"></div>
+</div>
+<div id="controls">
+<input id="minInput" type="number" placeholder="dk">
+<input id="secInput" type="number" placeholder="sn">
+<button id="setBtn">Ayarla</button>
+</div>
+</div>
+<div class="panel" id="right">
+<ul id="negativeList"></ul>
+</div>
+<script type="module" src="app.js"></script>
 </body>
 </html>
