@@ -52,5 +52,5 @@ test('renderTimers DOM elemanlarini olusturur', () => {
   const { addTimer } = require('../script');
   addTimer('A', 1);
   jest.runOnlyPendingTimers();
-  expect(document.getElementById('enYakin').children.length).toBe(1);
+  expect(document.getElementById('yaklasanlar').children.length).toBe(1);
 });

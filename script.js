@@ -9,6 +9,9 @@ const historyEl = document.getElementById('history');
 const soundInput = document.getElementById('soundFile');
 const alertSound = document.getElementById('alertSound');
 alertSound.src = 'Sound/sound.wav';
+if(typeof Notification!=='undefined'&&Notification.permission==='default'){
+  Notification.requestPermission();
+}
 const REMOVE_DELAY = 10000;
 const timezoneSelect = document.getElementById('timezone');
 const listEl = document.getElementById('mvpList');
@@ -77,19 +80,31 @@ function loadMvpData(cb){
 
 function renderMvpList() {
   listEl.innerHTML = '';
-  const ol = document.createElement('ol');
   mvpData.forEach(m => {
-    const li = document.createElement('li');
-    li.textContent = m.name;
-    li.onclick = () => addTimer(m.name, m.respawn / 60);
-    li.oncontextmenu = e => {
-      e.preventDefault();
-      const val = parseInt(prompt('Dakika?') || '', 10);
-      if (!isNaN(val)) addTimer(m.name, val);
+    const c=document.createElement('div');
+    c.className='mvp-card';
+    const img=document.createElement('img');
+    img.src=m.img||'';
+    const name=document.createElement('div');
+    name.textContent=m.name;
+    const map=document.createElement('img');
+    map.src=m.mapImg||'';
+    const inp=document.createElement('input');
+    inp.type='number';
+    inp.placeholder='Dakika';
+    const btn=document.createElement('button');
+    btn.textContent='Başlat';
+    btn.onclick=()=>{
+      const val=parseInt(inp.value,10);
+      addTimer(m.name,isNaN(val)?m.respawn/60:val);
     };
-    ol.appendChild(li);
+    c.appendChild(img);
+    c.appendChild(name);
+    c.appendChild(map);
+    c.appendChild(inp);
+    c.appendChild(btn);
+    listEl.appendChild(c);
   });
-  listEl.appendChild(ol);
 }
 
 let timers = JSON.parse(localStorage.getItem('mvpTimers') || '[]').map(t => ({...t, done:t.done||false}));
@@ -156,33 +171,43 @@ function moveTimer(index, dir) {
 
 function kartOlustur(t,i){
   const mvp=mvpData.find(m=>m.name===t.name)||{};
-  const kart=document.createElement("div");
-  kart.className="card";
-  const sol=document.createElement("img");
-  sol.src=mvp.img||"";
-  const orta=document.createElement("img");
-  orta.src=mvp.mapImg||"";
-  const sag=document.createElement("div");
-  const dk=Math.ceil((t.end-Date.now())/60000);
-  sag.textContent=`Kalan: ${dk} dk`;
-  sag.style.fontWeight="bold";
-  const sil=document.createElement("button");
-  sil.textContent="Sil";
+  const kart=document.createElement('div');
+  kart.className='card';
+  const img=document.createElement('img');
+  img.src=mvp.img||'';
+  const map=document.createElement('img');
+  map.src=mvp.mapImg||'';
+  const inp=document.createElement('input');
+  inp.type='number';
+  inp.value=Math.ceil((t.end-Date.now())/60000);
+  const guncelle=document.createElement('button');
+  guncelle.textContent='Güncelle';
+  const apply=()=>{
+    const val=parseInt(inp.value,10);
+    if(!isNaN(val)){
+      t.end=Date.now()+val*60000;
+      saveTimers();
+      renderTimers();
+    }
+  };
+  guncelle.onclick=apply;
+  inp.onkeydown=e=>{if(e.key==='Enter')apply();};
+  const sil=document.createElement('button');
+  sil.textContent='Sil';
   sil.onclick=()=>removeTimer(i);
-  const yukari=document.createElement("button");
-  yukari.textContent="▲";
+  const yukari=document.createElement('button');
+  yukari.textContent='▲';
   yukari.onclick=()=>moveTimer(i,-1);
-  const asagi=document.createElement("button");
-  asagi.textContent="▼";
+  const asagi=document.createElement('button');
+  asagi.textContent='▼';
   asagi.onclick=()=>moveTimer(i,1);
-  const ctrl=document.createElement("div");
-  ctrl.appendChild(sil);
-  ctrl.appendChild(yukari);
-  ctrl.appendChild(asagi);
-  kart.appendChild(sol);
-  kart.appendChild(orta);
-  kart.appendChild(sag);
-  kart.appendChild(ctrl);
+  kart.appendChild(img);
+  kart.appendChild(map);
+  kart.appendChild(inp);
+  kart.appendChild(guncelle);
+  kart.appendChild(sil);
+  kart.appendChild(yukari);
+  kart.appendChild(asagi);
   return kart;
 }
 
@@ -190,9 +215,8 @@ function renderTimers(){
   const now=Date.now();
   timers=timers.filter(tt=>!(tt.removeAt&&tt.removeAt<=now));
   timers.sort((a,b)=>a.end-b.end);
-  nearestEl.innerHTML="";
-  upcomingEl.innerHTML="";
-  completedEl.innerHTML="";
+  upcomingEl.innerHTML='';
+  completedEl.innerHTML='';
   timers.forEach((t,i)=>{
     const left=t.end-now;
     if(left<=0&&!t.done){
@@ -201,12 +225,18 @@ function renderTimers(){
       t.removeAt=now+REMOVE_DELAY;
       saveHistory();
       if(alertSound.src)alertSound.play();
+      if(typeof Notification!=='undefined'&&Notification.permission==='granted'){
+        new Notification(`${t.name} spawn oldu`);
+      }
     }
   });
   const aktif=timers.filter(t=>t.end>now);
   const bitti=timers.filter(t=>t.end<=now);
-  if(aktif[0])nearestEl.appendChild(kartOlustur(aktif[0],timers.indexOf(aktif[0])));
-  aktif.slice(1).forEach(t=>upcomingEl.appendChild(kartOlustur(t,timers.indexOf(t))));
+  if(aktif[0]){
+    const dk=Math.ceil((aktif[0].end-now)/60000);
+    nearestEl.textContent=`En Yakın MVP: ${aktif[0].name} - ${dk} dk`;
+  }else{nearestEl.textContent='';}
+  aktif.forEach(t=>upcomingEl.appendChild(kartOlustur(t,timers.indexOf(t))));
   bitti.forEach(t=>completedEl.appendChild(kartOlustur(t,timers.indexOf(t))));
   saveTimers();
   renderHistory();
