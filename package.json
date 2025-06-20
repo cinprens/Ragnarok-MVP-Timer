@@ -3,7 +3,8 @@
   "version": "1.0.0",
   "scripts": {
     "test": "jest",
-    "start": "python server.py"
+    "start": "python server.py",
+    "prepare": "npm install"
   },
   "devDependencies": {
     "jest": "^29.6.1",
