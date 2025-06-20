@@ -19,6 +19,7 @@ Zaman dolduğunda seçtiğiniz ses dosyası çalınır ve kart kırmızı renge 
 
 ## Geliştirici Talimatları
 
+- Testleri çalıştırmadan önce `npm install` komutunu çalıştırın.
 - Testleri çalıştırmak için `npm test` komutunu kullanın.
 - Kod düzenlemelerinde ESLint kuralları uygulanmalıdır.
 - `script.js` içinde `mvpData` dizisi ile yeni canavarlar ekleyebilirsiniz.
