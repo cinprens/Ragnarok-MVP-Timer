@@ -55,3 +55,4 @@ function zamanEtiketi(t,cls,geri=false){
   const ss=Math.floor(Math.abs(left)%60000/1000).toString().padStart(2,'0');
   d.textContent = (geri?'-':'')+`${mm}:${ss}`; return d;
 }
+module.exports = {addTimer, removeTimer, moveTimer, timers}
