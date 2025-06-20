@@ -68,7 +68,7 @@ function renderMvpList() {
   listEl.appendChild(ol);
 }
 
-let timers = JSON.parse(localStorage.getItem('mvpTimers') || '[]');
+let timers = JSON.parse(localStorage.getItem('mvpTimers') || '[]').map(t => ({...t, done:t.done||false}));
 let history = JSON.parse(localStorage.getItem('mvpHistory') || '[]');
 
 function saveTimers() {
@@ -81,7 +81,7 @@ function saveHistory() {
 
 function addTimer(name, minutes) {
   const end = Date.now() + minutes * 60000;
-  timers.push({ name, end });
+  timers.push({ name, end, done:false });
   saveTimers();
   renderTimers();
 }
@@ -105,38 +105,57 @@ function renderTimers() {
   timersEl.innerHTML = '';
   const now = Date.now();
   timers.forEach((t, i) => {
-    const div = document.createElement('div');
     const left = t.end - now;
-    if (left <= 0) {
+    const mvp = mvpData.find(m => m.name === t.name);
+    if (left <= 0 && !t.done) {
       history.unshift({ name: t.name, time: t.end });
-      timers.splice(i, 1);
-      saveTimers();
+      t.done = true;
       saveHistory();
-      renderHistory();
       if (alertSound.src) alertSound.play();
-    } else {
-      const endStr = new Date(t.end).toLocaleString('tr-TR', { timeZone: timezoneSelect.value });
+    }
+    const card = document.createElement('div');
+    card.className = 'card';
+    card.classList.add(left > 0 ? 'active' : 'respawning');
+    if (mvp) {
+      const img = document.createElement('img');
+      img.src = mvp.img;
+      card.appendChild(img);
+      const map = document.createElement('img');
+      map.src = mvp.mapImg;
+      card.appendChild(map);
+    }
+    const info = document.createElement('div');
+    if (left > 0) {
       const sec = Math.ceil(left / 1000);
       const h = Math.floor(sec / 3600);
       const m = Math.floor((sec % 3600) / 60);
       const s = sec % 60;
       const leftStr = `${h.toString().padStart(2,'0')}:${m.toString().padStart(2,'0')}:${s.toString().padStart(2,'0')}`;
-      div.textContent = `${t.name} ${leftStr} ${endStr}`;
-      const removeBtn = document.createElement('button');
-      removeBtn.textContent = 'Sil';
-      removeBtn.onclick = () => removeTimer(i);
-      const upBtn = document.createElement('button');
-      upBtn.textContent = '▲';
-      upBtn.onclick = () => moveTimer(i, -1);
-      const downBtn = document.createElement('button');
-      downBtn.textContent = '▼';
-      downBtn.onclick = () => moveTimer(i, 1);
-      div.appendChild(removeBtn);
-      div.appendChild(upBtn);
-      div.appendChild(downBtn);
-      timersEl.appendChild(div);
+      const endStr = new Date(t.end).toLocaleString('tr-TR', { timeZone: timezoneSelect.value });
+      info.textContent = `${t.name} ${leftStr} ${endStr}`;
+    } else {
+      const endStr = new Date(t.end).toLocaleString('tr-TR', { timeZone: timezoneSelect.value });
+      info.innerHTML = `<span class='respawn-text'>RESPAWNING...</span> ${t.name} ${endStr}`;
     }
+    card.appendChild(info);
+    const removeBtn = document.createElement('button');
+    removeBtn.textContent = 'Sil';
+    removeBtn.onclick = () => removeTimer(i);
+    const upBtn = document.createElement('button');
+    upBtn.textContent = '▲';
+    upBtn.onclick = () => moveTimer(i, -1);
+    const downBtn = document.createElement('button');
+    downBtn.textContent = '▼';
+    downBtn.onclick = () => moveTimer(i, 1);
+    const ctrl = document.createElement('div');
+    ctrl.appendChild(removeBtn);
+    ctrl.appendChild(upBtn);
+    ctrl.appendChild(downBtn);
+    card.appendChild(ctrl);
+    timersEl.appendChild(card);
   });
+  saveTimers();
+  renderHistory();
 }
 
 function renderHistory() {
