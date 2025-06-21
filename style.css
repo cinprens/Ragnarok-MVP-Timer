@@ -168,7 +168,14 @@ ul { list-style: none; margin: 0; padding: 0; }
 .mvp-row img.tomb { width: 20px; height: 20px; justify-self: end; }
 .mvp-row.positive .mvp-timer { color: var(--pos); }
 .mvp-row.negative .mvp-timer { color: var(--neg); }
-.mvp-row .mvp-timer { text-align: right; font-variant-numeric: tabular-nums; }
+.mvp-row .mvp-timer {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+}
+.spawn-date { text-align: right; font-size: 0.85rem; color: #ccc; }
 .tomb-time { text-align: right; font-size: 0.85rem; color: #ccc; }
 .mvp-row.tomb-active img.tomb { filter: drop-shadow(0 0 4px #a277ff); }
 .mvp-row button { width: 100%; height: 28px; }

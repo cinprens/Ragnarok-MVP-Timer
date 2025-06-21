@@ -22,6 +22,7 @@ test('negatif karta tasinir',async()=>{
   expect(li).not.toBeNull();
   expect(li.classList.contains('negative')).toBe(true);
   expect(li.querySelector('button').textContent).toBe('Reset');
+  expect(li.querySelector('.spawn-date')).not.toBeNull();
   mod.resetMvp(mod.MVP_LIST[0]);
   mod.UI.render();
   expect(document.querySelector('#positiveList li')).not.toBeNull();
