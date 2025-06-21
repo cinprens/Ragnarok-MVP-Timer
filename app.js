@@ -76,11 +76,18 @@ function toggleTomb(m,li){
   render();
 }
 
-setInterval(() => {
-  MVP_LIST.forEach(m => m.remaining--);
+let timerId=null;
+function step(){
+  MVP_LIST.forEach(m=>m.remaining--);
   if(UI.current) UI.time.textContent=fmt(UI.current.remaining);
   render();
-},1000);
+}
+function startTimers(){
+  if(!timerId) timerId=setInterval(step,1000);
+}
+function stopTimers(){
+  if(timerId){clearInterval(timerId);timerId=null;}
+}
 
 function flashRow(m){
   setTimeout(() => {
@@ -105,6 +112,8 @@ $("#setBtn").onclick = () => {
   selected.tomb = false;
   render();
 };
+$("#startBtn").onclick=startTimers;
+$("#stopBtn").onclick=stopTimers;
 
 (() => {
   const left   = document.getElementById("left");
