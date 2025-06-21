@@ -31,21 +31,29 @@
       <img id="mvpGif" alt="">
       <div id="mvpTime"></div>
       <img id="mvpMap" alt="">
-      <div id="controls">
-        <input id="minInput" type="number" placeholder="min" min="0" />
-        <input id="secInput" type="number" placeholder="sec" min="0" max="59" />
-        <button id="setBtn">Set</button>
-        <button id="startBtn">Start</button>
-        <button id="stopBtn">Stop</button>
-      </div>
-        <div id="tombForm">
-          <input id="tombHour" type="number" placeholder="hh" min="0" max="23">
-          <input id="tombMin" type="number" placeholder="mm" min="0" max="59">
-          <input id="tombSec" type="number" placeholder="ss" min="0" max="59">
-          <button id="tombBtn">Tomb</button>
+      <div id="mapName"></div>
+      <div id="timerBox">
+        <div class="optBox">
+          <div class="box-title">Opsiyonel Timer (Dakika / Saniye)</div>
+          <div id="controls">
+            <input id="minInput" type="number" placeholder="min" min="0" />
+            <input id="secInput" type="number" placeholder="sec" min="0" max="59" />
+            <button id="setBtn">Set</button>
+            <button id="startBtn">Start</button>
+            <button id="stopBtn">Stop</button>
+          </div>
+        </div>
+        <div class="tombBox">
+          <div class="box-title">Tomb Zamanı (Saat / Dakika / Saniye)</div>
+          <div id="tombForm">
+            <input id="tombHour" type="number" placeholder="hh" min="0" max="23">
+            <input id="tombMin" type="number" placeholder="mm" min="0" max="59">
+            <input id="tombSec" type="number" placeholder="ss" min="0" max="59">
+            <button id="tombBtn">Tomb</button>
+          </div>
         </div>
       </div>
-      <button id="resetAllBtn">Reset All Timers</button>
+    </div>
     </div>
 
   <div class="resizer" data-side="right"></div>

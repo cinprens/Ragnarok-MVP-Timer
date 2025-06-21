@@ -96,6 +96,7 @@ const UI={
   name:$("#mvpName"),
   time:$("#mvpTime"),
   map:$("#mvpMap"),
+  mapName:$("#mapName"),
   left:$("#positiveList"),
   right:$("#right #negativeList"),
   render(){
@@ -116,6 +117,7 @@ const UI={
     this.gif.src=m.sprite();
     this.time.textContent=fmt(m.remaining);
     this.map.src=m.mapImg();
+    this.mapName.textContent='Map: '+m.map;
   },
   clearCurrent(){
     this.current=null;
@@ -123,6 +125,7 @@ const UI={
     this.gif.src="";
     this.time.textContent="";
     this.map.src="";
+    this.mapName.textContent="";
   }
 };
 
@@ -212,12 +215,12 @@ function toggleTomb(m){
           s=document.getElementById("tombSec").value;
     if(h===""||mn===""||s===""){alert('Saat gir');return;}
     const val=`${String(h).padStart(2,'0')}:${String(mn).padStart(2,'0')}:${String(s).padStart(2,'0')}`;
-    m.remaining=mezarSaatineGoreKalan(val,timezone,m.respawn);
+    m.remaining=mezarSaatineGoreKalan(val,'Asia/Kuching',m.respawn);
     m.spawnUTC=Date.now()+m.remaining*1000;
     m.tomb=true;
     m.running = true;
     startTimers();
-    m.tombTime=val+' '+timezone;
+    m.tombTime=val+' Asia/Kuching';
   }
   updateSpawnDates();
   render();
@@ -294,7 +297,6 @@ $("#setBtn").onclick = () => {
 };
 $("#startBtn").onclick=startTimers;
 $("#stopBtn").onclick=stopTimers;
-document.getElementById("resetAllBtn").onclick=resetAll;
 document.getElementById("tombBtn").onclick=()=>{
   if(!selected){alert('Önce bir MVP seç');return;}
   toggleTomb(selected);
