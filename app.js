@@ -26,9 +26,26 @@ let MVP_LIST=[];
 const $=s=>document.querySelector(s);
 const tzSel=$('#tzSelect');
 const tzDiv=document.getElementById('currentTZ');
+const timeDiv=document.getElementById('currentTime');
+const offsetDiv=document.getElementById('tzOffset');
 let timezone=localStorage.getItem('timezone')||Intl.DateTimeFormat().resolvedOptions().timeZone;
 const SOUND=typeof Audio!=='undefined'?new Audio('./Sound/sound.wav'):null;
 function nowTz(){return new Date(new Date().toLocaleString('en-US',{timeZone:timezone}));}
+function updateCurrent(){
+  if(timeDiv)timeDiv.textContent=nowTz().toLocaleTimeString();
+}
+function updateOffset(){
+  if(!offsetDiv)return;
+  const min=-nowTz().getTimezoneOffset();
+  const sign=min>=0?'+':'-';
+  const val=Math.abs(min);
+  const h=String(Math.floor(val/60)).padStart(2,'0');
+  const m=String(val%60).padStart(2,'0');
+  offsetDiv.textContent=`UTC ${sign}${h}:${m}`;
+}
+setInterval(updateCurrent,1000);
+updateCurrent();
+updateOffset();
 function updateSpawnDates(){
   MVP_LIST.forEach(m=>{
     let next=m.spawnUTC||Date.now()+m.remaining*1000;
@@ -64,6 +81,7 @@ function handleZoneChange(){
     timezone=tzSel.value;
   }
   if(tzDiv)tzDiv.textContent=timezone;
+  updateOffset();
   updateSpawnDates();
   render();
   saveTimers();
@@ -300,6 +318,7 @@ function loadTimers(){
     }
   }
   if(tzDiv)tzDiv.textContent=timezone;
+  updateOffset();
   const str=localStorage.getItem('timers');
   if(str){
     try{
