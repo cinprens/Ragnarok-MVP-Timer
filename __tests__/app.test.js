@@ -6,6 +6,7 @@ test('ana paneller mevcut',()=>{
   expect(document.getElementById('left')).not.toBeNull();
   expect(document.getElementById('mid')).not.toBeNull();
   expect(document.getElementById('right')).not.toBeNull();
+  expect(document.querySelector('#right #negativeList')).not.toBeNull();
 });
 
 test('negatif karta tasinir',async()=>{
@@ -13,7 +14,7 @@ test('negatif karta tasinir',async()=>{
   global.fetch=()=>Promise.resolve({json:()=>Promise.resolve([])});
   const mod=require('../app.js');
   mod.UI.left=document.getElementById('positiveList');
-  mod.UI.right=document.getElementById('negativeList');
+  mod.UI.right=document.querySelector('#right #negativeList');
   mod.MVP_LIST.length=0;
   mod.MVP_LIST.push({id:'X',file:'',map:'m',respawn:60,remaining:-1,running:false,tomb:false,tombTime:'',sprite(){return ''},mapImg(){return ''}});
   mod.UI.render();

@@ -31,7 +31,7 @@ const UI={
   time:$("#mvpTime"),
   map:$("#mvpMap"),
   left:$("#positiveList"),
-  right:$("#negativeList"),
+  right:$("#right #negativeList"),
   render(){
     const pos=MVP_LIST.filter(m=>m.remaining>=0).sort((a,b)=>a.remaining-b.remaining);
     const neg=MVP_LIST.filter(m=>m.remaining<0).sort((a,b)=>a.remaining-b.remaining);
