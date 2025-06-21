@@ -411,4 +411,4 @@ if(bannerBtn){
 }
 
 if(typeof window!=="undefined"){window.loadTimers=loadTimers;window.saveTimers=saveTimers;}
-if(typeof module!=="undefined")module.exports={UI,MVP_LIST,resetMvp,nowTz};
+if(typeof module!=="undefined")module.exports={UI,MVP_LIST,resetMvp,nowTz,step};
