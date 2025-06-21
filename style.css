@@ -124,6 +124,7 @@ body {
   box-shadow: 0 0 10px #000;
 }
 
+#mvpName { background:#444; color:var(--fg); padding:4px 8px; border-radius:4px; font-size:1.4rem; text-align:center; }
 #mvpGif { width: min(25vw, 128px); image-rendering: pixelated; }
 #mvpMap { width: min(25vw, 128px); border-radius: 6px; image-rendering: pixelated; }
 #mvpTime { font-size: 2rem; color: var(--pos); }
