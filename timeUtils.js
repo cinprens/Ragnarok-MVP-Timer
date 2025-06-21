@@ -6,9 +6,11 @@ if(typeof window==='undefined'){
 }
 function mezarSaatineGoreKalan(saat,zone,respawn){
   const [h,m]=saat.split(':').map(Number);
-  const now=DateTime.now().setZone(zone);
-  let t=now.set({hour:h,minute:m,second:0,millisecond:0});
-  if(t>now)t=t.minus({days:1});
+  const localNow=DateTime.now();
+  let tLocal=localNow.set({hour:h,minute:m,second:0,millisecond:0});
+  if(tLocal>localNow)tLocal=tLocal.minus({days:1});
+  const now=localNow.setZone(zone);
+  const t=tLocal.setZone(zone);
   const diff=now.diff(t,'seconds').seconds;
   return Math.round(respawn-diff);
 }

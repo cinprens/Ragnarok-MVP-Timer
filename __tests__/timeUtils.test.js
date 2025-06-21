@@ -18,3 +18,10 @@ test('mezar dunden',()=>{
 test('ozel sure',()=>{
   expect(ozelZamanaGoreKalan(5,30)).toBe(330);
 });
+
+test('mezar utc custom',()=>{
+  Settings.now=()=>new Date('2023-01-01T12:00:00Z').getTime();
+  const r=mezarSaatineGoreKalan('11:30','UTC',5400);
+  expect(r).toBe(3600);
+  Settings.now=null;
+});
