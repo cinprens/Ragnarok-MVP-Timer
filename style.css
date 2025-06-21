@@ -12,6 +12,8 @@
   --highlight: #0ff;
 }
 
+*{box-sizing:border-box;}
+
 @media (min-width: 1280px) {
   :root {
     --left-panel-width: 25%;
@@ -118,7 +120,7 @@ body {
   gap: 12px;
   background: #2a2a2a;
   width: 100%;
-  max-width: 480px;
+  max-width: 420px;
   padding: 20px;
   border-radius: 12px;
   box-shadow: 0 0 10px #000;
