@@ -33,6 +33,21 @@
     <div id="log"></div>
   </div>
 </div>
+<script>
+function savePanelWidths(){
+  const lw=getComputedStyle(document.documentElement).getPropertyValue('--left-w');
+  const rw=getComputedStyle(document.documentElement).getPropertyValue('--right-w');
+  localStorage.setItem('leftWidth',lw);
+  localStorage.setItem('rightWidth',rw);
+}
+function loadPanelWidths(){
+  const lw=localStorage.getItem('leftWidth');
+  const rw=localStorage.getItem('rightWidth');
+  if(lw)document.documentElement.style.setProperty('--left-w',lw);
+  if(rw)document.documentElement.style.setProperty('--right-w',rw);
+}
+document.addEventListener('DOMContentLoaded',loadPanelWidths);
+</script>
 <script type="module" src="app.js"></script>
 </body>
 </html>
