@@ -67,26 +67,56 @@ function makeLi(m,positive){
   return li;
 }
 function toggleTomb(m,li){
-  m.tomb=!m.tomb;
-  if(m.tomb)m.remaining+=600;
-  li.classList.toggle("tomb-active",m.tomb);
+  m.tomb = !m.tomb;
+  if (m.tomb) m.remaining += 600;
+  li.classList.toggle("tomb-active", m.tomb);
   render();
 }
+
 function setCurrent(m){
-  mvpGif.src=m.sprite();
-  mvpName.textContent=m.id;
-  mvpMap.innerHTML=`<img src="${m.mapImg()}" class="mvp-mapThumb"> ${m.map}`;
-  mvpTime.textContent=fmt(m.remaining);
+  mvpGif.src = m.sprite();
+  mvpName.textContent = m.id;
+  mvpMap.innerHTML = `<img src="${m.mapImg()}" class="mvp-mapThumb"> ${m.map}`;
+  mvpTime.textContent = fmt(m.remaining);
 }
-function clearCurrent(){mvpGif.src="";mvpName.textContent="";mvpMap.innerHTML="";mvpTime.textContent="";}
-setInterval(()=>{MVP_LIST.forEach(m=>{m.remaining--;if(m.remaining===0)flashRow(m);});render();},1000);
+
+function clearCurrent(){
+  mvpGif.src = "";
+  mvpName.textContent = "";
+  mvpMap.innerHTML = "";
+  mvpTime.textContent = "";
+}
+
+setInterval(() => {
+  MVP_LIST.forEach(m => {
+    m.remaining--;
+    if (m.remaining === 0) flashRow(m);
+  });
+  render();
+}, 1000);
+
 function flashRow(m){
-  setTimeout(()=>{const li=[...document.querySelectorAll(".mvp-row")].find(el=>el.textContent.includes(m.id));li&&li.classList.add("flash");setTimeout(()=>li&&li.classList.remove("flash"),300);},20);
+  setTimeout(() => {
+    const li = [...document.querySelectorAll(".mvp-row")].find(el => el.textContent.includes(m.id));
+    li && li.classList.add("flash");
+    setTimeout(() => li && li.classList.remove("flash"), 300);
+  }, 20);
 }
-$("#setBtn").onclick=()=>{
-  if(!selected){alert("Önce listeden bir MVP seç.");return;}
-  const dk=parseInt($("#minInput").value||0),sn=parseInt($("#secInput").value||0);
-  if(isNaN(dk)||isNaN(sn)||sn<0||sn>59){alert("Süre hatalı");return;}
-  selected.remaining=dk*60+sn;selected.tomb=false;render();
+
+$("#setBtn").onclick = () => {
+  if (!selected) {
+    alert("Önce listeden bir MVP seç.");
+    return;
+  }
+  const dk = parseInt($("#minInput").value || 0),
+        sn = parseInt($("#secInput").value || 0);
+  if (isNaN(dk) || isNaN(sn) || sn < 0 || sn > 59) {
+    alert("Süre hatalı");
+    return;
+  }
+  selected.remaining = dk * 60 + sn;
+  selected.tomb = false;
+  render();
 };
+
 render();
