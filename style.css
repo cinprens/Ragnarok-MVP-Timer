@@ -24,12 +24,13 @@ body {
   background: var(--bg);
   color: var(--fg);
   font: 14px Helvetica, Arial, sans-serif;
-  overflow: hidden;
+  overflow-x: hidden;
+  overflow-y: auto;
 }
 
 #wrapper {
   display: grid;
-  grid-template-columns: var(--left-w, var(--left-panel-width)) 4px 1fr 4px var(--right-w, var(--right-panel-width));
+  grid-template-columns: minmax(180px, var(--left-w, var(--left-panel-width))) 4px 1fr 4px minmax(180px, var(--right-w, var(--right-panel-width)));
   height: 100vh;
   overflow: hidden;
 }
@@ -89,11 +90,11 @@ body {
   box-shadow: 0 0 10px #000;
 }
 
-#mvpGif { width: 128px; image-rendering: pixelated; }
-#mvpMap { width: 128px; border-radius: 6px; image-rendering: pixelated; }
+#mvpGif { width: min(25vw, 128px); image-rendering: pixelated; }
+#mvpMap { width: min(25vw, 128px); border-radius: 6px; image-rendering: pixelated; }
 #mvpTime { font-size: 2rem; color: var(--pos); }
 
-#controls { display: flex; gap: 6px; }
+#controls { display: flex; flex-wrap: wrap; gap: 6px; }
 #controls input {
   width: 60px;
   background: #333;
@@ -151,10 +152,10 @@ ul { list-style: none; margin: 0; padding: 0; }
   pointer-events: none;
 }
 
-.banner-top { top: 0; left: 0; width: 100%; }
-.banner-bottom { bottom: 0; left: 0; width: 100%; }
-.banner-left { top: 0; bottom: 0; left: 0; width: 120px; }
-.banner-right { top: 0; bottom: 0; right: 0; width: 120px; }
+.banner-top { top: 0; left: 0; width: 100%; height: min(10vh, 120px); }
+.banner-bottom { bottom: 0; left: 0; width: 100%; height: min(10vh, 120px); }
+.banner-left { top: 0; bottom: 0; left: 0; width: min(12vw, 120px); }
+.banner-right { top: 0; bottom: 0; right: 0; width: min(12vw, 120px); }
 
 @media (max-width: 800px) {
   .banner-top,
