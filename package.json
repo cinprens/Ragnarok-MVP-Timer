@@ -5,7 +5,7 @@
     "test": "jest",
     "start": "python server.py",
     "prepare": "npm install",
-    "lint": "eslint ."
+    "lint": "eslint . -c eslint.config.js"
   },
   "devDependencies": {
     "jest": "^29.6.1",
