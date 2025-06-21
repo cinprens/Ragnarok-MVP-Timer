@@ -10,35 +10,18 @@ class MVP{
   sprite(){return `./MVP_Giff/${this.file}`;}
   mapImg(){return `./Maps/${this.map}.gif`;}
 }
-const mvpData=[
-  ["AMON_RA","AMON_RA.gif","moc_pryd04",60],
-  ["BAPHOMET","BAPHOMET.gif","prt_maze03",120],
-  ["BEELZEBUB_","BEELZEBU_.gif","abbey03",720],
-  ["DARK_LORD","DARK_LORD.gif","gl_chyard",120],
-  ["DOPPELGANGER","DOPPELGANGER.gif","prt_sewb4",120],
-  ["DRACULA","DRACULA.gif","gef_dun01",60],
-  ["DRAKE","DRAKE.gif","treasure02",120],
-  ["EDDGA","EDDGA.gif","pay_fild10",120],
-  ["Evil Snake Lord","Evil Snake Lord.gif","lou_dun03",60],
-  ["GARM","GARM.gif","xmas_fild01",120],
-  ["GOLDEN_BUG","GOLDEN_BUG.gif","pay_dun04",60],
-  ["KTULLANUX","KTULLANUX.gif","odin_tem03",120],
-  ["MAYA","MAYA.gif","anthell02",120],
-  ["MISTRESS","MISTRESS.gif","gon_dun03",120],
-  ["MOONLIGHT","MOONLIGHT.gif","mjolnir_04",120],
-  ["ORC_LORD","ORC_LORD.gif","gef_fild14",60],
-  ["ORK_HERO","ORK_HERO.gif","gef_fild03",60],
-  ["OSIRIS","OSIRIS.gif","in_sphinx5",60],
-  ["Pharaoh","Pharaoh.gif","in_sphinx5",60],
-  ["PHREEONI","PHREEONI.gif","moc_fild17",60],
-  ["RANDGRIS","RANDGRIS.gif","tur_dun04",240],
-  ["STORMKNIGHT","STORMKNIGHT.gif","xmas_dun02",120],
-  ["TAO_GUNKA","TAO_GUNKA.gif","beach_dun",60],
-  ["THANATOS","THANATOS.gif","tha_t02",120],
-  ["TURTLE_GENERAL","TURTLE GENERAL.gif","tur_dun04",60],
-  ["White Lady","White Lady.gif","lou_dun03",60]
-];
-const MVP_LIST=mvpData.map(([id,file,map,resp])=>new MVP({id,file,map,respawnMin:resp}));
+let MVP_LIST=[];
+fetch("mvpData.json")
+  .then(r=>r.json())
+  .then(arr=>{
+    MVP_LIST=arr.map(d=>new MVP({
+      id:d.name,
+      file:d.img.replace("MVP_Giff/",""),
+      map:d.map,
+      respawnMin:d.respawn/60
+    }));
+    render();
+  });
 const $=s=>document.querySelector(s);
 // TODO: layout v2
 const leftUl=$("#positiveList");
@@ -118,5 +101,3 @@ $("#setBtn").onclick = () => {
   selected.tomb = false;
   render();
 };
-
-render();

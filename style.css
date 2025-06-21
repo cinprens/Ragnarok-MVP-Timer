@@ -62,18 +62,19 @@ ul {
   border-bottom: 1px solid #333;
   cursor: pointer;
   position: relative;
+  font-size: 1.2rem;
 }
 
 .mvp-row img.sprite {
-  width: 32px;
-  height: 32px;
+  width: 64px;
+  height: 64px;
   margin-right: 6px;
   image-rendering: pixelated;
 }
 
 .mvp-mapThumb {
-  width: 32px;
-  height: 32px;
+  width: 64px;
+  height: 64px;
   margin: auto;
   border-radius: 4px;
 }
@@ -97,6 +98,7 @@ ul {
   margin-left: auto;
   text-align: right;
   font-variant-numeric: tabular-nums;
+  font-size: 1.2rem;
 }
 
 .mvp-row.positive .mvp-timer {
@@ -124,6 +126,13 @@ ul {
   width: 100%;
   max-width: 520px;
   object-fit: contain;
+}
+
+#currentSpawn {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
 }
 
 #controls {

@@ -38,7 +38,7 @@
     "name": "Orc Hero",
     "map": "gef_fild03",
     "respawn": 3600,
-    "img": "",
+    "img": "MVP_Giff/ORK_HERO.gif",
     "mapImg": "Maps/gef_fild03.gif"
   },
   {
@@ -157,7 +157,7 @@
     "name": "Stormy Knight",
     "map": "xmas_dun02",
     "respawn": 7200,
-    "img": "",
+    "img": "MVP_Giff/STORMKNIGHT.gif",
     "mapImg": "Maps/xmas_dun02.gif"
   },
   {
