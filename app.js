@@ -16,7 +16,7 @@ class MVP{
 let MVP_LIST=[];
 const $=s=>document.querySelector(s);
 const tzSel=$('#tzSelect');
-let timezone=Intl.DateTimeFormat().resolvedOptions().timeZone;
+let timezone=localStorage.getItem('timezone')||Intl.DateTimeFormat().resolvedOptions().timeZone;
 function nowTz(){return new Date(new Date().toLocaleString('en-US',{timeZone:timezone}));}
 function updateSpawnDates(){
   MVP_LIST.forEach(m=>{m.spawnDate=new Date(new Date(m.spawnUTC).toLocaleString('en-US',{timeZone:timezone}));});
@@ -24,7 +24,7 @@ function updateSpawnDates(){
 if(tzSel){
   const zones=['UTC','Europe/Istanbul','Europe/London','America/New_York','Asia/Tokyo'];
   zones.forEach(z=>{const o=document.createElement('option');o.value=z;o.textContent=z;if(z===timezone)o.selected=true;tzSel.append(o);});
-  tzSel.addEventListener('change',()=>{timezone=tzSel.value;updateSpawnDates();render();});
+  tzSel.addEventListener('change',()=>{timezone=tzSel.value;updateSpawnDates();render();saveTimers();});
 }
 const UI={
   gif:$("#mvpGif"),
@@ -63,8 +63,7 @@ fetch("mvpData.json")
       respawnMin:d.respawn/60
     }));
     MVP_LIST.forEach(m=>m.running=false);
-    updateSpawnDates();
-    render();
+    loadTimers();
   });
 
 let selected=null;
@@ -102,6 +101,7 @@ function makeLi(m,positive){
         startTimers();
       }
       render();
+      saveTimers();
     };
   }
   li.append(img,info,map,time,tombTime,tomb,btn);
@@ -124,10 +124,11 @@ function toggleTomb(m,li){
     m.spawnUTC=Date.now()+m.remaining*1000;
     m.tomb=true;
     m.tombTime=val;
-    li.classList.add("tomb-active");
+  li.classList.add("tomb-active");
   }
   updateSpawnDates();
   render();
+  saveTimers();
 }
 
 let timerId=null;
@@ -155,6 +156,7 @@ function resetMvp(m){
   m.running=false;
   updateSpawnDates();
   render();
+  saveTimers();
 }
 
 function flashRow(m){
@@ -181,9 +183,46 @@ $("#setBtn").onclick = () => {
   selected.spawnUTC=Date.now()+selected.remaining*1000;
   updateSpawnDates();
   render();
+  saveTimers();
 };
 $("#startBtn").onclick=startTimers;
 $("#stopBtn").onclick=stopTimers;
+
+function saveTimers(){
+  const data=MVP_LIST.map(m=>({id:m.id,remaining:m.remaining,running:m.running,spawnUTC:m.spawnUTC}));
+  localStorage.setItem('timers',JSON.stringify(data));
+  localStorage.setItem('timezone',timezone);
+}
+
+function loadTimers(){
+  const tz=localStorage.getItem('timezone');
+  if(tz){
+    timezone=tz;
+    if(tzSel)tzSel.value=tz;
+  }
+  const str=localStorage.getItem('timers');
+  if(str){
+    try{
+      const arr=JSON.parse(str);
+      arr.forEach(d=>{
+        const m=MVP_LIST.find(x=>x.id===d.id);
+        if(m){
+          m.running=!!d.running;
+          m.spawnUTC=d.spawnUTC||Date.now()+m.remaining*1000;
+          if(m.running){
+            m.remaining=Math.floor((m.spawnUTC-Date.now())/1000);
+          }else if(typeof d.remaining==='number'){
+            m.remaining=d.remaining;
+            m.spawnUTC=Date.now()+m.remaining*1000;
+          }
+        }
+      });
+      if(anyRunning())startTimers();
+    }catch(e){}
+  }
+  updateSpawnDates();
+  render();
+}
 
 (() => {
   const left   = document.getElementById("left");
@@ -243,4 +282,5 @@ if(bannerBtn){
   setBannerState();
 }
 
+if(typeof window!=="undefined"){window.loadTimers=loadTimers;window.saveTimers=saveTimers;}
 if(typeof module!=="undefined")module.exports={UI,MVP_LIST,resetMvp};
