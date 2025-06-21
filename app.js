@@ -1,11 +1,22 @@
 if(typeof Notification!=='undefined'&&Notification.permission==='default'){
   Notification.requestPermission();
 }
-let mezarSaatineGoreKalan,ozelZamanaGoreKalan;
-if(typeof window==='undefined'){
-  ({mezarSaatineGoreKalan,ozelZamanaGoreKalan}=require('./timeUtils.js'));
-}else{
-  ({mezarSaatineGoreKalan,ozelZamanaGoreKalan}=window);
+function ozelZamanaGoreKalan(minutes=0,seconds=0){
+  return minutes*60+seconds;
+}
+function mezarSaatineGoreKalan(tombStr,tz='Asia/Kuching',respawnSec=3600){
+  const [h,m,s]=tombStr.split(':').map(Number);
+  const now=new Date(new Date().toLocaleString('en-US',{timeZone:tz}));
+  const tomb=new Date(now);
+  tomb.setHours(h,m,s,0);
+  if(tomb>now)tomb.setDate(tomb.getDate()-1);
+  const elapsed=(now-tomb)/1000;
+  const remaining=respawnSec-(elapsed%respawnSec);
+  return Math.floor(remaining);
+}
+if(typeof window!=='undefined'){
+  window.ozelZamanaGoreKalan=ozelZamanaGoreKalan;
+  window.mezarSaatineGoreKalan=mezarSaatineGoreKalan;
 }
 class MVP{
   constructor({id,file,map,respawnMin}){
@@ -210,17 +221,17 @@ function toggleTomb(m){
     m.tomb=false;
     m.tombTime="";
   }else{
-    const h=document.getElementById("tombHour").value,
-          mn=document.getElementById("tombMin").value,
-          s=document.getElementById("tombSec").value;
+    const h=document.getElementById("tombHour").value;
+    const mn=document.getElementById("tombMin").value;
+    const s=document.getElementById("tombSec").value;
     if(h===""||mn===""||s===""){alert('Saat gir');return;}
     const val=`${String(h).padStart(2,'0')}:${String(mn).padStart(2,'0')}:${String(s).padStart(2,'0')}`;
     m.remaining=mezarSaatineGoreKalan(val,'Asia/Kuching',m.respawn);
     m.spawnUTC=Date.now()+m.remaining*1000;
     m.tomb=true;
-    m.running = true;
+    m.tombTime=`${val} Asia/Kuching`;
+    m.running=true;
     startTimers();
-    m.tombTime=val+' Asia/Kuching';
   }
   updateSpawnDates();
   render();
@@ -275,21 +286,15 @@ function flashRow(m){
   }, 20);
 }
 
-$("#setBtn").onclick = () => {
-  if (!selected) {
-    alert('Önce bir MVP seç');
-    return;
-  }
-  const dk = parseInt($("#minInput").value || 0),
-        sn = parseInt($("#secInput").value || 0);
-  if (isNaN(dk) || isNaN(sn) || sn < 0 || sn > 59) {
-    alert('Süre geçersiz');
-    return;
-  }
-  selected.remaining = ozelZamanaGoreKalan(dk,sn);
-  selected.tomb = false;
+$("#setBtn").onclick=()=>{
+  if(!selected){alert('Önce bir MVP seç');return;}
+  const dk=parseInt($("#minInput").value||0,10);
+  const sn=parseInt($("#secInput").value||0,10);
+  if(isNaN(dk)||isNaN(sn)||sn<0||sn>59){alert('Geçersiz süre');return;}
+  selected.remaining=ozelZamanaGoreKalan(dk,sn);
   selected.spawnUTC=Date.now()+selected.remaining*1000;
-  selected.running = true;
+  selected.tomb=false;
+  selected.running=true;
   startTimers();
   updateSpawnDates();
   render();
