@@ -6,6 +6,7 @@ class MVP{
     this.respawn=respawnMin*60;
     this.remaining=this.respawn;
     this.tomb=false;
+    this.tombTime="";
   }
   sprite(){return `./MVP_Giff/${this.file}`;}
   mapImg(){return `./Maps/${this.map}.gif`;}
@@ -65,17 +66,32 @@ function makeLi(m,positive){
   info.innerHTML=`<strong>${m.id}</strong><span>${m.map}</span>`;
   const map=document.createElement("img");map.className="mvp-mapThumb";map.src=m.mapImg();
   const time=document.createElement("div");time.className="mvp-timer";time.textContent=fmt(m.remaining);
+  const tombTime=document.createElement("div");tombTime.className="tomb-time";tombTime.textContent=m.tombTime;
   const tomb=document.createElement("img");tomb.className="tomb";tomb.src="./MVP_Giff/MOB_TOMB.gif";tomb.onclick=e=>{e.stopPropagation();toggleTomb(m,li);};
   const btn=document.createElement("button");
   btn.textContent="Seç";
   btn.onclick=e=>{e.stopPropagation();selected=m;startTimers();};
-  li.append(img,info,map,time,tomb,btn);
+  li.append(img,info,map,time,tombTime,tomb,btn);
   return li;
 }
 function toggleTomb(m,li){
-  m.tomb = !m.tomb;
-  if (m.tomb) m.remaining += 600;
-  li.classList.toggle("tomb-active", m.tomb);
+  if(m.tomb){
+    m.tomb=false;
+    m.tombTime="";
+    li.classList.remove("tomb-active");
+  }else{
+    const val=document.getElementById("tombInput").value;
+    if(!val){alert("Saat gir");return;}
+    const [h,min]=val.split(":" ).map(Number);
+    const now=new Date();
+    let t=new Date(now.getFullYear(),now.getMonth(),now.getDate(),h,min);
+    if(t>now)t.setDate(t.getDate()-1);
+    const diff=(now-t)/1000;
+    m.remaining=m.respawn-diff;
+    m.tomb=true;
+    m.tombTime=val;
+    li.classList.add("tomb-active");
+  }
   render();
 }
 
