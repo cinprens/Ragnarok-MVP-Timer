@@ -45,7 +45,9 @@ function makeLi(m,positive){
   li.onclick=()=>{selected=m;};
   const img=document.createElement("img");
   img.className="sprite";img.src=m.sprite();
-  const info=document.createElement("div");info.style.flex=1;info.innerHTML=`<strong>${m.id}</strong><br>${m.map}`;
+  const info=document.createElement("div");
+  info.className="mvp-info";
+  info.innerHTML=`<strong>${m.id}</strong><span>${m.map}</span>`;
   const map=document.createElement("img");map.className="mvp-mapThumb";map.src=m.mapImg();
   const time=document.createElement("div");time.className="mvp-timer";time.textContent=fmt(m.remaining);
   const tomb=document.createElement("img");tomb.className="tomb";tomb.src="./MVP_Giff/MOB_TOMB.gif";tomb.onclick=e=>{e.stopPropagation();toggleTomb(m,li);};

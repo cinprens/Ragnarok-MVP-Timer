@@ -386,3 +386,18 @@ body {
   height:100vh;
   overflow:hidden;
 }
+
+.mvp-info{display:flex;flex-direction:column;line-height:1.2;flex:1;}
+.mvp-info strong{font-size:1rem;}
+.mvp-info span{font-size:0.85rem;color:#ccc;}
+.mvp-row{gap:10px;}
+#mvpGif{width:150px;}
+#mvpTime{font-size:2.2rem;font-weight:bold;}
+#mvpMap{width:150px;}
+#controls{display:flex;gap:8px;margin-top:16px;}
+#controls input{width:60px;padding:4px;font-size:1rem;}
+#controls button{padding:4px 14px;font-size:1rem;cursor:pointer;}
+@media (max-width:600px){
+  #wrapper{grid-template-columns:1fr;}
+  #left,#right{flex-basis:100%;width:100%;}
+}
