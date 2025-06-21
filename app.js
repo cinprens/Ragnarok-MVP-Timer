@@ -8,6 +8,7 @@ class MVP{
     this.tomb=false;
     this.tombTime="";
     this.spawnUTC=Date.now()+this.remaining*1000;
+    this.running=false;
   }
   sprite(){return `./MVP_Giff/${this.file}`;}
   mapImg(){return `./Maps/${this.map}.gif`;}
@@ -61,6 +62,7 @@ fetch("mvpData.json")
       map:d.map,
       respawnMin:d.respawn/60
     }));
+    MVP_LIST.forEach(m=>m.running=false);
     updateSpawnDates();
     render();
   });
@@ -82,8 +84,20 @@ function makeLi(m,positive){
   const tombTime=document.createElement("div");tombTime.className="tomb-time";tombTime.textContent=m.tombTime;
   const tomb=document.createElement("img");tomb.className="tomb";tomb.src="./MVP_Giff/MOB_TOMB.gif";tomb.onclick=e=>{e.stopPropagation();toggleTomb(m,li);};
   const btn=document.createElement("button");
-  btn.textContent="Seç";
-  btn.onclick=e=>{e.stopPropagation();selected=m;startTimers();};
+  btn.textContent=m.running?"Durdur":"Başlat";
+  btn.onclick=e=>{
+    e.stopPropagation();
+    if(m.running){
+      m.remaining=Math.floor((m.spawnUTC-Date.now())/1000);
+      m.running=false;
+      if(!anyRunning())stopTimers();
+    }else{
+      m.spawnUTC=Date.now()+m.remaining*1000;
+      m.running=true;
+      startTimers();
+    }
+    render();
+  };
   li.append(img,info,map,time,tombTime,tomb,btn);
   return li;
 }
@@ -111,11 +125,16 @@ function toggleTomb(m,li){
 }
 
 let timerId=null;
+function anyRunning(){return MVP_LIST.some(m=>m.running);}
 function step(){
-  const now=nowTz();
-  MVP_LIST.forEach(m=>{m.remaining=Math.floor((m.spawnDate-now)/1000);});
+  MVP_LIST.forEach(m=>{
+    if(m.running){
+      m.remaining--;
+    }
+  });
   if(UI.current) UI.time.textContent=fmt(UI.current.remaining);
   render();
+  if(!anyRunning())stopTimers();
 }
 function startTimers(){
   if(!timerId) timerId=setInterval(step,1000);
