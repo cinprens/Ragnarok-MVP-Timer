@@ -157,3 +157,18 @@ $("#stopBtn").onclick=stopTimers;
     window.addEventListener("touchend", stop);
   }
 })();
+
+const bannerBtn=document.getElementById("bannerToggle");
+function setBannerState(){
+  const hidden=localStorage.getItem("bannerHidden")==="1";
+  document.body.classList.toggle("banners-hidden",hidden);
+  if(bannerBtn)bannerBtn.textContent=hidden?"Banner Göster":"Banner Gizle";
+}
+if(bannerBtn){
+  bannerBtn.addEventListener("click",()=>{
+    const now=document.body.classList.toggle("banners-hidden");
+    localStorage.setItem("bannerHidden",now?"1":"0");
+    bannerBtn.textContent=now?"Banner Göster":"Banner Gizle";
+  });
+  setBannerState();
+}
