@@ -42,6 +42,14 @@ test('sayac azalir',()=>{
   expect(m.remaining).toBe(1);
 });
 
+test('step fonksiyonu sayaci azaltir',()=>{
+  const mod=require('../app.js');
+  mod.MVP_LIST.length=0;
+  mod.MVP_LIST.push({id:'X',file:'',map:'',respawn:60,remaining:5,running:true,tomb:false,tombTime:'',spawnUTC:Date.now()+5000});
+  mod.step();
+  expect(mod.MVP_LIST[0].remaining).toBe(4);
+});
+
 test('dogus sureleri',()=>{
   data.forEach(d=>{
     expect(d.respawn).toBe(times[d.name]);
