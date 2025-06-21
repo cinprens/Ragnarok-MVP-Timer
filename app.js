@@ -66,7 +66,10 @@ function makeLi(m,positive){
   const map=document.createElement("img");map.className="mvp-mapThumb";map.src=m.mapImg();
   const time=document.createElement("div");time.className="mvp-timer";time.textContent=fmt(m.remaining);
   const tomb=document.createElement("img");tomb.className="tomb";tomb.src="./MVP_Giff/MOB_TOMB.gif";tomb.onclick=e=>{e.stopPropagation();toggleTomb(m,li);};
-  li.append(img,info,map,time,tomb);
+  const btn=document.createElement("button");
+  btn.textContent="Seç";
+  btn.onclick=e=>{e.stopPropagation();selected=m;startTimers();};
+  li.append(img,info,map,time,tomb,btn);
   return li;
 }
 function toggleTomb(m,li){
