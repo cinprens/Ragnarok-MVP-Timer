@@ -7,12 +7,24 @@ class MVP{
     this.remaining=this.respawn;
     this.tomb=false;
     this.tombTime="";
+    this.spawnUTC=Date.now()+this.remaining*1000;
   }
   sprite(){return `./MVP_Giff/${this.file}`;}
   mapImg(){return `./Maps/${this.map}.gif`;}
 }
 let MVP_LIST=[];
 const $=s=>document.querySelector(s);
+const tzSel=$('#tzSelect');
+let timezone=Intl.DateTimeFormat().resolvedOptions().timeZone;
+function nowTz(){return new Date(new Date().toLocaleString('en-US',{timeZone:timezone}));}
+function updateSpawnDates(){
+  MVP_LIST.forEach(m=>{m.spawnDate=new Date(new Date(m.spawnUTC).toLocaleString('en-US',{timeZone:timezone}));});
+}
+if(tzSel){
+  const zones=['UTC','Europe/Istanbul','Europe/London','America/New_York','Asia/Tokyo'];
+  zones.forEach(z=>{const o=document.createElement('option');o.value=z;o.textContent=z;if(z===timezone)o.selected=true;tzSel.append(o);});
+  tzSel.addEventListener('change',()=>{timezone=tzSel.value;updateSpawnDates();render();});
+}
 const UI={
   gif:$("#mvpGif"),
   time:$("#mvpTime"),
@@ -49,6 +61,7 @@ fetch("mvpData.json")
       map:d.map,
       respawnMin:d.respawn/60
     }));
+    updateSpawnDates();
     render();
   });
 
@@ -83,21 +96,24 @@ function toggleTomb(m,li){
     const val=document.getElementById("tombInput").value;
     if(!val){alert("Saat gir");return;}
     const [h,min]=val.split(":" ).map(Number);
-    const now=new Date();
+    const now=nowTz();
     let t=new Date(now.getFullYear(),now.getMonth(),now.getDate(),h,min);
     if(t>now)t.setDate(t.getDate()-1);
     const diff=(now-t)/1000;
     m.remaining=m.respawn-diff;
+    m.spawnUTC=Date.now()+m.remaining*1000;
     m.tomb=true;
     m.tombTime=val;
     li.classList.add("tomb-active");
   }
+  updateSpawnDates();
   render();
 }
 
 let timerId=null;
 function step(){
-  MVP_LIST.forEach(m=>m.remaining--);
+  const now=nowTz();
+  MVP_LIST.forEach(m=>{m.remaining=Math.floor((m.spawnDate-now)/1000);});
   if(UI.current) UI.time.textContent=fmt(UI.current.remaining);
   render();
 }
@@ -129,6 +145,8 @@ $("#setBtn").onclick = () => {
   }
   selected.remaining = dk * 60 + sn;
   selected.tomb = false;
+  selected.spawnUTC=Date.now()+selected.remaining*1000;
+  updateSpawnDates();
   render();
 };
 $("#startBtn").onclick=startTimers;
