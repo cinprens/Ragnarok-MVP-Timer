@@ -6,23 +6,25 @@
 <link rel="stylesheet" href="style.css">
 </head>
 <body>
-<div class="panel" id="left">
-<ul id="positiveList"></ul>
-</div>
-<div class="panel center-panel" id="center">
-<div id="currentSpawn">
-  <img id="mvpGif" alt="">
-  <div id="mvpTime"></div>
-  <img id="mvpMap" alt="">
-</div>
-<div id="controls">
-<input id="minInput" type="number" placeholder="dk">
-<input id="secInput" type="number" placeholder="sn">
-<button id="setBtn">Ayarla</button>
-</div>
-</div>
-<div class="panel" id="right">
-<ul id="negativeList"></ul>
+<div id="wrapper">
+  <div id="left">
+    <ul id="positiveList"></ul>
+  </div>
+  <div id="mid">
+    <div id="currentSpawn">
+      <img id="mvpGif" alt="">
+      <div id="mvpTime"></div>
+      <img id="mvpMap" alt="">
+    </div>
+    <div id="controls">
+      <input id="minInput" type="number" placeholder="dk">
+      <input id="secInput" type="number" placeholder="sn">
+      <button id="setBtn">Ayarla</button>
+    </div>
+  </div>
+  <div id="right">
+    <ul id="negativeList"></ul>
+  </div>
 </div>
 <script type="module" src="app.js"></script>
 </body>
