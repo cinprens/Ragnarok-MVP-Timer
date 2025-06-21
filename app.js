@@ -285,18 +285,6 @@ $("#setBtn").onclick = () => {
   render();
   saveTimers();
 };
-$("#allSetBtn").onclick=()=>{
-  const dk=parseInt($("#allMinInput").value||0),sn=parseInt($("#allSecInput").value||0);
-  if(isNaN(dk)||isNaN(sn)||sn<0||sn>59){alert('Süre geçersiz');return;}
-  MVP_LIST.forEach(m=>{
-    m.remaining=ozelZamanaGoreKalan(dk,sn);
-    m.tomb=false;
-    m.spawnUTC=Date.now()+m.remaining*1000;
-  });
-  updateSpawnDates();
-  render();
-  saveTimers();
-};
 $("#startBtn").onclick=startTimers;
 $("#stopBtn").onclick=stopTimers;
 document.getElementById("resetAllBtn").onclick=resetAll;
