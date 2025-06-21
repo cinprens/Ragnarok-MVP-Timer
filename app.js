@@ -147,13 +147,14 @@ const killsBox=document.getElementById("killsPanel");
 const killsTitle=document.getElementById("killsTitle");
 function updateKillPanel(){
   if(!killsBox)return;
-  killsTitle.textContent=`Ben Kestim (${TOTAL_KILL})`;
-  const sorted=MVP_LIST.filter(x=>x.kills>0).sort((a,b)=>b.kills-a.kills);
+  killsTitle.textContent=`Ben\u202fKestim\u202f(${TOTAL_KILL})`;
+  const sorted=MVP_LIST.filter(x=>x.kills>0)
+                       .sort((a,b)=>b.kills-a.kills);
   killsBox.innerHTML="";
   sorted.forEach(m=>{
     const row=document.createElement("div");
     row.className="kill-row";
-    row.innerHTML=`\n       <span class="kname">${m.id}</span>\n       <span class="kcount">${m.kills}</span>\n    `;
+    row.innerHTML=`\n      <img src="${m.sprite()}" alt="">\n      <span class="kname">${m.id}</span>\n      <span class="kcount">${m.kills}</span>`;
     killsBox.append(row);
   });
 }
