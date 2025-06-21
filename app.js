@@ -73,6 +73,7 @@ function render(){UI.render();}
 function makeLi(m,positive){
   const li=document.createElement("li");
   li.className=`mvp-row ${positive?"positive":"negative"}${m.tomb?" tomb-active":""}`;
+  if(m.remaining<0)li.classList.add("negative");
   li.onclick=()=>{selected=m;};
   const img=document.createElement("img");
   img.className="sprite";img.src=m.sprite();
@@ -84,20 +85,25 @@ function makeLi(m,positive){
   const tombTime=document.createElement("div");tombTime.className="tomb-time";tombTime.textContent=m.tombTime;
   const tomb=document.createElement("img");tomb.className="tomb";tomb.src="./MVP_Giff/MOB_TOMB.gif";tomb.onclick=e=>{e.stopPropagation();toggleTomb(m,li);};
   const btn=document.createElement("button");
-  btn.textContent=m.running?"Durdur":"Başlat";
-  btn.onclick=e=>{
-    e.stopPropagation();
-    if(m.running){
-      m.remaining=Math.floor((m.spawnUTC-Date.now())/1000);
-      m.running=false;
-      if(!anyRunning())stopTimers();
-    }else{
-      m.spawnUTC=Date.now()+m.remaining*1000;
-      m.running=true;
-      startTimers();
-    }
-    render();
-  };
+  if(m.remaining<0){
+    btn.textContent="Sıfırla";
+    btn.onclick=e=>{e.stopPropagation();resetMvp(m);};
+  }else{
+    btn.textContent=m.running?"Durdur":"Başlat";
+    btn.onclick=e=>{
+      e.stopPropagation();
+      if(m.running){
+        m.remaining=Math.floor((m.spawnUTC-Date.now())/1000);
+        m.running=false;
+        if(!anyRunning())stopTimers();
+      }else{
+        m.spawnUTC=Date.now()+m.remaining*1000;
+        m.running=true;
+        startTimers();
+      }
+      render();
+    };
+  }
   li.append(img,info,map,time,tombTime,tomb,btn);
   return li;
 }
@@ -141,6 +147,14 @@ function startTimers(){
 }
 function stopTimers(){
   if(timerId){clearInterval(timerId);timerId=null;}
+}
+
+function resetMvp(m){
+  m.remaining=m.respawn;
+  m.spawnUTC=Date.now()+m.remaining*1000;
+  m.running=false;
+  updateSpawnDates();
+  render();
 }
 
 function flashRow(m){
@@ -228,3 +242,5 @@ if(bannerBtn){
   });
   setBannerState();
 }
+
+if(typeof module!=="undefined")module.exports={UI,MVP_LIST,resetMvp};
