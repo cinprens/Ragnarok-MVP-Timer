@@ -115,7 +115,7 @@ body {
 ul { list-style: none; margin: 0; padding: 0; }
 .mvp-row {
   display: grid;
-  grid-template-columns: var(--sprite) 1fr var(--thumb) 90px 24px;
+  grid-template-columns: var(--sprite) 1fr var(--thumb) 90px 24px 60px;
   align-items: center;
   gap: 8px;
   min-height: var(--row-h);
@@ -132,6 +132,7 @@ ul { list-style: none; margin: 0; padding: 0; }
 .mvp-row.negative .mvp-timer { color: var(--neg); }
 .mvp-row .mvp-timer { text-align: right; font-variant-numeric: tabular-nums; }
 .mvp-row.tomb-active img.tomb { filter: drop-shadow(0 0 4px #a277ff); }
+.mvp-row button { width: 100%; height: 28px; }
 
 @keyframes flash { from { background: var(--flash); } to { background: transparent; } }
 .mvp-row.flash { animation: flash 0.3s; }
