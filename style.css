@@ -35,8 +35,21 @@ body {
 }
 
 @media (max-width: 600px) {
+  :root {
+    --left-panel-width: 100%;
+    --right-panel-width: 100%;
+  }
   #wrapper {
     grid-template-columns: 1fr;
+  }
+  .resizer { display: none; }
+  .banner-top,
+  .banner-bottom,
+  .banner-left,
+  .banner-right {
+    position: static;
+    width: 100%;
+    display: block;
   }
 }
 
