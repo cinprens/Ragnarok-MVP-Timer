@@ -82,7 +82,13 @@ function makeLi(m,positive){
   const li=document.createElement("li");
   li.className=`mvp-row ${positive?"positive":"negative"}${m.tomb?" tomb-active":""}`;
   if(m.remaining<0)li.classList.add("negative");
-  li.onclick=()=>{selected=m;};
+  if(selected===m)li.classList.add("selected");
+  li.onclick=()=>{
+    const old=document.querySelector('.mvp-row.selected');
+    if(old)old.classList.remove('selected');
+    selected=m;
+    render();
+  };
   const img=document.createElement("img");
   img.className="sprite";img.src=m.sprite();
   const info=document.createElement("div");

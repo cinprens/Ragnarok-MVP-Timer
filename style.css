@@ -9,6 +9,7 @@
   --row-h: 72px;
   --left-panel-width: 320px;
   --right-panel-width: 320px;
+  --highlight: #0ff;
 }
 
 @media (min-width: 1280px) {
@@ -157,6 +158,10 @@ ul { list-style: none; margin: 0; padding: 0; }
   font-size: 1.2rem;
   cursor: pointer;
   position: relative;
+}
+.mvp-row.selected {
+  box-shadow: 0 0 0 2px var(--highlight);
+  outline: 2px solid var(--highlight);
 }
 .mvp-row img.sprite { width: var(--sprite); height: var(--sprite); image-rendering: pixelated; }
 .mvp-mapThumb { width: var(--thumb); height: var(--thumb); border-radius: 4px; object-fit: cover; }
