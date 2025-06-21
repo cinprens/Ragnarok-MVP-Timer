@@ -1,3 +1,6 @@
+if(typeof Notification!=='undefined'&&Notification.permission==='default'){
+  Notification.requestPermission();
+}
 class MVP{
   constructor({id,file,map,respawnMin}){
     this.id=id;
@@ -17,6 +20,7 @@ let MVP_LIST=[];
 const $=s=>document.querySelector(s);
 const tzSel=$('#tzSelect');
 let timezone=localStorage.getItem('timezone')||Intl.DateTimeFormat().resolvedOptions().timeZone;
+const SOUND=typeof Audio!=='undefined'?new Audio('./Sound/sound.wav'):null;
 function nowTz(){return new Date(new Date().toLocaleString('en-US',{timeZone:timezone}));}
 function updateSpawnDates(){
   MVP_LIST.forEach(m=>{m.spawnDate=new Date(new Date(m.spawnUTC).toLocaleString('en-US',{timeZone:timezone}));});
@@ -142,6 +146,10 @@ function step(){
   MVP_LIST.forEach(m=>{
     if(m.running){
       m.remaining--;
+      if(m.remaining===180&&SOUND)SOUND.play();
+      if(m.remaining===-1&&typeof Notification!=='undefined'&&Notification.permission==='granted'){
+        new Notification(m.id,{body:`${m.map} haritasında`});
+      }
     }
   });
   if(UI.current) UI.time.textContent=fmt(UI.current.remaining);
