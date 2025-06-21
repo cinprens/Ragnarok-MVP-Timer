@@ -209,6 +209,13 @@ function resetMvp(m){
   saveTimers();
 }
 
+function resetAll(){
+  MVP_LIST.forEach(resetMvp);
+  updateSpawnDates();
+  render();
+  saveTimers();
+}
+
 function flashRow(m){
   setTimeout(() => {
     const li = [...document.querySelectorAll(".mvp-row")].find(el => el.textContent.includes(m.id));
@@ -237,6 +244,7 @@ $("#setBtn").onclick = () => {
 };
 $("#startBtn").onclick=startTimers;
 $("#stopBtn").onclick=stopTimers;
+document.getElementById("resetAllBtn").onclick=resetAll;
 
 function saveTimers(){
   const data=MVP_LIST.map(m=>({id:m.id,remaining:m.remaining,running:m.running,spawnUTC:m.spawnUTC}));
