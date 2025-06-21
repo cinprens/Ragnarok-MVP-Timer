@@ -215,6 +215,8 @@ function toggleTomb(m){
     m.remaining=mezarSaatineGoreKalan(val,timezone,m.respawn);
     m.spawnUTC=Date.now()+m.remaining*1000;
     m.tomb=true;
+    m.running = true;
+    startTimers();
     m.tombTime=val+' '+timezone;
   }
   updateSpawnDates();
@@ -284,6 +286,8 @@ $("#setBtn").onclick = () => {
   selected.remaining = ozelZamanaGoreKalan(dk,sn);
   selected.tomb = false;
   selected.spawnUTC=Date.now()+selected.remaining*1000;
+  selected.running = true;
+  startTimers();
   updateSpawnDates();
   render();
   saveTimers();
