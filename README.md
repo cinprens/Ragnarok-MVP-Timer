@@ -20,10 +20,31 @@ When a timer ends, your chosen sound plays and the card turns red.
 
 ## Developer Notes
 
-- Run `npm install` before running tests.
+- Run `npm install` before running tests; this installs Jest and other dev dependencies defined in `package.json`.
 - Use `npm test` to execute the test suite.
 - Follow ESLint rules for code edits.
 - Add new monsters using the `mvpData` array in `app.js`.
+- Current dev dependencies: Jest 29.6.1 and ESLint 8.53.0.
+
+Example CI output:
+
+```
+$ npm test
+
+> ragnarok-mvp-timer@1.0.0 test
+> jest
+
+ PASS  __tests__/app.test.js
+ PASS  __tests__/layout.test.js
+ PASS  __tests__/nowTz.test.js
+ PASS  __tests__/timeUtils.test.js
+ PASS  __tests__/timer.test.js
+
+Test Suites: 5 passed, 5 total
+Tests:       17 passed, 17 total
+Snapshots:   0 total
+Time:        2.3 s
+```
 
 ## Interface
 
