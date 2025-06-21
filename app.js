@@ -25,10 +25,38 @@ function nowTz(){return new Date(new Date().toLocaleString('en-US',{timeZone:tim
 function updateSpawnDates(){
   MVP_LIST.forEach(m=>{m.spawnDate=new Date(new Date(m.spawnUTC).toLocaleString('en-US',{timeZone:timezone}));});
 }
+let autoReturnId;
+
+function populateTimeZones(){
+  const zones=Intl.supportedValuesOf('timeZone');
+  zones.forEach(z=>{
+    const o=document.createElement('option');
+    o.value=z;
+    o.textContent=z;
+    if(z===timezone)o.selected=true;
+    tzSel.append(o);
+  });
+  const opt=document.createElement('option');
+  opt.value='custom';
+  opt.textContent='Özel...';
+  tzSel.append(opt);
+}
+
+function handleZoneChange(){
+  if(tzSel.value==='custom'){
+    const z=prompt('Zaman Dilimi:',timezone);
+    if(z)timezone=z;
+  }else{
+    timezone=tzSel.value;
+  }
+  updateSpawnDates();
+  render();
+  saveTimers();
+}
+
 if(tzSel){
-  const zones=['UTC','Europe/Istanbul','Europe/London','America/New_York','Asia/Tokyo'];
-  zones.forEach(z=>{const o=document.createElement('option');o.value=z;o.textContent=z;if(z===timezone)o.selected=true;tzSel.append(o);});
-  tzSel.addEventListener('change',()=>{timezone=tzSel.value;updateSpawnDates();render();saveTimers();});
+  populateTimeZones();
+  tzSel.addEventListener('change',handleZoneChange);
 }
 const UI={
   gif:$("#mvpGif"),
@@ -78,17 +106,20 @@ fetch("mvpData.json")
 let selected=null;
 const fmt=s=>`${s<0?"-":""}${String(Math.floor(Math.abs(s)/60)).padStart(2,"0")}:${String(Math.abs(s)%60).padStart(2,"0")}`;
 function render(){UI.render();}
+function selectMvp(m){
+  const old=document.querySelector('.mvp-row.selected');
+  if(old)old.classList.remove('selected');
+  selected=m;
+  clearTimeout(autoReturnId);
+  autoReturnId=setTimeout(()=>{selected=null;render();},600000);
+  render();
+}
 function makeLi(m,positive){
   const li=document.createElement("li");
   li.className=`mvp-row ${positive?"positive":"negative"}${m.tomb?" tomb-active":""}`;
   if(m.remaining<0)li.classList.add("negative");
   if(selected===m)li.classList.add("selected");
-  li.onclick=()=>{
-    const old=document.querySelector('.mvp-row.selected');
-    if(old)old.classList.remove('selected');
-    selected=m;
-    render();
-  };
+  li.onclick=()=>selectMvp(m);
   const img=document.createElement("img");
   img.className="sprite";img.src=m.sprite();
   const info=document.createElement("div");
@@ -129,7 +160,7 @@ function toggleTomb(m,li){
     li.classList.remove("tomb-active");
   }else{
     const val=document.getElementById("tombInput").value;
-    if(!val){alert("Enter time");return;}
+    if(!val){alert('Saat gir');return;}
     const [h,min]=val.split(":" ).map(Number);
     const now=nowTz();
     let t=new Date(now.getFullYear(),now.getMonth(),now.getDate(),h,min);
@@ -138,7 +169,7 @@ function toggleTomb(m,li){
     m.remaining=m.respawn-diff;
     m.spawnUTC=Date.now()+m.remaining*1000;
     m.tomb=true;
-    m.tombTime=val;
+    m.tombTime=val+' '+timezone;
   li.classList.add("tomb-active");
   }
   updateSpawnDates();
@@ -188,13 +219,13 @@ function flashRow(m){
 
 $("#setBtn").onclick = () => {
   if (!selected) {
-    alert("Select an MVP first.");
+    alert('Önce bir MVP seç');
     return;
   }
   const dk = parseInt($("#minInput").value || 0),
         sn = parseInt($("#secInput").value || 0);
   if (isNaN(dk) || isNaN(sn) || sn < 0 || sn > 59) {
-    alert("Invalid duration");
+    alert('Süre geçersiz');
     return;
   }
   selected.remaining = dk * 60 + sn;
@@ -217,7 +248,10 @@ function loadTimers(){
   const tz=localStorage.getItem('timezone');
   if(tz){
     timezone=tz;
-    if(tzSel)tzSel.value=tz;
+    if(tzSel){
+      const opt=[...tzSel.options].find(o=>o.value===tz);
+      tzSel.value=opt?tz:'custom';
+    }
   }
   const str=localStorage.getItem('timers');
   if(str){
