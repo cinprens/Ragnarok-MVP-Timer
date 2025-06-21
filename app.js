@@ -1,6 +1,12 @@
 if(typeof Notification!=='undefined'&&Notification.permission==='default'){
   Notification.requestPermission();
 }
+let mezarSaatineGoreKalan,ozelZamanaGoreKalan;
+if(typeof window==='undefined'){
+  ({mezarSaatineGoreKalan,ozelZamanaGoreKalan}=require('./timeUtils.js'));
+}else{
+  ({mezarSaatineGoreKalan,ozelZamanaGoreKalan}=window);
+}
 class MVP{
   constructor({id,file,map,respawnMin}){
     this.id=id;
@@ -161,12 +167,7 @@ function toggleTomb(m,li){
   }else{
     const val=document.getElementById("tombInput").value;
     if(!val){alert('Saat gir');return;}
-    const [h,min]=val.split(":" ).map(Number);
-    const now=nowTz();
-    let t=new Date(now.getFullYear(),now.getMonth(),now.getDate(),h,min);
-    if(t>now)t.setDate(t.getDate()-1);
-    const diff=(now-t)/1000;
-    m.remaining=m.respawn-diff;
+    m.remaining=mezarSaatineGoreKalan(val,timezone,m.respawn);
     m.spawnUTC=Date.now()+m.remaining*1000;
     m.tomb=true;
     m.tombTime=val+' '+timezone;
@@ -235,7 +236,7 @@ $("#setBtn").onclick = () => {
     alert('Süre geçersiz');
     return;
   }
-  selected.remaining = dk * 60 + sn;
+  selected.remaining = ozelZamanaGoreKalan(dk,sn);
   selected.tomb = false;
   selected.spawnUTC=Date.now()+selected.remaining*1000;
   updateSpawnDates();
