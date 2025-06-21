@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="tr">
+<html lang="en">
 <head>
 <meta charset="UTF-8">
 <title>Ragnarok MVP Timer</title>
@@ -12,25 +12,27 @@
 <img class="banner-right" src="Logo/Banner2.png" alt="">
 <div id="wrapper">
   <div id="left">
+    <button class="scroll-up" data-target="positiveList">▲</button>
     <ul id="positiveList"></ul>
+    <button class="scroll-down" data-target="positiveList">▼</button>
   </div>
 
   <div class="resizer" data-side="left"></div>
 
   <div id="mid">
     <select id="tzSelect"></select>
-    <button id="bannerToggle">Banner Gizle</button>
-    <p id="usageNotes">MVP listesinden birini seçip süreyi ayarladıktan sonra başlat tuşu ile sayacı izleyebilirsiniz. Mezar görünme zamanını ilgili alana girebilirsiniz.</p>
+    <button id="bannerToggle">Hide Banners</button>
+    <p id="usageNotes">Select an MVP and set its time, then watch the timer. You can also enter the tomb time.</p>
     <div id="currentSpawn">
       <img id="mvpGif" alt="">
       <div id="mvpTime"></div>
       <img id="mvpMap" alt="">
       <div id="controls">
-        <input id="minInput" type="number" placeholder="dk" min="0" />
-        <input id="secInput" type="number" placeholder="sn" min="0" max="59" />
-        <button id="setBtn">Ayarla</button>
-        <button id="startBtn">Başlat</button>
-        <button id="stopBtn">Durdur</button>
+        <input id="minInput" type="number" placeholder="min" min="0" />
+        <input id="secInput" type="number" placeholder="sec" min="0" max="59" />
+        <button id="setBtn">Set</button>
+        <button id="startBtn">Start</button>
+        <button id="stopBtn">Stop</button>
       </div>
       <div id="tombForm">
         <input id="tombInput" type="time">
@@ -41,8 +43,10 @@
   <div class="resizer" data-side="right"></div>
 
   <div id="right">
+    <button class="scroll-up" data-target="negativeList">▲</button>
     <div id="log"></div>
     <ul id="negativeList"></ul>
+    <button class="scroll-down" data-target="negativeList">▼</button>
   </div>
 </div>
 <script>

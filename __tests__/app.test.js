@@ -21,7 +21,7 @@ test('negatif karta tasinir',async()=>{
   const li=document.querySelector('#negativeList li');
   expect(li).not.toBeNull();
   expect(li.classList.contains('negative')).toBe(true);
-  expect(li.querySelector('button').textContent).toBe('Sıfırla');
+  expect(li.querySelector('button').textContent).toBe('Reset');
   mod.resetMvp(mod.MVP_LIST[0]);
   mod.UI.render();
   expect(document.querySelector('#positiveList li')).not.toBeNull();
