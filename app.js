@@ -29,11 +29,14 @@ class MVP{
     this.tombTime="";
     this.spawnUTC=Date.now()+this.remaining*1000;
     this.running=false;
+    this.kills=0;
   }
   sprite(){return `./MVP_Giff/${this.file}`;}
   mapImg(){return `./Maps/${this.map}.gif`;}
 }
 let MVP_LIST=[];
+let KILL_LOG=[];
+let TOTAL_KILL=0;
 const $=s=>document.querySelector(s);
 const tzSel=$('#tzSelect');
 const tzDiv=document.getElementById('currentTZ');
@@ -140,6 +143,21 @@ const UI={
   }
 };
 
+const killsBox=document.getElementById("killsPanel");
+const killsTitle=document.getElementById("killsTitle");
+function updateKillPanel(){
+  if(!killsBox)return;
+  killsTitle.textContent=`Ben Kestim (${TOTAL_KILL})`;
+  const sorted=MVP_LIST.filter(x=>x.kills>0).sort((a,b)=>b.kills-a.kills);
+  killsBox.innerHTML="";
+  sorted.forEach(m=>{
+    const row=document.createElement("div");
+    row.className="kill-row";
+    row.innerHTML=`\n       <span class="kname">${m.id}</span>\n       <span class="kcount">${m.kills}</span>\n    `;
+    killsBox.append(row);
+  });
+}
+
 fetch("mvpData.json")
   .then(r=>r.json())
   .then(arr=>{
@@ -151,6 +169,7 @@ fetch("mvpData.json")
     }));
     MVP_LIST.forEach(m=>m.running=false);
     loadTimers();
+    updateKillPanel();
   });
 
 let selected=null;
@@ -163,6 +182,14 @@ function selectMvp(m){
   clearTimeout(autoReturnId);
   autoReturnId=setTimeout(()=>{selected=null;render();},600000);
   render();
+}
+function markKilled(m){
+  m.kills++;
+  TOTAL_KILL++;
+  KILL_LOG.push({id:m.id,ts:Date.now()});
+  updateKillPanel();
+  saveTimers();
+  flashRow(m);
 }
 function makeLi(m,positive){
   const li=document.createElement("li");
@@ -213,7 +240,10 @@ function makeLi(m,positive){
       saveTimers();
     };
   }
-  li.append(img,info,map,time,tombTime,tomb,btn);
+  const btnKill=document.createElement("button");
+  btnKill.textContent="I KILL";
+  btnKill.onclick=e=>{e.stopPropagation();markKilled(m);};
+  li.append(img,info,map,time,tombTime,tomb,btn,btnKill);
   return li;
 }
 function toggleTomb(m){
@@ -308,8 +338,10 @@ document.getElementById("tombBtn").onclick=()=>{
 };
 
 function saveTimers(){
-  const data=MVP_LIST.map(m=>({id:m.id,remaining:m.remaining,running:m.running,spawnUTC:m.spawnUTC}));
+  const data=MVP_LIST.map(m=>({id:m.id,remaining:m.remaining,running:m.running,spawnUTC:m.spawnUTC,kills:m.kills}));
   localStorage.setItem('timers',JSON.stringify(data));
+  localStorage.setItem('killLog',JSON.stringify(KILL_LOG));
+  localStorage.setItem('totalKill',TOTAL_KILL);
   localStorage.setItem('timezone',timezone);
 }
 
@@ -324,6 +356,12 @@ function loadTimers(){
   }
   if(tzDiv)tzDiv.textContent=timezone;
   updateOffset();
+  const kl=localStorage.getItem('killLog');
+  const tk=localStorage.getItem('totalKill');
+  if(kl){
+    KILL_LOG=JSON.parse(kl);
+    TOTAL_KILL=parseInt(tk||0,10);
+  }
   const str=localStorage.getItem('timers');
   if(str){
     try{
@@ -331,6 +369,7 @@ function loadTimers(){
       arr.forEach(d=>{
         const m=MVP_LIST.find(x=>x.id===d.id);
         if(m){
+          m.kills=d.kills||0;
           m.running=!!d.running;
           m.spawnUTC=d.spawnUTC||Date.now()+m.remaining*1000;
           if(m.running){
@@ -346,6 +385,7 @@ function loadTimers(){
   }
   updateSpawnDates();
   render();
+  updateKillPanel();
 }
 
 (() => {
@@ -426,3 +466,4 @@ if(bannerBtn){
 
 if(typeof window!=="undefined"){window.loadTimers=loadTimers;window.saveTimers=saveTimers;}
 if(typeof module!=="undefined")module.exports={UI,MVP_LIST,resetMvp,nowTz,step};
+loadTimers&&updateKillPanel();
