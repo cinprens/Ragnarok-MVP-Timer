@@ -69,8 +69,28 @@ body {
   overflow-y: auto;
   background: #111;
   border-right: 1px solid #333;
+  position: relative;
+  -ms-overflow-style: none;
+  scrollbar-width: none;
 }
+#left::-webkit-scrollbar,
+#right::-webkit-scrollbar { display: none; }
 #right { border-left: 1px solid #333; }
+
+.scroll-up,
+.scroll-down {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  background: #222;
+  color: #fff;
+  border: none;
+  padding: 4px;
+  cursor: pointer;
+  z-index: 20;
+}
+.scroll-up { top: 0; }
+.scroll-down { bottom: 0; }
 
 #mid {
   display: flex;

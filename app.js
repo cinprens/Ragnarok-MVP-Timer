@@ -90,10 +90,10 @@ function makeLi(m,positive){
   const tomb=document.createElement("img");tomb.className="tomb";tomb.src="./MVP_Giff/MOB_TOMB.gif";tomb.onclick=e=>{e.stopPropagation();toggleTomb(m,li);};
   const btn=document.createElement("button");
   if(m.remaining<0){
-    btn.textContent="Sıfırla";
+    btn.textContent="Reset";
     btn.onclick=e=>{e.stopPropagation();resetMvp(m);};
   }else{
-    btn.textContent=m.running?"Durdur":"Başlat";
+    btn.textContent=m.running?"Stop":"Start";
     btn.onclick=e=>{
       e.stopPropagation();
       if(m.running){
@@ -119,7 +119,7 @@ function toggleTomb(m,li){
     li.classList.remove("tomb-active");
   }else{
     const val=document.getElementById("tombInput").value;
-    if(!val){alert("Saat gir");return;}
+    if(!val){alert("Enter time");return;}
     const [h,min]=val.split(":" ).map(Number);
     const now=nowTz();
     let t=new Date(now.getFullYear(),now.getMonth(),now.getDate(),h,min);
@@ -174,13 +174,13 @@ function flashRow(m){
 
 $("#setBtn").onclick = () => {
   if (!selected) {
-    alert("Önce listeden bir MVP seç.");
+    alert("Select an MVP first.");
     return;
   }
   const dk = parseInt($("#minInput").value || 0),
         sn = parseInt($("#secInput").value || 0);
   if (isNaN(dk) || isNaN(sn) || sn < 0 || sn > 59) {
-    alert("Süre hatalı");
+    alert("Invalid duration");
     return;
   }
   selected.remaining = dk * 60 + sn;
@@ -272,17 +272,35 @@ function loadTimers(){
   }
 })();
 
+document.querySelectorAll('.scroll-up').forEach(b=>{
+  b.addEventListener('click',()=>{
+    const ul=document.getElementById(b.dataset.target);
+    ul.scrollTop-=100;
+  });
+});
+document.querySelectorAll('.scroll-down').forEach(b=>{
+  b.addEventListener('click',()=>{
+    const ul=document.getElementById(b.dataset.target);
+    ul.scrollTop+=100;
+  });
+});
+document.querySelectorAll('#left,#right').forEach(panel=>{
+  panel.addEventListener('wheel',e=>{
+    panel.scrollBy({top:e.deltaY,behavior:'smooth'});
+  });
+});
+
 const bannerBtn=document.getElementById("bannerToggle");
 function setBannerState(){
   const hidden=localStorage.getItem("bannerHidden")==="1";
   document.body.classList.toggle("banners-hidden",hidden);
-  if(bannerBtn)bannerBtn.textContent=hidden?"Banner Göster":"Banner Gizle";
+  if(bannerBtn)bannerBtn.textContent=hidden?"Show Banners":"Hide Banners";
 }
 if(bannerBtn){
   bannerBtn.addEventListener("click",()=>{
     const now=document.body.classList.toggle("banners-hidden");
     localStorage.setItem("bannerHidden",now?"1":"0");
-    bannerBtn.textContent=now?"Banner Göster":"Banner Gizle";
+    bannerBtn.textContent=now?"Show Banners":"Hide Banners";
   });
   setBannerState();
 }

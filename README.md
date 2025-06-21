@@ -1,35 +1,35 @@
-# Ragnarok MVP Sayaç
+# Ragnarok MVP Timer
 
-Bu uygulama Ragnarok Online oyunundaki MVP canavarlarının doğma zamanlarını takip etmek için hazırlanmıştır. Dakika cinsinden zamanlayıcı ekleyerek sonraki doğuşu izleyebilir, tamamlanan süreler geçmiş listesine eklenir.
+This application tracks respawn times of MVP monsters in Ragnarok Online. You can add timers in minutes to watch the next spawn; completed timers move to the history list.
 
-## Çalıştırma
+## Usage
 
-1. Depoyu klonlayın veya indirin.
-2. `index.html` dosyasını modern bir tarayıcıyla açın.
-3. "MVP" alanına canavar adını, "Dakika" alanına beklenen süresini yazın ve **Ekle** düğmesine basın.
-4. Sağdaki listeden hazır MVP adlarını seçerek de zamanlayıcı oluşturabilirsiniz.
+1. Clone or download the repository.
+2. Open `index.html` in a modern browser.
+3. Enter the monster name and expected minutes, then click **Add**.
+4. You can also create timers using the preset MVP list on the right.
 
-Zaman dolduğunda seçtiğiniz ses dosyası çalınır ve kart kırmızı renge döner.
+When a timer ends, your chosen sound plays and the card turns red.
 
-### Python ile Yerel Sunucu
+### Local Server with Python
 
-1. `npm install` komutunu çalıştırın.
-2. `npm start` yazarak `server.py` dosyasını çalıştırın.
-3. Tarayıcıda `http://localhost:3000` adresini açın.
-4. Farklı bir port kullanmak için `PORT` ortam değişkenini ayarlayın.
+1. Run `npm install`.
+2. Start the server using `npm start`.
+3. Open `http://localhost:3000` in your browser.
+4. Set the `PORT` environment variable to use a different port.
 
-## Geliştirici Talimatları
+## Developer Notes
 
-- Testleri çalıştırmadan önce `npm install` komutunu çalıştırın.
-- Testleri çalıştırmak için `npm test` komutunu kullanın.
-- Kod düzenlemelerinde ESLint kuralları uygulanmalıdır.
-- `app.js` içinde `mvpData` dizisi ile yeni canavarlar ekleyebilirsiniz.
+- Run `npm install` before running tests.
+- Use `npm test` to execute the test suite.
+- Follow ESLint rules for code edits.
+- Add new monsters using the `mvpData` array in `app.js`.
 
-## Arayüz
+## Interface
 
-Aşağıdaki örnek kart tipik bir zamanlayıcı görünümünü gösterir:
+The example below shows a typical timer card:
 
-![Örnek](MVP%20Giff/DRACULA.gif)
+![Sample](MVP%20Giff/DRACULA.gif)
 
-Kart üstünde kalan süre, tahmini doğuş saati ve silme/taşıma düğmeleri bulunur.
-<!-- Güncel dosyaları görmek için tarayıcı önbelleğini temizleyin. -->
+The card displays remaining time, estimated spawn time and buttons to reset or move it.
+<!-- Clear browser cache to see updated files. -->
