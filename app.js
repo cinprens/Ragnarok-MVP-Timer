@@ -85,7 +85,6 @@ function clearCurrent(){mvpGif.src="";mvpName.textContent="";mvpMap.innerHTML=""
   mvpTime.textContent=fmt(m.remaining);
 }
 function clearCurrent(){mvpGif.src="";mvpName.textContent="";mvpMap.textContent="";mvpTime.textContent="";}
-main
 setInterval(()=>{MVP_LIST.forEach(m=>{m.remaining--;if(m.remaining===0)flashRow(m);});render();},1000);
 function flashRow(m){
   setTimeout(()=>{const li=[...document.querySelectorAll(".mvp-row")].find(el=>el.textContent.includes(m.id));li&&li.classList.add("flash");setTimeout(()=>li&&li.classList.remove("flash"),300);},20);
