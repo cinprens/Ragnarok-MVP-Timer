@@ -25,6 +25,7 @@ class MVP{
 let MVP_LIST=[];
 const $=s=>document.querySelector(s);
 const tzSel=$('#tzSelect');
+const tzDiv=document.getElementById('currentTZ');
 let timezone=localStorage.getItem('timezone')||Intl.DateTimeFormat().resolvedOptions().timeZone;
 const SOUND=typeof Audio!=='undefined'?new Audio('./Sound/sound.wav'):null;
 function nowTz(){return new Date(new Date().toLocaleString('en-US',{timeZone:timezone}));}
@@ -62,6 +63,7 @@ function handleZoneChange(){
   }else{
     timezone=tzSel.value;
   }
+  if(tzDiv)tzDiv.textContent=timezone;
   updateSpawnDates();
   render();
   saveTimers();
@@ -297,6 +299,7 @@ function loadTimers(){
       tzSel.value=opt?tz:'custom';
     }
   }
+  if(tzDiv)tzDiv.textContent=timezone;
   const str=localStorage.getItem('timers');
   if(str){
     try{

@@ -58,3 +58,14 @@ test('sag panel secimi orta panelde gosterir',()=>{
   expect(mod.UI.current).toBe(mod.MVP_LIST[0]);
   expect(mod.UI.time.textContent).toBe('-00:05');
 });
+
+test('zaman dilimi seciminde gosterim',()=>{
+  document.body.innerHTML=html;
+  global.fetch=()=>Promise.resolve({json:()=>Promise.resolve([])});
+  require('../app.js');
+  const sel=document.getElementById('tzSelect');
+  const div=document.getElementById('currentTZ');
+  sel.value='Asia/Tokyo';
+  sel.dispatchEvent(new Event('change'));
+  expect(div.textContent).toBe('Asia/Tokyo');
+});
