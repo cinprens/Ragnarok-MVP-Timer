@@ -93,6 +93,7 @@ if(tzSel){
 }
 const UI={
   gif:$("#mvpGif"),
+  name:$("#mvpName"),
   time:$("#mvpTime"),
   map:$("#mvpMap"),
   left:$("#positiveList"),
@@ -111,12 +112,14 @@ const UI={
   },
   setCurrent(m){
     this.current=m;
+    this.name.textContent=m.id;
     this.gif.src=m.sprite();
     this.time.textContent=fmt(m.remaining);
     this.map.src=m.mapImg();
   },
   clearCurrent(){
     this.current=null;
+    this.name.textContent="";
     this.gif.src="";
     this.time.textContent="";
     this.map.src="";
