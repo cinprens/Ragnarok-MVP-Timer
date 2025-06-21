@@ -1,5 +1,5 @@
 # TODO: layout v2
-:root{--bg:#1e1e1e;--fg:#f0f0f0;--pos:#50fa7b;--neg:#ff5555;--flash:#ff79c6;--left-panel-width:30%;}
+:root{--bg:#1e1e1e;--fg:#f0f0f0;--pos:#50fa7b;--neg:#ff5555;--flash:#ff79c6;--left-panel-width:60%;}
 body{margin:0;height:100vh;display:flex;flex-wrap:wrap;background:var(--bg);color:var(--fg);font:14px Helvetica,Arial,sans-serif}
 .panel{overflow:auto;padding:8px}
 #left{flex-basis:100%;width:100%;border-right:1px solid #333}
@@ -9,7 +9,7 @@ body{margin:0;height:100vh;display:flex;flex-wrap:wrap;background:var(--bg);colo
 ul{list-style:none;margin:0;padding:0}
 .mvp-row{display:flex;align-items:center;justify-content:space-between;padding:6px 4px;border-bottom:1px solid #333;cursor:pointer;position:relative}
 .mvp-row img.sprite{width:32px;height:32px;margin-right:6px;image-rendering:pixelated}
-.mvp-row img.mvp-mapThumb{width:32px;height:32px;margin:auto;border-radius:4px}
+.mvp-mapThumb{width:32px;height:32px;margin:auto;border-radius:4px}
 .mvp-row img.tomb{position:absolute;top:4px;right:4px;width:16px;height:16px;cursor:pointer;transition:filter .2s}
 .mvp-row.tomb-active img.tomb{filter:drop-shadow(0 0 4px #a277ff)}
 .mvp-row .mvp-timer{min-width:65px;margin-left:auto;text-align:right;font-variant-numeric:tabular-nums}
@@ -24,5 +24,5 @@ button{padding:4px 10px;background:#444;border:none;color:var(--fg)}
 button:hover{background:#555}
 @media(min-width:768px){
   #left{flex-basis:var(--left-panel-width);width:var(--left-panel-width)}
-  #center{width:70%}
+  #center{width:40%}
 }
