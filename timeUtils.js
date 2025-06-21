@@ -5,9 +5,9 @@ if(typeof window==='undefined'){
   ({DateTime}=luxon);
 }
 function mezarSaatineGoreKalan(saat,zone,respawn){
-  const [h,m]=saat.split(':').map(Number);
+  const [h,m,s=0]=saat.split(':').map(Number);
   const localNow=DateTime.now();
-  let tLocal=localNow.set({hour:h,minute:m,second:0,millisecond:0});
+  let tLocal=localNow.set({hour:h,minute:m,second:s,millisecond:0});
   if(tLocal>localNow)tLocal=tLocal.minus({days:1});
   const now=localNow.setZone(zone);
   const t=tLocal.setZone(zone);

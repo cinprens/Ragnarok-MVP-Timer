@@ -207,8 +207,11 @@ function toggleTomb(m){
     m.tomb=false;
     m.tombTime="";
   }else{
-    const val=document.getElementById("tombInput").value;
-    if(!val){alert('Saat gir');return;}
+    const h=document.getElementById("tombHour").value,
+          mn=document.getElementById("tombMin").value,
+          s=document.getElementById("tombSec").value;
+    if(h===""||mn===""||s===""){alert('Saat gir');return;}
+    const val=`${String(h).padStart(2,'0')}:${String(mn).padStart(2,'0')}:${String(s).padStart(2,'0')}`;
     m.remaining=mezarSaatineGoreKalan(val,timezone,m.respawn);
     m.spawnUTC=Date.now()+m.remaining*1000;
     m.tomb=true;
