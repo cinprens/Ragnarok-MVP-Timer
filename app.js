@@ -11,6 +11,34 @@ class MVP{
   mapImg(){return `./Maps/${this.map}.gif`;}
 }
 let MVP_LIST=[];
+const $=s=>document.querySelector(s);
+const UI={
+  gif:$("#mvpGif"),
+  time:$("#mvpTime"),
+  map:$("#mvpMap"),
+  left:$("#positiveList"),
+  right:$("#negativeList"),
+  render(){
+    const pos=MVP_LIST.filter(m=>m.remaining>=0).sort((a,b)=>a.remaining-b.remaining);
+    const neg=MVP_LIST.filter(m=>m.remaining<0).sort((a,b)=>a.remaining-b.remaining);
+    this.left.innerHTML="";pos.forEach(m=>this.left.append(makeLi(m,true)));
+    this.right.innerHTML="";neg.forEach(m=>this.right.append(makeLi(m,false)));
+    pos[0]?this.setCurrent(pos[0]):this.clearCurrent();
+  },
+  setCurrent(m){
+    this.current=m;
+    this.gif.src=m.sprite();
+    this.time.textContent=fmt(m.remaining);
+    this.map.src=m.mapImg();
+  },
+  clearCurrent(){
+    this.current=null;
+    this.gif.src="";
+    this.time.textContent="";
+    this.map.src="";
+  }
+};
+
 fetch("mvpData.json")
   .then(r=>r.json())
   .then(arr=>{
@@ -22,23 +50,10 @@ fetch("mvpData.json")
     }));
     render();
   });
-const $=s=>document.querySelector(s);
-const gifEl=$("#mvpGif");
-const timeEl=$("#mvpTime");
-const mapEl=$("#mvpMap");
-let current=null;
-// TODO: layout v2
-const leftUl=$("#positiveList");
-const rightUl=$("#negativeList");
+
 let selected=null;
 const fmt=s=>`${s<0?"-":""}${String(Math.floor(Math.abs(s)/60)).padStart(2,"0")}:${String(Math.abs(s)%60).padStart(2,"0")}`;
-function render(){
-  const pos=MVP_LIST.filter(m=>m.remaining>=0).sort((a,b)=>a.remaining-b.remaining);
-  const neg=MVP_LIST.filter(m=>m.remaining<0).sort((a,b)=>a.remaining-b.remaining);
-  leftUl.innerHTML="";pos.forEach(m=>leftUl.append(makeLi(m,true)));
-  rightUl.innerHTML="";neg.forEach(m=>rightUl.append(makeLi(m,false)));
-  if(pos[0])setCurrent(pos[0]);else clearCurrent();
-}
+function render(){UI.render();}
 function makeLi(m,positive){
   const li=document.createElement("li");
   li.className=`mvp-row ${positive?"positive":"negative"}${m.tomb?" tomb-active":""}`;
@@ -61,25 +76,11 @@ function toggleTomb(m,li){
   render();
 }
 
-function setCurrent(m) {
-  current = m;
-  gifEl.src = m.sprite();
-  timeEl.textContent = fmt(m.remaining);
-  mapEl.src = m.mapImg();
-}
-
-function clearCurrent() {
-  current = null;
-  gifEl.src = "";
-  timeEl.textContent = "";
-  mapEl.src = "";
-}
-
 setInterval(() => {
   MVP_LIST.forEach(m => m.remaining--);
-  if (current) timeEl.textContent = fmt(current.remaining);
+  if(UI.current) UI.time.textContent=fmt(UI.current.remaining);
   render();
-}, 1000);
+},1000);
 
 function flashRow(m){
   setTimeout(() => {
@@ -138,6 +139,7 @@ $("#setBtn").onclick = () => {
       window.removeEventListener("mouseup", stop);
       window.removeEventListener("touchmove", tmv);
       window.removeEventListener("touchend", stop);
+      if(window.savePanelWidths)window.savePanelWidths();
     }
     const tmv = ev=>move(ev.touches[0]);
     window.addEventListener("mousemove", move);
