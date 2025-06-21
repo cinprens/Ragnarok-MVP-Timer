@@ -175,7 +175,13 @@ ul { list-style: none; margin: 0; padding: 0; }
 }
 .mvp-row img.sprite { width: var(--sprite); height: var(--sprite); image-rendering: pixelated; }
 .mvp-mapThumb { width: var(--thumb); height: var(--thumb); border-radius: 4px; object-fit: cover; }
-.mvp-row img.tomb { width: 20px; height: 20px; justify-self: end; }
+.mvp-row img.tomb {
+  width: 20px;
+  height: 20px;
+  justify-self: end;
+  pointer-events: none;
+  opacity: 0.6;
+}
 .mvp-row.positive .mvp-timer { color: var(--pos); }
 .mvp-row.negative .mvp-timer { color: var(--neg); }
 .mvp-row .mvp-timer {

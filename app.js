@@ -154,7 +154,7 @@ function makeLi(m,positive){
     time.append(sd);
   }
   const tombTime=document.createElement("div");tombTime.className="tomb-time";tombTime.textContent=m.tombTime;
-  const tomb=document.createElement("img");tomb.className="tomb";tomb.src="./MVP_Giff/MOB_TOMB.gif";tomb.onclick=e=>{e.stopPropagation();toggleTomb(m,li);};
+  const tomb=document.createElement("img");tomb.className="tomb";tomb.src="./MVP_Giff/MOB_TOMB.gif";
   const btn=document.createElement("button");
   if(m.remaining<0){
     btn.textContent="Reset";
@@ -179,11 +179,10 @@ function makeLi(m,positive){
   li.append(img,info,map,time,tombTime,tomb,btn);
   return li;
 }
-function toggleTomb(m,li){
+function toggleTomb(m){
   if(m.tomb){
     m.tomb=false;
     m.tombTime="";
-    li.classList.remove("tomb-active");
   }else{
     const val=document.getElementById("tombInput").value;
     if(!val){alert('Saat gir');return;}
@@ -191,7 +190,6 @@ function toggleTomb(m,li){
     m.spawnUTC=Date.now()+m.remaining*1000;
     m.tomb=true;
     m.tombTime=val+' '+timezone;
-  li.classList.add("tomb-active");
   }
   updateSpawnDates();
   render();
@@ -279,6 +277,10 @@ $("#allSetBtn").onclick=()=>{
 $("#startBtn").onclick=startTimers;
 $("#stopBtn").onclick=stopTimers;
 document.getElementById("resetAllBtn").onclick=resetAll;
+document.getElementById("tombBtn").onclick=()=>{
+  if(!selected){alert('Önce bir MVP seç');return;}
+  toggleTomb(selected);
+};
 
 function saveTimers(){
   const data=MVP_LIST.map(m=>({id:m.id,remaining:m.remaining,running:m.running,spawnUTC:m.spawnUTC}));
