@@ -9,21 +9,24 @@
 <div id="wrapper">
   <div id="left">
     <ul id="positiveList"></ul>
+    <ul id="negativeList"></ul>
   </div>
+
   <div id="mid">
     <div id="currentSpawn">
       <img id="mvpGif" alt="">
       <div id="mvpTime"></div>
       <img id="mvpMap" alt="">
-    </div>
-    <div id="controls">
-      <input id="minInput" type="number" placeholder="dk">
-      <input id="secInput" type="number" placeholder="sn">
-      <button id="setBtn">Ayarla</button>
+      <div id="controls">
+        <input id="minInput" placeholder="dk" />
+        <input id="secInput" placeholder="sn" />
+        <button id="setBtn">Ayarla</button>
+      </div>
     </div>
   </div>
+
   <div id="right">
-    <ul id="negativeList"></ul>
+    <div id="log"> <!-- ileride geçmiş MVP'ler buraya yazılabilir --> </div>
   </div>
 </div>
 <script type="module" src="app.js"></script>
