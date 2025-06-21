@@ -26,3 +26,17 @@ test('negatif karta tasinir',async()=>{
   mod.UI.render();
   expect(document.querySelector('#positiveList li')).not.toBeNull();
 });
+
+test('kart secimi class ekler',()=>{
+  document.body.innerHTML=html;
+  const mod=require('../app.js');
+  mod.UI.left=document.getElementById('positiveList');
+  mod.UI.right=document.querySelector('#right #negativeList');
+  mod.MVP_LIST.length=0;
+  mod.MVP_LIST.push({id:'A',file:'',map:'m',respawn:60,remaining:10,running:false,tomb:false,tombTime:'',sprite(){return ''},mapImg(){return ''}});
+  mod.UI.render();
+  const li=document.querySelector('#positiveList li');
+  li.click();
+  const selectedLi=document.querySelector('#positiveList li');
+  expect(selectedLi.classList.contains('selected')).toBe(true);
+});
