@@ -146,6 +146,12 @@ body {
 }
 #controls button:hover { background: #666; }
 
+#resetAllBtn {
+  margin-top: 12px;
+  align-self: center;
+  text-align: center;
+}
+
 ul { list-style: none; margin: 0; padding: 0; }
 .mvp-row {
   display: grid;
