@@ -141,7 +141,86 @@ button:hover {
     flex-basis: var(--left-panel-width);
     width: var(--left-panel-width);
   }
-  #center {
+#center {
     width: calc(100% - var(--left-panel-width));
   }
+}
+
+:root {
+  --sprite: 64px;
+  --thumb: 64px;
+  --row-h: 72px;
+}
+
+#wrapper {
+  display: flex;
+  height: 100vh;
+  overflow: hidden;
+}
+
+#left, #right {
+  flex: 0 0 320px;
+  overflow-y: auto;
+}
+
+#mid {
+  flex: 1 1 auto;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: auto;
+}
+
+@media (max-width: 900px) {
+  #left, #right {
+    flex-basis: 240px;
+  }
+}
+
+.mvp-row {
+  display: grid;
+  grid-template-columns: var(--sprite) minmax(0, 1fr) var(--thumb) 80px 20px;
+  align-items: center;
+  gap: 6px;
+  height: calc(var(--sprite) + 4px);
+  padding: 2px 4px;
+  border-bottom: 1px solid #333;
+  font-size: 1.2rem;
+  cursor: pointer;
+  position: relative;
+}
+
+.mvp-row img.sprite {
+  width: var(--sprite);
+  height: var(--sprite);
+  image-rendering: pixelated;
+}
+
+.mvp-mapThumb {
+  width: var(--thumb);
+  height: var(--thumb);
+  border-radius: 4px;
+  object-fit: cover;
+}
+
+#currentSpawn {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+}
+
+#currentSpawn img#mvpGif {
+  width: 128px;
+  image-rendering: pixelated;
+}
+
+#currentSpawn #mvpTime {
+  font-size: 2rem;
+  color: var(--pos);
+}
+
+#currentSpawn img#mvpMap {
+  width: 128px;
+  border-radius: 6px;
 }

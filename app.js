@@ -23,13 +23,13 @@ fetch("mvpData.json")
     render();
   });
 const $=s=>document.querySelector(s);
-// TODO: layout v2
-const leftUl=$("#positiveList");
-const rightUl=$("#negativeList");
 const gifEl=$("#mvpGif");
 const timeEl=$("#mvpTime");
 const mapEl=$("#mvpMap");
 let current=null;
+// TODO: layout v2
+const leftUl=$("#positiveList");
+const rightUl=$("#negativeList");
 let selected=null;
 const fmt=s=>`${s<0?"-":""}${String(Math.floor(Math.abs(s)/60)).padStart(2,"0")}:${String(Math.abs(s)%60).padStart(2,"0")}`;
 function render(){
@@ -59,22 +59,25 @@ function toggleTomb(m,li){
   render();
 }
 
-function setCurrent(m){
-  current=m;
-  gifEl.src=m.sprite();
-  timeEl.textContent=fmt(m.remaining);
-  mapEl.src=m.mapImg();
-}
-function clearCurrent(){
-  current=null;
-  gifEl.src=timeEl.textContent=mapEl.src="";
+function setCurrent(m) {
+  current = m;
+  gifEl.src = m.sprite();
+  timeEl.textContent = fmt(m.remaining);
+  mapEl.src = m.mapImg();
 }
 
-setInterval(()=>{
-  MVP_LIST.forEach(m=>m.remaining--);
-  if(current) timeEl.textContent=fmt(current.remaining);
+function clearCurrent() {
+  current = null;
+  gifEl.src = "";
+  timeEl.textContent = "";
+  mapEl.src = "";
+}
+
+setInterval(() => {
+  MVP_LIST.forEach(m => m.remaining--);
+  if (current) timeEl.textContent = fmt(current.remaining);
   render();
-},1000);
+}, 1000);
 
 function flashRow(m){
   setTimeout(() => {
