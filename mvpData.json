@@ -1,6 +1,6 @@
 [
   {"name":"Beelzebub",        "map":"abbey03",    "respawn":43200, "img":"MVP_Giff/BEELZEBUB_.gif", "mapImg":"Maps/abbey03.gif"},
-  {"name":"Maya",             "map":"anthell02",  "respawn":3600 , "img":"MVP_Giff/MAYA.gif",       "mapImg":"Maps/anthell02.gif"},
+  {"name":"Maya",             "map":"anthell02",  "respawn":7200 , "img":"MVP_Giff/MAYA.gif",       "mapImg":"Maps/anthell02.gif"},
   {"name":"Tao Gunka",        "map":"beach_dun",  "respawn":3600 , "img":"MVP_Giff/TAO_GUNKA.gif",  "mapImg":"Maps/beach_dun.gif"},
   {"name":"Dracula",          "map":"gef_dun01",  "respawn":3600 , "img":"MVP_Giff/DRACULA.gif",    "mapImg":"Maps/gef_dun01.gif"},
   {"name":"Orc Hero",         "map":"gef_fild03", "respawn":3600 , "img":"MVP_Giff/ORK_HERO.gif",   "mapImg":"Maps/gef_fild03.gif"},
