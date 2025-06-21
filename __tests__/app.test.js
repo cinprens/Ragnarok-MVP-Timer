@@ -41,3 +41,20 @@ test('kart secimi class ekler',()=>{
   const selectedLi=document.querySelector('#positiveList li');
   expect(selectedLi.classList.contains('selected')).toBe(true);
 });
+
+test('sag panel secimi orta panelde gosterir',()=>{
+  document.body.innerHTML=html;
+  const mod=require('../app.js');
+  mod.UI.left=document.getElementById('positiveList');
+  mod.UI.right=document.querySelector('#right #negativeList');
+  mod.UI.gif=document.getElementById('mvpGif');
+  mod.UI.time=document.getElementById('mvpTime');
+  mod.UI.map=document.getElementById('mvpMap');
+  mod.MVP_LIST.length=0;
+  mod.MVP_LIST.push({id:'N',file:'x',map:'m',respawn:60,remaining:-5,running:false,tomb:false,tombTime:'',sprite(){return 's'},mapImg(){return 'p'}});
+  mod.UI.render();
+  const li=document.querySelector('#negativeList li');
+  li.click();
+  expect(mod.UI.current).toBe(mod.MVP_LIST[0]);
+  expect(mod.UI.time.textContent).toBe('-00:05');
+});
