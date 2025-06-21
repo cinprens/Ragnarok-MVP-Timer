@@ -165,3 +165,22 @@ ul { list-style: none; margin: 0; padding: 0; }
     display: none;
   }
 }
+
+.banners-hidden .banner-top,
+.banners-hidden .banner-bottom,
+.banners-hidden .banner-left,
+.banners-hidden .banner-right{
+  display:none;
+}
+
+#bannerToggle{
+  position:fixed;
+  top:8px;
+  right:8px;
+  z-index:1101;
+  background:#444;
+  color:var(--fg);
+  border:none;
+  padding:4px 8px;
+  cursor:pointer;
+}
