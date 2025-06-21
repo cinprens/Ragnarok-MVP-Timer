@@ -4,7 +4,8 @@
   "scripts": {
     "test": "jest",
     "start": "python server.py",
-    "prepare": "npm install"
+    "prepare": "npm install",
+    "lint": "eslint ."
   },
   "devDependencies": {
     "jest": "^29.6.1",

@@ -15,14 +15,15 @@ Zaman dolduğunda seçtiğiniz ses dosyası çalınır ve kart kırmızı renge 
 
 1. `npm install` komutunu çalıştırın.
 2. `npm start` yazarak `server.py` dosyasını çalıştırın.
-3. Tarayıcıda `http://localhost:8000` adresini açın.
+3. Tarayıcıda `http://localhost:3000` adresini açın.
+4. Farklı bir port kullanmak için `PORT` ortam değişkenini ayarlayın.
 
 ## Geliştirici Talimatları
 
 - Testleri çalıştırmadan önce `npm install` komutunu çalıştırın.
 - Testleri çalıştırmak için `npm test` komutunu kullanın.
 - Kod düzenlemelerinde ESLint kuralları uygulanmalıdır.
-- `script.js` içinde `mvpData` dizisi ile yeni canavarlar ekleyebilirsiniz.
+- `app.js` içinde `mvpData` dizisi ile yeni canavarlar ekleyebilirsiniz.
 
 ## Arayüz
 
