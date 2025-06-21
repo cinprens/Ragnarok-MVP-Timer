@@ -1,3 +1,8 @@
+:root{
+  --sprite:64px;
+  --thumb:64px;
+  --row-h:72px;
+}
 :root {
   --bg: #1e1e1e;
   --fg: #f0f0f0;
@@ -54,52 +59,30 @@ ul {
   padding: 0;
 }
 
-.mvp-row {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 6px 4px;
-  border-bottom: 1px solid #333;
-  cursor: pointer;
-  position: relative;
-  font-size: 1.2rem;
+.mvp-row{
+  display:grid;
+  grid-template-columns:var(--sprite) 1fr var(--thumb) 90px 24px;
+  align-items:center;
+  gap:8px;
+  min-height:var(--row-h);
+  padding:4px 6px;
+  border-bottom:1px solid #333;
+  font-size:1.2rem;
+  cursor:pointer;
+  position:relative;
 }
 
-.mvp-row img.sprite {
-  width: 64px;
-  height: 64px;
-  margin-right: 6px;
-  image-rendering: pixelated;
-}
+.mvp-row img.sprite{width:var(--sprite);height:var(--sprite);image-rendering:pixelated;}
 
-.mvp-mapThumb {
-  width: 64px;
-  height: 64px;
-  margin: auto;
-  border-radius: 4px;
-}
+.mvp-mapThumb{width:var(--thumb);height:var(--thumb);border-radius:4px;}
 
-.mvp-row img.tomb {
-  position: absolute;
-  top: 4px;
-  right: 4px;
-  width: 16px;
-  height: 16px;
-  cursor: pointer;
-  transition: filter 0.2s;
-}
+.mvp-row img.tomb{width:20px;height:20px;justify-self:end;}
 
 .mvp-row.tomb-active img.tomb {
   filter: drop-shadow(0 0 4px #a277ff);
 }
 
-.mvp-row .mvp-timer {
-  min-width: 65px;
-  margin-left: auto;
-  text-align: right;
-  font-variant-numeric: tabular-nums;
-  font-size: 1.2rem;
-}
+.mvp-row .mvp-timer{text-align:right;font-variant-numeric:tabular-nums;}
 
 .mvp-row.positive .mvp-timer {
   color: var(--pos);
@@ -122,18 +105,11 @@ ul {
   animation: flash 0.3s;
 }
 
-#mvpGif {
-  width: 100%;
-  max-width: 520px;
-  object-fit: contain;
-}
+#currentSpawn{display:flex;flex-direction:column;align-items:center;gap:8px;}
+#currentSpawn img#mvpGif{width:128px;image-rendering:pixelated;}
+#currentSpawn #mvpTime{font-size:2rem;color:var(--pos);}
+#currentSpawn img#mvpMap{width:128px;border-radius:6px;}
 
-#currentSpawn {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 8px;
-}
 
 #controls {
   margin-top: 20px;

@@ -26,7 +26,10 @@ const $=s=>document.querySelector(s);
 // TODO: layout v2
 const leftUl=$("#positiveList");
 const rightUl=$("#negativeList");
-const mvpGif=$("#mvpGif"),mvpName=$("#mvpName"),mvpMap=$("#mvpMap"),mvpTime=$("#mvpTime");
+const gifEl=$("#mvpGif");
+const timeEl=$("#mvpTime");
+const mapEl=$("#mvpMap");
+let current=null;
 let selected=null;
 const fmt=s=>`${s<0?"-":""}${String(Math.floor(Math.abs(s)/60)).padStart(2,"0")}:${String(Math.abs(s)%60).padStart(2,"0")}`;
 function render(){
@@ -57,26 +60,21 @@ function toggleTomb(m,li){
 }
 
 function setCurrent(m){
-  mvpGif.src = m.sprite();
-  mvpName.textContent = m.id;
-  mvpMap.innerHTML = `<img src="${m.mapImg()}" class="mvp-mapThumb"> ${m.map}`;
-  mvpTime.textContent = fmt(m.remaining);
+  current=m;
+  gifEl.src=m.sprite();
+  timeEl.textContent=fmt(m.remaining);
+  mapEl.src=m.mapImg();
 }
-
 function clearCurrent(){
-  mvpGif.src = "";
-  mvpName.textContent = "";
-  mvpMap.innerHTML = "";
-  mvpTime.textContent = "";
+  current=null;
+  gifEl.src=timeEl.textContent=mapEl.src="";
 }
 
-setInterval(() => {
-  MVP_LIST.forEach(m => {
-    m.remaining--;
-    if (m.remaining === 0) flashRow(m);
-  });
+setInterval(()=>{
+  MVP_LIST.forEach(m=>m.remaining--);
+  if(current) timeEl.textContent=fmt(current.remaining);
   render();
-}, 1000);
+},1000);
 
 function flashRow(m){
   setTimeout(() => {

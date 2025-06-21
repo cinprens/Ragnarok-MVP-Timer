@@ -32,3 +32,4 @@ Aşağıdaki örnek kart tipik bir zamanlayıcı görünümünü gösterir:
 ![Örnek](MVP%20Giff/DRACULA.gif)
 
 Kart üstünde kalan süre, tahmini doğuş saati ve silme/taşıma düğmeleri bulunur.
+<!-- Güncel dosyaları görmek için tarayıcı önbelleğini temizleyin. -->
