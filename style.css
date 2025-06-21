@@ -365,3 +365,24 @@ body {
 .mvp-row.negative .mvp-timer {
   color: var(--neg);
 }
+
+/* --- DRAG BAR --- */
+.resizer{
+  width:4px;
+  background:#444;
+  cursor:col-resize;
+  z-index:10;
+}
+.resizer:hover{background:#666;}
+
+@media (hover:none){
+  .resizer{width:6px;}
+}
+
+/* wrapper grid’i drag‑bara göre güncelle */
+#wrapper{
+  display:grid;
+  grid-template-columns: 320px 4px 1fr 4px 320px;
+  height:100vh;
+  overflow:hidden;
+}
