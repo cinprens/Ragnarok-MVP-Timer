@@ -102,3 +102,45 @@ $("#setBtn").onclick = () => {
   selected.tomb = false;
   render();
 };
+
+(() => {
+  const left   = document.getElementById("left");
+  const right  = document.getElementById("right");
+  const resizers = document.querySelectorAll(".resizer");
+
+  resizers.forEach(bar => {
+    bar.addEventListener("mousedown", start);
+    bar.addEventListener("touchstart", e=>start(e.touches[0]));
+  });
+
+  function start(e){
+    const side = e.target.dataset.side;
+    const startX = e.clientX;
+    const startLeft  = left.getBoundingClientRect().width;
+    const startRight = right.getBoundingClientRect().width;
+
+    function move(ev){
+      const dx = ev.clientX - startX;
+      if(side === "left"){
+        const newW = Math.max(180, startLeft + dx);
+        left.style.width = newW + "px";
+        document.documentElement.style.setProperty("--left-w", newW+"px");
+      }else{
+        const newW = Math.max(180, startRight - dx);
+        right.style.width = newW + "px";
+        document.documentElement.style.setProperty("--right-w", newW+"px");
+      }
+    }
+    function stop(){
+      window.removeEventListener("mousemove", move);
+      window.removeEventListener("mouseup", stop);
+      window.removeEventListener("touchmove", tmv);
+      window.removeEventListener("touchend", stop);
+    }
+    const tmv = ev=>move(ev.touches[0]);
+    window.addEventListener("mousemove", move);
+    window.addEventListener("mouseup", stop);
+    window.addEventListener("touchmove", tmv);
+    window.addEventListener("touchend", stop);
+  }
+})();
