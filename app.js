@@ -29,7 +29,14 @@ let timezone=localStorage.getItem('timezone')||Intl.DateTimeFormat().resolvedOpt
 const SOUND=typeof Audio!=='undefined'?new Audio('./Sound/sound.wav'):null;
 function nowTz(){return new Date(new Date().toLocaleString('en-US',{timeZone:timezone}));}
 function updateSpawnDates(){
-  MVP_LIST.forEach(m=>{m.spawnDate=new Date(new Date(m.spawnUTC).toLocaleString('en-US',{timeZone:timezone}));});
+  MVP_LIST.forEach(m=>{
+    let next=m.spawnUTC||Date.now()+m.remaining*1000;
+    if(m.remaining<0){
+      const cycles=Math.floor(-m.remaining/m.respawn)+1;
+      next+=cycles*m.respawn*1000;
+    }
+    m.spawnDate=new Date(new Date(next).toLocaleString('en-US',{timeZone:timezone}));
+  });
 }
 let autoReturnId;
 
@@ -132,7 +139,20 @@ function makeLi(m,positive){
   info.className="mvp-info";
   info.innerHTML=`<strong>${m.id}</strong><span>${m.map}</span>`;
   const map=document.createElement("img");map.className="mvp-mapThumb";map.src=m.mapImg();
-  const time=document.createElement("div");time.className="mvp-timer";time.textContent=fmt(m.remaining);
+  const time=document.createElement("div");
+  time.className="mvp-timer";
+  const remain=document.createElement("div");
+  remain.textContent=fmt(m.remaining);
+  time.append(remain);
+  if(m.remaining<0){
+    const next=m.spawnUTC||Date.now()+m.remaining*1000;
+    const cycles=Math.floor(-m.remaining/m.respawn)+1;
+    const date=new Date(new Date(next+cycles*m.respawn*1000).toLocaleString('en-US',{timeZone:timezone}));
+    const sd=document.createElement("div");
+    sd.className="spawn-date";
+    sd.textContent=date.toLocaleString();
+    time.append(sd);
+  }
   const tombTime=document.createElement("div");tombTime.className="tomb-time";tombTime.textContent=m.tombTime;
   const tomb=document.createElement("img");tomb.className="tomb";tomb.src="./MVP_Giff/MOB_TOMB.gif";tomb.onclick=e=>{e.stopPropagation();toggleTomb(m,li);};
   const btn=document.createElement("button");
@@ -190,6 +210,7 @@ function step(){
       }
     }
   });
+  updateSpawnDates();
   if(UI.current) UI.time.textContent=fmt(UI.current.remaining);
   render();
   if(!anyRunning())stopTimers();
