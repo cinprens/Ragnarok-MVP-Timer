@@ -18,3 +18,11 @@ test('mobilde resizer gizli',()=>{
 test('mobilde banner statik',()=>{
   expect(css).toMatch(/position:\s*static/);
 });
+
+test('global box-sizing',()=>{
+  expect(css).toMatch(/\*\s*{[^}]*box-sizing:\s*border-box/);
+});
+
+test('timerBox genisligi tam',()=>{
+  expect(css).toMatch(/#timerBox\s*{[^}]*width:\s*100%/);
+});
