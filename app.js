@@ -40,9 +40,10 @@ const mvpData=[
 ];
 const MVP_LIST=mvpData.map(([id,file,map,resp])=>new MVP({id,file,map,respawnMin:resp}));
 const $=s=>document.querySelector(s);
+// TODO: layout v2
 const leftUl=$("#positiveList");
 const rightUl=$("#negativeList");
-const csImg=$("#csImg"),csName=$("#csName"),csMap=$("#csMap"),csTime=$("#csTime");
+const mvpGif=$("#mvpGif"),mvpName=$("#mvpName"),mvpMap=$("#mvpMap"),mvpTime=$("#mvpTime");
 let selected=null;
 const fmt=s=>`${s<0?"-":""}${String(Math.floor(Math.abs(s)/60)).padStart(2,"0")}:${String(Math.abs(s)%60).padStart(2,"0")}`;
 function render(){
@@ -54,15 +55,15 @@ function render(){
 }
 function makeLi(m,positive){
   const li=document.createElement("li");
-  li.className=`${positive?"positive":"negative"}${m.tomb?" tomb-active":""}`;
+  li.className=`mvp-row ${positive?"positive":"negative"}${m.tomb?" tomb-active":""}`;
   li.onclick=()=>{selected=m;};
   const img=document.createElement("img");
   img.className="sprite";img.src=m.sprite();
   const info=document.createElement("div");info.style.flex=1;info.innerHTML=`<strong>${m.id}</strong><br>${m.map}`;
-  const time=document.createElement("div");time.className="time";time.textContent=fmt(m.remaining);
-  const map=document.createElement("img");map.className="map";map.src=m.mapImg();
+  const map=document.createElement("img");map.className="mvp-mapThumb";map.src=m.mapImg();
+  const time=document.createElement("div");time.className="mvp-timer";time.textContent=fmt(m.remaining);
   const tomb=document.createElement("img");tomb.className="tomb";tomb.src="./MVP_Giff/MOB_TOMB.gif";tomb.onclick=e=>{e.stopPropagation();toggleTomb(m,li);};
-  li.append(img,info,time,tomb,map);
+  li.append(img,info,map,time,tomb);
   return li;
 }
 function toggleTomb(m,li){
@@ -72,15 +73,15 @@ function toggleTomb(m,li){
   render();
 }
 function setCurrent(m){
-  csImg.src=m.sprite();
-  csName.textContent=m.id;
-  csMap.textContent=`${m.map}`;
-  csTime.textContent=fmt(m.remaining);
+  mvpGif.src=m.sprite();
+  mvpName.textContent=m.id;
+  mvpMap.innerHTML=`<img src="${m.mapImg()}" class="mvp-mapThumb"> ${m.map}`;
+  mvpTime.textContent=fmt(m.remaining);
 }
-function clearCurrent(){csImg.src="";csName.textContent="";csMap.textContent="";csTime.textContent="";}
+function clearCurrent(){mvpGif.src="";mvpName.textContent="";mvpMap.innerHTML="";mvpTime.textContent="";}
 setInterval(()=>{MVP_LIST.forEach(m=>{m.remaining--;if(m.remaining===0)flashRow(m);});render();},1000);
 function flashRow(m){
-  setTimeout(()=>{const li=[...document.querySelectorAll("li")].find(el=>el.textContent.includes(m.id));li&&li.classList.add("flash");setTimeout(()=>li&&li.classList.remove("flash"),300);},20);
+  setTimeout(()=>{const li=[...document.querySelectorAll(".mvp-row")].find(el=>el.textContent.includes(m.id));li&&li.classList.add("flash");setTimeout(()=>li&&li.classList.remove("flash"),300);},20);
 }
 $("#setBtn").onclick=()=>{
   if(!selected){alert("Önce listeden bir MVP seç.");return;}
