@@ -18,11 +18,17 @@ test('blink efekti',()=>{
   mod.MVP_LIST.push({id:'B',file:'',map:'m',respawn:60,remaining:60,running:true,tomb:false,tombTime:'',spawnUTC:Date.now()+60000,sprite(){return ''},mapImg(){return ''}});
   mod.UI.render();
   mod.step();
+
+  expect(mod.MVP_LIST[0].blink).toBe(true);
+
   let li=document.querySelector('.mvp-row');
   const mid=document.querySelector('#mid-panel .mvp-stack');
   expect(li.classList.contains('blink')).toBe(true);
   expect(mid.classList.contains('blink')).toBe(true);
   for(let i=0;i<10;i++) mod.step();
+
+  expect(mod.MVP_LIST[0].blink).toBe(false);
+
   li=document.querySelector('.mvp-row');
   expect(li.classList.contains('blink')).toBe(false);
   expect(mid.classList.contains('blink')).toBe(false);
