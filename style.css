@@ -130,15 +130,22 @@ html,body{ height:100%; overflow:hidden; }
 .scroll-down { bottom: 0; }
 
 #mid {
+  min-height: 0;
+  overflow: hidden;
+  flex: 1 1 auto; /* shrinkable içerik */
+}
+body, html {
+  height: 100%;
+  margin: 0;
+  padding: 0;
   display: flex;
   flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  gap: 12px;
-  padding: 20px;
-  position: relative;
-  flex: 1 1 auto;
-  min-height: 0;
+  justify-content: flex-end; /* Sayfanın altına yasla */
+}
+
+#wrapper {
+  height: 90vh;
+  margin: 0 auto;
 }
 
 #usageNotes {
