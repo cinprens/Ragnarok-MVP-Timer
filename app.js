@@ -102,7 +102,9 @@ function updateSpawnDates() {
 /* ———————————————————  PANEL YARDIMCILARI ——————————————————— */
 function fillList(box, arr, positive) {
   box.innerHTML = '';
-  arr.forEach(m => box.append(makeLi(m, positive)));
+  const frag = document.createDocumentFragment();
+  arr.forEach(m => frag.append(makeLi(m, positive)));
+  box.append(frag);
 }
 
 function renderMid(m) {
@@ -176,6 +178,7 @@ function updateKillPanel() {
   const sorted = MVP_LIST.filter(x => x.kills > 0)
                          .sort((a, b) => b.kills - a.kills);
   killsBox.innerHTML = '';
+  const frag = document.createDocumentFragment();
   sorted.forEach(m => {
     const row = document.createElement('div');
     row.className = 'kill-row';
@@ -183,8 +186,9 @@ function updateKillPanel() {
       <img src="${m.sprite()}" alt="">
       <span class="kname">${m.id}</span>
       <span class="kcount">${m.kills}</span>`;
-    killsBox.append(row);
+    frag.append(row);
   });
+  killsBox.append(frag);
 }
 
 /* ———————————————————  MVP SATIRI OLUŞTUR ——————————————————— */
