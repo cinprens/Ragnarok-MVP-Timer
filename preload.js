@@ -1,10 +1,16 @@
-const { contextBridge, ipcRenderer } = require('electron');
-const fs = require('fs');
-const path = require('path');
+const { contextBridge, ipcRenderer } = require("electron");
+const fs = require("fs");
+const path = require("path");
 
-// mvpData.json, asar icinde olabilecegi icin kosullu yol
-const dataPath = path.join(process.resourcesPath, 'mvpData.json');
-const userPath = path.join(process.env.APPDATA || process.env.HOME, 'Ragnarok-MVP-Timer', 'customMvps.json');
+// mvpData.json konumu paketlenmis ve gelistirme modlari icin kontrol edilir
+const asarPath = path.join(process.resourcesPath, "mvpData.json");
+const localPath = path.join(__dirname, "mvpData.json");
+const dataPath = fs.existsSync(asarPath) ? asarPath : localPath;
+const userPath = path.join(
+  process.env.APPDATA || process.env.HOME,
+  "Ragnarok-MVP-Timer",
+  "customMvps.json"
+);
 
 function readJson(file) {
   try {
@@ -29,5 +35,8 @@ contextBridge.exposeInMainWorld('api', {
   },
   onTimer(cb) {
     ipcRenderer.on('timer‑tick', (_, t) => cb(t));
+  },
+  on(channel, cb) {
+    ipcRenderer.on(channel, (_e, data) => cb(data));
   }
 });
