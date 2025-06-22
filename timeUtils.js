@@ -1,9 +1,4 @@
-let DateTime;
-if(typeof window==='undefined'){
-  ({DateTime}=require('./luxon.js'));
-}else{
-  ({DateTime}=luxon);
-}
+import { DateTime } from 'luxon';
 function mezarSaatineGoreKalan(saat,zone,respawn){
   const [h,m,s=0]=saat.split(':').map(Number);
   const localNow=DateTime.now();
@@ -17,8 +12,9 @@ function mezarSaatineGoreKalan(saat,zone,respawn){
 function ozelZamanaGoreKalan(dk,sn){
   return dk*60+sn;
 }
-if(typeof window!=='undefined'){
-  window.mezarSaatineGoreKalan=mezarSaatineGoreKalan;
-  window.ozelZamanaGoreKalan=ozelZamanaGoreKalan;
+if (typeof window !== 'undefined') {
+  window.mezarSaatineGoreKalan = mezarSaatineGoreKalan;
+  window.ozelZamanaGoreKalan = ozelZamanaGoreKalan;
 }
-module.exports={mezarSaatineGoreKalan,ozelZamanaGoreKalan};
+
+export { mezarSaatineGoreKalan, ozelZamanaGoreKalan };

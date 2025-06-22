@@ -12,7 +12,7 @@ test('ana paneller mevcut',()=>{
 test('negatif karta tasinir',async()=>{
   document.body.innerHTML=html;
   global.fetch=()=>Promise.resolve({json:()=>Promise.resolve([])});
-  const mod=require('../app.js');
+  const mod=await import('../app.js');
   mod.UI.left=document.getElementById('positiveList');
   mod.UI.right=document.querySelector('#right #negativeList');
   mod.MVP_LIST.length=0;
@@ -28,9 +28,9 @@ test('negatif karta tasinir',async()=>{
   expect(document.querySelector('#positiveList li')).not.toBeNull();
 });
 
-test('kart secimi class ekler',()=>{
+test('kart secimi class ekler', async () => {
   document.body.innerHTML=html;
-  const mod=require('../app.js');
+  const mod=await import('../app.js');
   mod.UI.left=document.getElementById('positiveList');
   mod.UI.right=document.querySelector('#right #negativeList');
   mod.MVP_LIST.length=0;
@@ -42,9 +42,9 @@ test('kart secimi class ekler',()=>{
   expect(selectedLi.classList.contains('selected')).toBe(true);
 });
 
-test('sag panel secimi orta panelde gosterir',()=>{
+test('sag panel secimi orta panelde gosterir', async () => {
   document.body.innerHTML=html;
-  const mod=require('../app.js');
+  const mod=await import('../app.js');
   mod.UI.left=document.getElementById('positiveList');
   mod.UI.right=document.querySelector('#right #negativeList');
   mod.UI.gif=document.getElementById('mvpGif');
@@ -59,10 +59,10 @@ test('sag panel secimi orta panelde gosterir',()=>{
   expect(mod.UI.time.textContent).toBe('-00:05');
 });
 
-test('zaman dilimi seciminde gosterim',()=>{
+test('zaman dilimi seciminde gosterim', async () => {
   document.body.innerHTML=html;
   global.fetch=()=>Promise.resolve({json:()=>Promise.resolve([])});
-  require('../app.js');
+  await import('../app.js');
   const sel=document.getElementById('tzSelect');
   const div=document.getElementById('currentTZ');
   sel.value='Asia/Tokyo';

@@ -1,14 +1,20 @@
 {
   "name": "ragnarok-mvp-timer",
   "version": "1.0.0",
+  "type": "module",
+  "main": "main.js",
   "scripts": {
-    "test": "jest",
-    "start": "python server.py",
-    "prepare": "npm install",
-    "lint": "eslint . -c eslint.config.js"
+    "dev": "NODE_ENV=development electron .",
+    "build": "electron-builder",
+    "start": "electron .",
+    "lint": "eslint ."
+  },
+  "dependencies": {
+    "electron": "^29.0.0",
+    "luxon": "^3.4.4"
   },
   "devDependencies": {
-    "jest": "29.6.1",
-    "eslint": "8.53.0"
+    "electron-reloader": "^3.3.0",
+    "eslint": "^8.53.0"
   }
 }

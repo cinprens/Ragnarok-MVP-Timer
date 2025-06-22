@@ -3,10 +3,10 @@ const html=fs.readFileSync('index.html','utf8');
 
 jest.useFakeTimers();
 
-test('blink efekti',()=>{
+test('blink efekti', async () => {
   document.body.innerHTML=html;
   global.fetch=()=>Promise.resolve({json:()=>Promise.resolve([])});
-  const mod=require('../app.js');
+  const mod=await import('../app.js');
   mod.UI.left=document.getElementById('positiveList');
   mod.UI.right=document.querySelector('#right #negativeList');
   mod.UI.name=document.getElementById('mvpName');
