@@ -1,5 +1,5 @@
-const {mezarSaatineGoreKalan,ozelZamanaGoreKalan}=require('../timeUtils');
-const {DateTime,Settings}=require('../luxon.js');
+import { DateTime, Settings } from 'luxon';
+import { mezarSaatineGoreKalan, ozelZamanaGoreKalan } from '../timeUtils.js';
 
 test('mezar bugun',()=>{
   Settings.now=()=>new Date('2023-01-01T12:00:00Z').getTime();

@@ -664,14 +664,4 @@ if(blinkBtn){
   setBlinkState();
 }
 
-if (typeof module !== 'undefined') {
-  module.exports = {
-    MVP_LIST,
-    UI,
-    step,
-    resetMvp,
-    nowTz,
-    markKilled,
-    toggleTomb
-  };
-}
+export { MVP_LIST, UI, step, resetMvp, nowTz, markKilled, toggleTomb };
