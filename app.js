@@ -103,6 +103,11 @@ function renderMid(m) {
   UI.name.textContent = m.id;
   UI.gif.src          = m.sprite();
   UI.time.textContent = fmt(m.remaining);
+  if (UI.tombImg) UI.tombImg.style.display = m.tomb ? 'block' : 'none';
+  if (UI.tombRemain) {
+    UI.tombRemain.style.display = m.tombTime ? 'block' : 'none';
+    UI.tombRemain.textContent   = m.tombTime;
+  }
   UI.map.src          = m.mapImg();
   UI.mapName.textContent = 'Map: ' + m.map;
 }
@@ -112,6 +117,8 @@ const UI = {
   gif     : $('#mvpGif'),
   name    : $('#mvpName'),
   time    : $('#mvpTime'),
+  tombImg : $('#tombImg'),
+  tombRemain: $('#tombRemain'),
   map     : $('#mvpMap'),
   mapName : $('#mapName'),
   left    : $('#positiveList'),
@@ -154,6 +161,11 @@ const UI = {
     this.name.textContent = '';
     this.gif .src         = '';
     this.time.textContent = '';
+    if (this.tombImg) this.tombImg.style.display = 'none';
+    if (this.tombRemain) {
+      this.tombRemain.textContent = '';
+      this.tombRemain.style.display = 'none';
+    }
     this.map .src         = '';
     this.mapName.textContent = '';
   }
@@ -212,10 +224,13 @@ function makeLi(m, positive) {
   }
 
   if (m.tombTime) {
+    const tombImg = new Image();
+    tombImg.className = 'tomb-thumb';
+    tombImg.src = './MVP_Giff/MOB_TOMB.gif';
     const tombTime = document.createElement('div');
     tombTime.className = 'tomb-time';
     tombTime.textContent = m.tombTime;
-    timeBox.append(tombTime);
+    timeBox.append(tombImg, tombTime);
   }
 
   /* Start/Stop or Reset  */
@@ -336,6 +351,8 @@ function resetMvp(m) {
   m.remaining = m.respawn;
   m.spawnUTC  = Date.now() + m.remaining * 1000;
   m.running   = false;
+  m.tomb      = false;
+  m.tombTime  = '';
   updateSpawnDates();
   UI.render();
   saveTimers();
