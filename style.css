@@ -137,7 +137,7 @@ html,body{ height:100%; overflow:hidden; }
   gap: 12px;
   padding: 20px;
   position: relative;
-  overflow-y: auto;
+  flex: 1 1 auto;
   min-height: 0;
 }
 
