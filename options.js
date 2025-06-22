@@ -1,114 +1,114 @@
-import { MVP_LIST, UI, MVP, saveTimers, updateSpawnDates, updateKillPanel } from './app.js';
+const nameInput=document.getElementById('nameInput');
+const mapInput=document.getElementById('mapInput');
+const respInput=document.getElementById('respInput');
+const spriteInput=document.getElementById('spriteInput');
+const mapGifInput=document.getElementById('mapGifInput');
+const sprPrev=document.getElementById('sprPrev');
+const mapPrev=document.getElementById('mapPrev');
+const form=document.getElementById('optForm');
+const listEl=document.getElementById('mvpList');
 
-const mid=document.getElementById('mid-panel');
-const btn=document.createElement('button');
-btn.id='optionsBtn';
-btn.textContent='Options';
-mid.prepend(btn);
-
-const panel=document.createElement('div');
-panel.id='optionsPanel';
-panel.classList.add('hidden');
-panel.innerHTML=`<div class="opt-inner">
-<h2>MVP Ayarları</h2>
-<form id="optForm">
-<input id="nameInput" placeholder="id">
-<input id="mapInput" placeholder="map">
-<input id="respInput" type="number" placeholder="dakika">
-<input id="spriteInput" type="file" accept="image/gif">
-<input id="mapGifInput" type="file" accept="image/gif">
-<div class="prevs"><img id="sprPrev"><img id="mapPrev"></div>
-<div class="form-btns"><button type="button" id="formSave">Kaydet</button><button type="button" id="formCancel">Kapat</button></div>
-</form>
-<h3>Kullanıcı MVP'leri</h3>
-<ul id="userList"></ul>
-<button id="resetAll">Varsayılana Sıfırla</button>
-</div>`;
-document.body.append(panel);
-
-const nameInput=panel.querySelector('#nameInput');
-const mapInput=panel.querySelector('#mapInput');
-const respInput=panel.querySelector('#respInput');
-const spriteInput=panel.querySelector('#spriteInput');
-const mapGifInput=panel.querySelector('#mapGifInput');
-const sprPrev=panel.querySelector('#sprPrev');
-const mapPrev=panel.querySelector('#mapPrev');
-const optForm=panel.querySelector('#optForm');
-
-let data=window.api.readData();
+let list=[];
+let userData=[];
 let edit=-1;
 
-function apply(){
-  for(let i=MVP_LIST.length-1;i>=0;i--)if(MVP_LIST[i].user)MVP_LIST.splice(i,1);
-  data.forEach(d=>{
-    const m=new MVP({id:d.id,file:'',map:'',respawnMin:d.respawn,spritePath:'./'+d.sprite,mapPath:'./'+d.mapGif});
-    m.user=true;
-    MVP_LIST.push(m);
-  });
-  updateSpawnDates();
-  UI.render();
-  updateKillPanel();
-  saveTimers();
-}
-
 function render(){
-  const ul=document.getElementById('userList');
-  ul.innerHTML='';
-  data.forEach((d,i)=>{
+  listEl.innerHTML='';
+  list.forEach((d,i)=>{
     const li=document.createElement('li');
-    li.innerHTML=`${d.id} (${d.map}) <button data-e="${i}">Düzenle</button> <button data-d="${i}">Sil</button>`;
-    ul.append(li);
+    const del=d.builtIn?'':` <button data-del="${i}">Sil</button>`;
+    li.innerHTML=`${d.id} (${d.map}) <button data-edit="${i}">Düzenle</button>${del}`;
+    listEl.append(li);
   });
 }
 
-btn.onclick=()=>{panel.classList.remove('hidden');render();};
-panel.addEventListener('click',e=>{
-  if(e.target.id==='formCancel')panel.classList.add('hidden');
-  if(e.target.dataset.e){
-    edit=+e.target.dataset.e;
-    const d=data[edit];
+function send(){
+  const arr=list.map(d=>({id:d.id,file:d.file,map:d.map,respawn:d.respawn,spritePath:d.spritePath,mapPath:d.mapPath,builtIn:d.builtIn}));
+  window.api.saveData(userData);
+  window.api.send('mvp-update',arr);
+}
+
+function load(){
+  fetch('mvpData.json')
+    .then(r=>r.json())
+    .then(arr=>{
+      list=arr.map(d=>({
+        id:d.name,
+        file:d.img.replace('MVP_Giff/',''),
+        map:d.map,
+        respawn:d.respawn/60,
+        spritePath:`./${d.img}`,
+        mapPath:`./${d.mapImg}`,
+        builtIn:true
+      }));
+      userData=window.api.readData();
+      userData.forEach((u,i)=>{
+        list.push({id:u.id,file:'',map:u.map,respawn:u.respawn,spritePath:`./${u.sprite}`,mapPath:`./${u.mapGif}`,builtIn:false,userIndex:i});
+      });
+      render();
+      send();
+    });
+}
+
+listEl.addEventListener('click',e=>{
+  if(e.target.dataset.edit){
+    edit=+e.target.dataset.edit;
+    const d=list[edit];
     nameInput.value=d.id;
     mapInput.value=d.map;
     respInput.value=d.respawn;
-    sprPrev.src='./'+d.sprite;
-    mapPrev.src='./'+d.mapGif;
+    sprPrev.src=d.spritePath;
+    mapPrev.src=d.mapPath;
   }
-  if(e.target.dataset.d){
-    data.splice(+e.target.dataset.d,1);
-    window.api.saveData(data);
-    apply();
-    render();
+  if(e.target.dataset.del){
+    const idx=+e.target.dataset.del;
+    const d=list[idx];
+    if(!d.builtIn){
+      userData.splice(d.userIndex,1);
+      list.splice(idx,1);
+      list.forEach(x=>{if(!x.builtIn&&x.userIndex>d.userIndex)x.userIndex--;});
+      send();
+      render();
+    }
   }
 });
 
-document.getElementById('spriteInput').addEventListener('change',ev=>{sprPrev.src=URL.createObjectURL(ev.target.files[0]);});
-document.getElementById('mapGifInput').addEventListener('change',ev=>{mapPrev.src=URL.createObjectURL(ev.target.files[0]);});
+spriteInput.addEventListener('change',ev=>{sprPrev.src=URL.createObjectURL(ev.target.files[0]);});
+mapGifInput.addEventListener('change',ev=>{mapPrev.src=URL.createObjectURL(ev.target.files[0]);});
 
 document.getElementById('formSave').onclick=()=>{
-  const n=nameInput.value.trim();
-  const m=mapInput.value.trim();
+  const id=nameInput.value.trim();
+  const map=mapInput.value.trim();
   const r=parseInt(respInput.value,10);
-  if(!n||!m||isNaN(r))return;
-  let sp=edit>=0?data[edit].sprite:'';
-  let mp=edit>=0?data[edit].mapGif:'';
+  if(!id||!map||isNaN(r))return;
+  let sp=edit>=0?list[edit].spritePath:'';
+  let mp=edit>=0?list[edit].mapPath:'';
   if(spriteInput.files[0])sp=window.api.saveGif(spriteInput.files[0].path);
   if(mapGifInput.files[0])mp=window.api.saveGif(mapGifInput.files[0].path);
-  const obj={id:n,map:m,respawn:r,sprite:sp,mapGif:mp};
-  if(edit>=0)data[edit]=obj;else data.push(obj);
-  window.api.saveData(data);
-  apply();
-  render();
-  optForm.reset();
+  if(edit>=0){
+    const itm=list[edit];
+    itm.id=id;itm.map=map;itm.respawn=r;itm.spritePath=sp;itm.mapPath=mp;
+    if(!itm.builtIn) userData[itm.userIndex]={id,map,respawn:r,sprite:sp.replace('./',''),mapGif:mp.replace('./','')};
+  }else{
+    const obj={id,map,respawn:r,sprite:sp.replace('./',''),mapGif:mp.replace('./','')};
+    userData.push(obj);
+    list.push({id,map,respawn:r,spritePath:sp,mapPath:mp,builtIn:false,userIndex:userData.length-1,file:''});
+  }
+  form.reset();
   sprPrev.src='';
   mapPrev.src='';
   edit=-1;
-};
-
-document.getElementById('resetAll').onclick=()=>{
-  data=[];
-  window.api.saveData(data);
-  apply();
+  send();
   render();
 };
 
-apply();
+document.getElementById('formCancel').onclick=()=>{window.close();};
+
+document.getElementById('resetAll').onclick=()=>{
+  userData=[];
+  list=list.filter(x=>x.builtIn);
+  send();
+  render();
+};
+
+load();
