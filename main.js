@@ -1,4 +1,4 @@
-import { app, BrowserWindow, Menu } from 'electron';
+import { app, BrowserWindow, Menu, ipcMain } from 'electron';
 import { fileURLToPath } from 'url';
 import path from 'node:path';
 
@@ -16,8 +16,9 @@ if (process.env.NODE_ENV === 'development') {
     });
 }
 
+let mainWin;
 const createWindow = () => {
-  const win = new BrowserWindow({
+  mainWin = new BrowserWindow({
     width: 1000,
     height: 750,
     webPreferences: {
@@ -26,8 +27,7 @@ const createWindow = () => {
       contextIsolation: true,
     },
   });
-
-  win.loadFile('index.html');
+  mainWin.loadFile('index.html');
 };
 
 const createOptionsWindow = () => {
@@ -53,6 +53,10 @@ const template = [
     ],
   },
 ];
+
+ipcMain.on('mvp-update', (_e, data) => {
+  if (mainWin) mainWin.webContents.send('mvp-update', data);
+});
 
 app.whenReady().then(() => {
   createWindow();

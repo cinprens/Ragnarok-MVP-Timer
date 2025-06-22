@@ -480,19 +480,61 @@ if (tzSel) {
 }
 
 /* ———————————————————  FETCH & INIT  ——————————————————— */
-fetch('mvpData.json')
-  .then(r => r.json())
-  .then(arr => {
-    MVP_LIST = arr.map(d => new MVP({
-      id        : d.name,
-      file      : d.img.replace('MVP_Giff/', ''),
-      map       : d.map,
-      respawnMin: d.respawn / 60
-    }));
-    MVP_LIST.forEach(m => m.running = false);
-    loadTimers();
-    updateKillPanel();
+function buildList(list){
+  MVP_LIST.length=0;
+  list.forEach(d=>{
+    const m=new MVP({
+      id:d.id,
+      file:d.file,
+      map:d.map,
+      respawnMin:d.respawn,
+      spritePath:d.spritePath,
+      mapPath:d.mapPath
+    });
+    m.builtIn=d.builtIn;
+    MVP_LIST.push(m);
   });
+}
+
+function loadAll(){
+  fetch('mvpData.json')
+    .then(r=>r.json())
+    .then(arr=>{
+      const base=arr.map(d=>({
+        id:d.name,
+        file:d.img.replace('MVP_Giff/',''),
+        map:d.map,
+        respawn:d.respawn/60,
+        spritePath:`./${d.img}`,
+        mapPath:`./${d.mapImg}`,
+        builtIn:true
+      }));
+      const usr=window.api.readData();
+      usr.forEach(u=>base.push({
+        id:u.id,
+        file:'',
+        map:u.map,
+        respawn:u.respawn,
+        spritePath:`./${u.sprite}`,
+        mapPath:`./${u.mapGif}`,
+        builtIn:false
+      }));
+      buildList(base);
+      MVP_LIST.forEach(m=>m.running=false);
+      loadTimers();
+      updateKillPanel();
+    });
+}
+
+window.api.on('mvp-update',list=>{
+  buildList(list);
+  updateSpawnDates();
+  UI.render();
+  updateKillPanel();
+  saveTimers();
+});
+
+loadAll();
 
 /* ———————————————————  BUTON BAĞLANTILARI  ——————————————————— */
 $('#setBtn'  ).onclick = () => {

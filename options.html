@@ -6,13 +6,22 @@
 <link rel="stylesheet" href="style.css">
 </head>
 <body>
-<div id="mid-panel" style="display:none"></div>
+<div id="optionsPanel" class="show">
+  <div class="opt-inner">
+    <h2>MVP Ayarları</h2>
+    <form id="optForm">
+      <input id="nameInput" placeholder="id">
+      <input id="mapInput" placeholder="map">
+      <input id="respInput" type="number" placeholder="dakika">
+      <input id="spriteInput" type="file" accept="image/gif">
+      <input id="mapGifInput" type="file" accept="image/gif">
+      <div class="prevs"><img id="sprPrev"><img id="mapPrev"></div>
+      <div class="form-btns"><button type="button" id="formSave">Kaydet</button><button type="button" id="formCancel">Kapat</button></div>
+    </form>
+    <ul id="mvpList"></ul>
+    <button id="resetAll">Varsayılana Sıfırla</button>
+  </div>
+</div>
 <script type="module" src="options.js"></script>
-<script>
-window.addEventListener('DOMContentLoaded',()=>{
-  const b=document.getElementById('optionsBtn');
-  if(b){b.click();b.style.display='none';}
-});
-</script>
 </body>
 </html>
