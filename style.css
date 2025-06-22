@@ -12,7 +12,7 @@
   --highlight: #0ff;
   --panel-alpha: 0.75;                  /* tek satırdan şeffaflık ayarı */
   --panel-bg: rgba(24,24,24,var(--panel-alpha));
-  --panel-border: rgba(255,255,255,0.08);
+  --panel-border: rgba(64,224,208,0.6);
   --kills-h: auto;
 }
 
@@ -94,6 +94,7 @@ html,body{height:100%;overflow:hidden;margin:0;padding:0;box-sizing:border-box;}
   border-radius:12px;
   overflow:hidden;
   box-shadow:0 0 18px rgba(0,0,0,.8);
+  border:1px solid var(--panel-border);
 }
 
 @media (max-width: 600px) {
@@ -150,7 +151,7 @@ html,body{height:100%;overflow:hidden;margin:0;padding:0;box-sizing:border-box;}
 #left, #right {
   overflow-y: auto;
   background: var(--panel-bg);
-  border-right: 1px solid var(--panel-border);
+  border: 1px solid var(--panel-border);
   position: relative;
   backdrop-filter: blur(4px);
   -ms-overflow-style: none;
@@ -160,7 +161,6 @@ html,body{height:100%;overflow:hidden;margin:0;padding:0;box-sizing:border-box;}
 #left::-webkit-scrollbar,
 #right::-webkit-scrollbar { display: none; }
 #right{
-  border-left:1px solid var(--panel-border);
   /* negatif panel, sol ile simetrik olsun */
   background:var(--panel-bg);
 }
@@ -193,6 +193,7 @@ button, select, input{
   display:flex;            /* sütun‑flex konteyner */
   flex-direction:column;
   min-height:0;
+  border:1px solid var(--panel-border);
 }
 
 #mid-panel {
@@ -218,6 +219,7 @@ button, select, input{
   width:100%;
   max-width:520px;
   border-radius:12px;
+  border:1px solid var(--panel-border);
   box-shadow:0 6px 18px rgba(0,0,0,.55);
 }
 
@@ -392,7 +394,7 @@ ul { list-style: none; margin: 0; padding: 0; }
   overflow-y: auto;
   background: rgba(20, 20, 20, 0.6);    /* yarı şeffaf gri */
   backdrop-filter: blur(6px);          /* cam efekti */
-  border-top: 1px solid rgba(255,255,255,0.05);
+  border: 1px solid var(--panel-border);
   padding: 16px 32px;
   margin: 0;
   display: flex;
