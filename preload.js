@@ -1,4 +1,4 @@
-import { contextBridge } from 'electron';
+import { contextBridge, ipcRenderer } from 'electron';
 import fs from 'node:fs';
 import path from 'node:path';
 
@@ -26,4 +26,6 @@ contextBridge.exposeInMainWorld('api', {
   saveGif,
   readData,
   saveData,
+  send(channel, data){ ipcRenderer.send(channel, data); },
+  on(channel, func){ ipcRenderer.on(channel, (e, ...args)=>func(...args)); },
 });
