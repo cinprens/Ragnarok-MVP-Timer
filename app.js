@@ -91,6 +91,22 @@ function updateSpawnDates() {
   });
 }
 
+/* ———————————————————  PANEL YARDIMCILARI ——————————————————— */
+function fillList(box, arr, positive) {
+  box.innerHTML = '';
+  arr.forEach(m => box.append(makeLi(m, positive)));
+}
+
+function renderMid(m) {
+  if (!m || m.remaining < 0) { UI.clearCurrent(); return; }
+  UI.current          = m;
+  UI.name.textContent = m.id;
+  UI.gif.src          = m.sprite();
+  UI.time.textContent = fmt(m.remaining);
+  UI.map.src          = m.mapImg();
+  UI.mapName.textContent = 'Map: ' + m.map;
+}
+
 /* ———————————————————  UI NESNESİ  ——————————————————— */
 const UI = {
   gif     : $('#mvpGif'),
@@ -101,23 +117,20 @@ const UI = {
   left    : $('#positiveList'),
   right   : $('#right #negativeList'),
 
-  /* === ANA RENDER === */
   render() {
     const pos = MVP_LIST.filter(m => m.remaining >= 0)
                         .sort((a, b) => a.remaining - b.remaining);
     const neg = MVP_LIST.filter(m => m.remaining < 0)
                         .sort((a, b) => a.remaining - b.remaining);
 
-    this.left.innerHTML  = '';
-    this.right.innerHTML = '';
-    pos.forEach(m => this.left .append(makeLi(m, true )));
-    neg.forEach(m => this.right.append(makeLi(m, false)));
+    fillList(this.left,  pos,  true);
+    fillList(this.right, neg, false);
 
     if (selected && selected.remaining >= 0) {
-      this.setCurrent(selected);
+      renderMid(selected);
     } else if (pos[0]) {
       selected = pos[0];
-      this.setCurrent(pos[0]);
+      renderMid(pos[0]);
     } else {
       selected = null;
       this.clearCurrent();
@@ -258,6 +271,44 @@ function flashRow(m) {
       setTimeout(() => li.classList.remove('flash'), 300);
     }
   }, 20);
+}
+
+function markKilled(m) {
+  TOTAL_KILL++;
+  m.kills++;
+  KILL_LOG.push({ id: m.id, time: Date.now() });
+  m.tomb = false;
+  m.tombTime = '';
+  m.remaining = m.respawn;
+  m.spawnUTC = Date.now() + m.remaining * 1000;
+  m.running = true;
+  flashRow(m);
+  startTimers();
+  updateSpawnDates();
+  updateKillPanel();
+  UI.render();
+  saveTimers();
+}
+
+function toggleTomb(m) {
+  const h = parseInt($('#tombHour').value || 0, 10);
+  const mn = parseInt($('#tombMin').value || 0, 10);
+  const s = parseInt($('#tombSec').value || 0, 10);
+  const str = `${String(h).padStart(2,'0')}:${String(mn).padStart(2,'0')}:${String(s).padStart(2,'0')}`;
+  if (m.tomb) {
+    m.tomb = false;
+    m.tombTime = '';
+  } else {
+    m.tomb = true;
+    m.tombTime = str;
+    m.remaining = mezarSaatineGoreKalan(str, timezone, m.respawn);
+    m.spawnUTC = Date.now() + m.remaining * 1000;
+    m.running = true;
+  }
+  startTimers();
+  updateSpawnDates();
+  UI.render();
+  saveTimers();
 }
 
 /* ———————————————————  TIMER DÖNGÜSÜ  ——————————————————— */
@@ -538,4 +589,16 @@ if (bannerBtn) {
     bannerBtn.textContent = now ? 'Show Banners' : 'Hide Banners';
   });
   setBannerState();
+}
+
+if (typeof module !== 'undefined') {
+  module.exports = {
+    MVP_LIST,
+    UI,
+    step,
+    resetMvp,
+    nowTz,
+    markKilled,
+    toggleTomb
+  };
 }
