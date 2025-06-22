@@ -57,6 +57,22 @@ const tzDiv    = $('#currentTZ');
 const timeDiv  = $('#currentTime');
 const offsetDiv = $('#tzOffset');
 
+function tzOffsetStr(z) {
+  const parts = Intl.DateTimeFormat('en-US', { timeZone: z, timeZoneName: 'short' })
+                    .formatToParts(new Date());
+  const tzn = parts.find(p => p.type === 'timeZoneName').value;
+  const m = tzn.match(/GMT([+-]?)(\d{1,2})(?::(\d{2}))?/);
+  if (!m) return 'UTC';
+  const sign = m[1] || '+';
+  const h = m[2].padStart(2, '0');
+  const mn = (m[3] || '00').padStart(2, '0');
+  return `UTC${sign}${h}:${mn}`;
+}
+
+function zoneDisplay(z) {
+  return `${z} (${tzOffsetStr(z)})`;
+}
+
 let timezone = localStorage.getItem('timezone') ||
                Intl.DateTimeFormat().resolvedOptions().timeZone;
 
@@ -212,14 +228,15 @@ function makeLi(m, positive) {
   }
 
   /* Tomb-Time */
-  const tombTime   = document.createElement('div');
-  tombTime.className = 'tomb-time';
-  tombTime.textContent = m.tombTime;
-
-  /* Tomb Icon */
-  const tombI  = new Image();
-  tombI.className = 'tomb';
-  tombI.src = './MVP_Giff/MOB_TOMB.gif';
+  let tombTime, tombI;
+  if (m.tomb) {
+    tombTime = document.createElement('div');
+    tombTime.className = 'tomb-time';
+    tombTime.textContent = m.tombTime;
+    tombI  = new Image();
+    tombI.className = 'tomb';
+    tombI.src = './MVP_Giff/MOB_TOMB.gif';
+  }
 
   /* Start/Stop or Reset  */
   const btn = document.createElement('button');
@@ -249,7 +266,10 @@ function makeLi(m, positive) {
   btnKill.textContent = 'I KILL';
   btnKill.onclick = e => { e.stopPropagation(); markKilled(m); };
 
-  li.append(img, info, mapT, timeBox, tombTime, tombI, btn, btnKill);
+  const els = [img, info, mapT, timeBox];
+  if (m.tomb) els.push(tombTime, tombI);
+  els.push(btn, btnKill);
+  li.append(...els);
   return li;
 }
 
@@ -368,7 +388,7 @@ function loadTimers() {
   const tz = localStorage.getItem('timezone');
   if (tz) timezone = tz;
 
-  if (tzDiv) tzDiv.textContent = timezone;
+  if (tzDiv) tzDiv.textContent = zoneDisplay(timezone);
   updateOffset();
 
   const kl = localStorage.getItem('killLog');
@@ -407,7 +427,7 @@ function populateTimeZones() {
   zones.forEach(z => {
     const o      = document.createElement('option');
     o.value      = z;
-    o.textContent = z;
+    o.textContent = zoneDisplay(z);
     if (z === timezone) o.selected = true;
     tzSel.append(o);
   });
@@ -423,7 +443,7 @@ function handleZoneChange() {
   } else {
     timezone = tzSel.value;
   }
-  if (tzDiv) tzDiv.textContent = timezone;
+  if (tzDiv) tzDiv.textContent = zoneDisplay(timezone);
   updateOffset();
   updateSpawnDates();
   UI.render();
