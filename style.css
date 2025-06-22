@@ -10,6 +10,9 @@
   --left-panel-width: 320px;
   --right-panel-width: 320px;
   --highlight: #0ff;
+  --panel-alpha: 0.75;                  /* tek satırdan şeffaflık ayarı */
+  --panel-bg: rgba(24,24,24,var(--panel-alpha));
+  --panel-border: rgba(255,255,255,0.08);
 }
 
 *{box-sizing:border-box;}
@@ -102,20 +105,35 @@ html,body{height:100%;overflow:hidden;margin:0;padding:0;box-sizing:border-box;}
   .resizer { width: 6px; }
 }
 
+.left-panel,
+#mid-panel,
+.right-panel{
+  background: var(--panel-bg);
+  border: 1px solid var(--panel-border);
+  backdrop-filter: blur(4px);           /* hafif cam efekti */
+}
+
 #left, #right {
   overflow-y: auto;
-  background: #111;
-  border-right: 1px solid #333;
+  background: var(--panel-bg);
+  border-right: 1px solid var(--panel-border);
   position: relative;
+  backdrop-filter: blur(4px);
   -ms-overflow-style: none;
   scrollbar-width: none;
   min-height: 0;
 }
 #left::-webkit-scrollbar,
 #right::-webkit-scrollbar { display: none; }
-#right { border-left: 1px solid #333; }
+#right { border-left: 1px solid var(--panel-border); }
 #positiveList,
 #negativeList{padding-bottom:44px;}
+
+button, select, input{
+  background: rgba(255,255,255,0.12);
+  color:#eee;
+  border:1px solid rgba(255,255,255,0.2);
+}
 
 .scroll-up,
 .scroll-down {
@@ -152,7 +170,8 @@ html,body{height:100%;overflow:hidden;margin:0;padding:0;box-sizing:border-box;}
   align-items:center;
   gap:10px;
   padding:20px 15px;
-  max-height:80vh;
+  max-height:78vh;
+  overflow:auto;
   background:#2a2a2a;
   width:100%;
   max-width:520px;
@@ -265,6 +284,11 @@ ul { list-style: none; margin: 0; padding: 0; }
   transition:background 0.5s;
 }
 
+.mvp-row.expired{
+  background: rgba(120,0,0,0.65);
+  color:#fff;
+}
+
 @keyframes flash { from { background: var(--flash); } to { background: transparent; } }
 .mvp-row.flash { animation: flash 0.3s; }
 
@@ -358,4 +382,9 @@ ul { list-style: none; margin: 0; padding: 0; }
 
 @media(max-width:600px){
   #killsPanel{ grid-template-columns:repeat(auto-fit,minmax(140px,1fr)); }
+}
+
+@media(max-width: 768px){
+  #app{ flex-direction: column; }
+  #mid-panel{ order:2; }               /* istersek orta paneli alta itebiliriz */
 }
