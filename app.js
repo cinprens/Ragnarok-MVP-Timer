@@ -213,7 +213,18 @@ function makeLi(m, positive) {
   /* Sayaç + sonraki spawn bilgisi */
   const timeBox = document.createElement('div'); timeBox.className = 'mvp-timer';
   const remain  = document.createElement('div'); remain.textContent = fmt(m.remaining);
-  timeBox.append(remain);
+
+  if (m.tombTime) {
+    const tombImg  = new Image();
+    tombImg.className = 'tomb-thumb';
+    tombImg.src  = './MVP_Giff/MOB_TOMB.gif';
+    const tombTime = document.createElement('div');
+    tombTime.className = 'tomb-time';
+    tombTime.textContent = m.tombTime;
+    timeBox.append(tombImg, remain, tombTime);
+  } else {
+    timeBox.append(remain);
+  }
 
   if (m.remaining < 0) {
     const next   = m.spawnDate;
@@ -221,16 +232,6 @@ function makeLi(m, positive) {
     sd.className = 'spawn-date';
     sd.textContent = next.toLocaleString();
     timeBox.append(sd);
-  }
-
-  if (m.tombTime) {
-    const tombImg = new Image();
-    tombImg.className = 'tomb-thumb';
-    tombImg.src = './MVP_Giff/MOB_TOMB.gif';
-    const tombTime = document.createElement('div');
-    tombTime.className = 'tomb-time';
-    tombTime.textContent = m.tombTime;
-    timeBox.append(tombImg, tombTime);
   }
 
   /* Start/Stop or Reset  */
