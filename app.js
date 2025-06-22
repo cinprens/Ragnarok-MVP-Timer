@@ -38,6 +38,7 @@ class MVP {
     this.spawnUTC  = Date.now() + this.remaining * 1000;
     this.running   = false;
     this.kills     = 0;
+    this.blink     = false;
   }
   sprite() { return `./MVP_Giff/${this.file}`; }
   mapImg() { return `./Maps/${this.map}.gif`; }
@@ -60,6 +61,8 @@ let timezone = localStorage.getItem('timezone') ||
                Intl.DateTimeFormat().resolvedOptions().timeZone;
 
 const SOUND = typeof Audio !== 'undefined' ? new Audio('./Sound/sound.wav') : null;
+const BLINK_KEY = 'blinkOff';
+let blinkEnabled = localStorage.getItem(BLINK_KEY) !== '1';
 const fmt   = s => `${s < 0 ? '-' : ''}${String(Math.floor(Math.abs(s) / 60)).padStart(2, '0')}:${String(Math.abs(s) % 60).padStart(2, '0')}`;
 
 function getOffsetStr(zone) {
@@ -269,6 +272,33 @@ function flashRow(m) {
   }, 20);
 }
 
+function blinkRow(m){
+  const li=[...document.querySelectorAll('.mvp-row')]
+            .find(el=>el.textContent.includes(m.id));
+  if(li) li.classList.add('blink');
+  if(UI.current===m){
+    const box=document.querySelector('#mid-panel .mvp-stack');
+    if(box) box.classList.add('blink');
+  }
+}
+
+function stopBlink(m){
+  const li=[...document.querySelectorAll('.mvp-row')]
+            .find(el=>el.textContent.includes(m.id));
+  if(li) li.classList.remove('blink');
+  if(UI.current===m){
+    const box=document.querySelector('#mid-panel .mvp-stack');
+    if(box) box.classList.remove('blink');
+  }
+}
+
+function applyBlink(){
+  MVP_LIST.forEach(m=>{
+    if(!blinkEnabled) m.blink=false;
+    if(m.blink) blinkRow(m); else stopBlink(m);
+  });
+}
+
 function markKilled(m) {
   TOTAL_KILL++;
   m.kills++;
@@ -313,6 +343,8 @@ function step() {
   MVP_LIST.forEach(m => {
     if (m.running) {
       m.remaining--;
+      if (m.remaining === 59) m.blink = true;
+      if (m.remaining === 49 || m.remaining === -1) m.blink = false;
       if (m.remaining === 180 && SOUND) SOUND.play();
       if (m.remaining === -1 &&
           typeof Notification !== 'undefined' &&
@@ -325,6 +357,7 @@ function step() {
   updateSpawnDates();
   if (UI.current) UI.time.textContent = fmt(UI.current.remaining);
   UI.render();
+  applyBlink();
   if (!anyRunning()) stopTimers();
 }
 function startTimers() { if (!timerId) timerId = setInterval(step, 1000); }
@@ -590,6 +623,7 @@ document.querySelectorAll('#left, #right').forEach(panel => {
 
 /* ———————————————————  BANNER GİZLE / GÖSTER  ——————————————————— */
 const bannerBtn = $('#bannerToggle');
+const blinkBtn  = $('#blinkToggle');
 function setBannerState() {
   const hidden = localStorage.getItem('bannerHidden') === '1';
   document.body.classList.toggle('banners-hidden', hidden);
@@ -602,6 +636,20 @@ if (bannerBtn) {
     bannerBtn.textContent = now ? 'Show Banners' : 'Hide Banners';
   });
   setBannerState();
+}
+
+function setBlinkState(){
+  if(!blinkBtn) return;
+  blinkBtn.textContent = blinkEnabled ? 'Disable Blink' : 'Enable Blink';
+}
+if(blinkBtn){
+  blinkBtn.addEventListener('click', ()=>{
+    blinkEnabled=!blinkEnabled;
+    localStorage.setItem(BLINK_KEY, blinkEnabled ? '0':'1');
+    setBlinkState();
+    applyBlink();
+  });
+  setBlinkState();
 }
 
 if (typeof module !== 'undefined') {

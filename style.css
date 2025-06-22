@@ -4,6 +4,7 @@
   --pos: #50fa7b;
   --neg: #ff5555;
   --flash: #ff79c6;
+  --blink: #0ff;
   --sprite: 64px;
   --thumb: 64px;
   --row-h: 68px;
@@ -367,6 +368,9 @@ ul { list-style: none; margin: 0; padding: 0; }
 
 @keyframes flash { from { background: var(--flash); } to { background: transparent; } }
 .mvp-row.flash { animation: flash 0.3s; }
+@keyframes blink { 0%,100% { background: var(--blink); } 50% { background: transparent; } }
+.mvp-row.blink,
+.mvp-stack.blink { animation: blink 1s step-end infinite; }
 
 .mvp-info { display: flex; flex-direction: column; line-height: 1.2; flex: 1; }
 .mvp-info strong { font-size: 1rem; }
