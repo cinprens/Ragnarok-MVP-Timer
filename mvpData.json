@@ -22,5 +22,11 @@
   {"name":"Drake",            "map":"treasure02", "respawn":3600 , "img":"MVP_Giff/DRAKE.gif",      "mapImg":"Maps/treasure02.gif"},
   {"name":"Turtle General",   "map":"tur_dun04",  "respawn":3600 , "img":"MVP_Giff/TURTLE GENERAL.gif","mapImg":"Maps/tur_dun04.gif"},
   {"name":"Stormy Knight",    "map":"xmas_dun02", "respawn":7200 , "img":"MVP_Giff/STORMKNIGHT.gif","mapImg":"Maps/xmas_dun02.gif"},
-  {"name":"Garm",             "map":"xmas_fild01","respawn":7200 , "img":"MVP_Giff/GARM.gif",       "mapImg":"Maps/xmas_fild01.gif"}
-]
+  {"name":"Garm",             "map":"xmas_fild01","respawn":7200 , "img":"MVP_Giff/GARM.gif",       "mapImg":"Maps/xmas_fild01.gif"},
+  {"name":"Vesper",           "map":"jupe_core",  "respawn":7200 , "img":"MVP_Giff/Vesper.gif",       "mapImg":"Maps/jupe_core.gif"},
+  {"name":"Samurai",           "map":"ama_dun03",  "respawn":5700 , "img":"MVP_Giff/Samurai.gif",       "mapImg":"Maps/ama_dun03.gif"},
+  {"name":"RSX 0806",        "map":"ein_dun02",  "respawn":7500 , "img":"MVP_Giff/RSX_0806.gif",       "mapImg":"Maps/ein_dun02.gif"},
+  {"name":"Kiel",           "map":"kh_dun02",  "respawn":7200 , "img":"MVP_Giff/KIEL.gif",       "mapImg":"Maps/kh_dun02.gif"},
+  {"name":"Ifrit",           "map":"thor_v03",  "respawn":39600 , "img":"MVP_Giff/IFRIT.gif",       "mapImg":"Maps/thor_v03.gif"},
+  {"name":"Lord of Death ",     "map":"niflheim",  "respawn":7980 , "img":"MVP_Giff/LORD_OF_DEATH.gif",       "mapImg":"Maps/niflheim.gif"}
+  ]
