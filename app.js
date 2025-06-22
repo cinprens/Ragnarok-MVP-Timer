@@ -467,6 +467,13 @@ $('#tombBtn' ).onclick = () => {
   toggleTomb(selected);
 };
 
+function autoTab(curr, next){
+  if(curr&&next)curr.addEventListener('input',()=>{if(curr.value.length>=2)next.focus();});
+}
+autoTab($('#minInput'), $('#secInput'));
+autoTab($('#tombHour'), $('#tombMin'));
+autoTab($('#tombMin'), $('#tombSec'));
+
 /* ———————————————————  SCROLL BUTONLARI  ——————————————————— */
 document.querySelectorAll('.scroll-up').forEach(b => {
   b.addEventListener('click', () => {
