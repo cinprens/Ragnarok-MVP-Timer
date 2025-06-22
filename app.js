@@ -63,17 +63,28 @@ let timezone = localStorage.getItem('timezone') ||
 const SOUND = typeof Audio !== 'undefined' ? new Audio('./Sound/sound.wav') : null;
 const fmt   = s => `${s < 0 ? '-' : ''}${String(Math.floor(Math.abs(s) / 60)).padStart(2, '0')}:${String(Math.abs(s) % 60).padStart(2, '0')}`;
 
+function getOffsetStr(zone) {
+  const str = new Intl.DateTimeFormat('en-US', { timeZone: zone, timeZoneName: 'short' }).format(new Date());
+  const m = str.match(/GMT([+-]\d+)/);
+  if (m) {
+    const sign = m[1][0];
+    const num  = m[1].slice(1).padStart(2, '0');
+    return `GMT${sign}${num}:00`;
+  }
+  const d   = new Date(new Date().toLocaleString('en-US', { timeZone: zone }));
+  const min = -d.getTimezoneOffset();
+  const sgn  = min >= 0 ? '+' : '-';
+  const val  = Math.abs(min);
+  const h    = String(Math.floor(val / 60)).padStart(2, '0');
+  const mnt  = String(val % 60).padStart(2, '0');
+  return `GMT${sgn}${h}:${mnt}`;
+}
 /* ———————————————————  ZAMAN / TZ   ——————————————————— */
 function nowTz() { return new Date(new Date().toLocaleString('en-US', { timeZone: timezone })); }
 function updateCurrent()  { if (timeDiv) timeDiv.textContent = nowTz().toLocaleTimeString(); }
 function updateOffset() {
   if (!offsetDiv) return;
-  const min  = -nowTz().getTimezoneOffset();
-  const sign = min >= 0 ? '+' : '-';
-  const val  = Math.abs(min);
-  const h    = String(Math.floor(val / 60)).padStart(2, '0');
-  const m    = String(val % 60).padStart(2, '0');
-  offsetDiv.textContent = `UTC ${sign}${h}:${m}`;
+  offsetDiv.textContent = getOffsetStr(timezone);
 }
 setInterval(updateCurrent, 1000);
 updateCurrent();
@@ -361,7 +372,7 @@ function loadTimers() {
   const tz = localStorage.getItem('timezone');
   if (tz) timezone = tz;
 
-  if (tzDiv) tzDiv.textContent = timezone;
+  if (tzDiv) tzDiv.textContent = `${timezone} (${getOffsetStr(timezone)})`;
   updateOffset();
 
   const kl = localStorage.getItem('killLog');
@@ -400,7 +411,7 @@ function populateTimeZones() {
   zones.forEach(z => {
     const o      = document.createElement('option');
     o.value      = z;
-    o.textContent = z;
+    o.textContent = `${z} (${getOffsetStr(z)})`;
     if (z === timezone) o.selected = true;
     tzSel.append(o);
   });
@@ -416,7 +427,7 @@ function handleZoneChange() {
   } else {
     timezone = tzSel.value;
   }
-  if (tzDiv) tzDiv.textContent = timezone;
+  if (tzDiv) tzDiv.textContent = `${timezone} (${getOffsetStr(timezone)})`;
   updateOffset();
   updateSpawnDates();
   UI.render();
