@@ -474,6 +474,16 @@ autoTab($('#minInput'), $('#secInput'));
 autoTab($('#tombHour'), $('#tombMin'));
 autoTab($('#tombMin'), $('#tombSec'));
 
+
+function autoBack(curr, prev){
+  if(curr&&prev)curr.addEventListener('keydown',e=>{
+    if(e.key==='Backspace'&&curr.value===''){prev.value=prev.value.slice(0,-1);prev.focus();e.preventDefault();}
+  });
+}
+autoBack($('#secInput'), $('#minInput'));
+autoBack($('#tombSec'), $('#tombMin'));
+autoBack($('#tombMin'), $('#tombHour'));
+
 /* ———————————————————  SCROLL BUTONLARI  ——————————————————— */
 document.querySelectorAll('.scroll-up').forEach(b => {
   b.addEventListener('click', () => {
