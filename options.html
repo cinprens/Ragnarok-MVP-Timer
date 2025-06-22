@@ -3,25 +3,24 @@
 <head>
 <meta charset="UTF-8">
 <title>MVP Ayarları</title>
-<link rel="stylesheet" href="style.css">
+<link rel="stylesheet" href="options.css" />
 </head>
 <body>
-<div id="optionsPanel" class="show">
-  <div class="opt-inner">
-    <h2>MVP Ayarları</h2>
-    <form id="optForm">
-      <input id="nameInput" placeholder="id">
-      <input id="mapInput" placeholder="map">
-      <input id="respInput" type="number" placeholder="dakika">
-      <input id="spriteInput" type="file" accept="image/gif">
-      <input id="mapGifInput" type="file" accept="image/gif">
-      <div class="prevs"><img id="sprPrev"><img id="mapPrev"></div>
-      <div class="form-btns"><button type="button" id="formSave">Kaydet</button><button type="button" id="formCancel">Kapat</button></div>
-    </form>
-    <ul id="mvpList"></ul>
-    <button id="resetAll">Varsayılana Sıfırla</button>
-  </div>
+<link rel="stylesheet" href="options.css" />
+<div class="tabs">
+  <button data-tab="edit">MVP Ekle/Düzenle</button>
+  <button data-tab="settings">Uygulama Ayarları</button>
+  <button data-tab="about">Hakkında</button>
 </div>
+<section id="edit" class="tab active">
+  <form id="mvpForm" class="grid">
+    <label>ID</label><input id="id">
+    <label>Ad</label><input id="name">
+    <label>Harita</label><input id="map">
+    <label>Süre (dk)</label><input id="respawn">
+    <button id="saveBtn" type="button">Kaydet</button>
+  </form>
+</section>
 <script type="module" src="options.js"></script>
 </body>
 </html>

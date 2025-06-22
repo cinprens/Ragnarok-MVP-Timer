@@ -1,6 +1,6 @@
-import { app, BrowserWindow, Menu, ipcMain } from 'electron';
-import { fileURLToPath } from 'url';
-import path from 'node:path';
+import { app, BrowserWindow, Menu, ipcMain } from "electron";
+import { fileURLToPath } from "url";
+import path from "node:path";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -17,53 +17,59 @@ if (process.env.NODE_ENV === 'development') {
 }
 
 let mainWin;
+let optionsWin;
 const createWindow = () => {
   mainWin = new BrowserWindow({
-    width: 1000,
-    height: 750,
-    webPreferences: {
-      preload: path.join(__dirname, 'preload.js'),
-      nodeIntegration: false,
-      contextIsolation: true,
-    },
+    width: 1100,
+    height: 800,
+    webPreferences: { preload: path.join(__dirname, "preload.js"), contextIsolation: true }
   });
-  mainWin.loadFile('index.html');
+  mainWin.loadFile("index.html");
+  createMenu();
 };
+
+function createMenu() {
+  const template = [
+    { label: "Dosya", submenu: [{ label: "Çıkış", accelerator: "Alt+F4", role: "quit" }] },
+    { label: "Görünüm", submenu: [
+        { label: "Yenile", accelerator: "Ctrl+R", role: "reload" },
+        { label: "Geliştirici Araçları", accelerator: "Ctrl+Shift+I", role: "toggleDevTools" }
+      ]},
+    { label: "Yardım", submenu: [{ label: "GitHub", click: () => require("electron").shell.openExternal("https://github.com/") }] }
+  ];
+  Menu.setApplicationMenu(Menu.buildFromTemplate(template));
+}
 
 const createOptionsWindow = () => {
   const win = new BrowserWindow({
-    width: 700,
-    height: 550,
+    width: 600,
+    height: 700,
     title: 'MVP Ayarları',
-    webPreferences: {
-      preload: path.join(__dirname, 'preload.js'),
-      nodeIntegration: false,
-      contextIsolation: true,
-    },
+    webPreferences: { preload: path.join(__dirname, "preload.js"), contextIsolation: true },
   });
   win.loadFile('options.html');
 };
 
-const template = [
-  {
-    label: 'File',
-    submenu: [
-      { label: 'Options', accelerator: 'CmdOrCtrl+O', click: createOptionsWindow },
-      { role: 'quit' },
-    ],
-  },
-];
+ipcMain.handle('open-options', () => {
+  if (optionsWin && !optionsWin.isDestroyed()) {
+    optionsWin.focus();
+    return;
+  }
+  optionsWin = new BrowserWindow({
+    width: 600,
+    height: 700,
+    parent: mainWin,
+    webPreferences: { preload: path.join(__dirname, "preload.js"), contextIsolation: true },
+  });
+  optionsWin.loadFile('options.html');
+});
+
 
 ipcMain.on('mvp-update', (_e, data) => {
   if (mainWin) mainWin.webContents.send('mvp-update', data);
 });
 
-app.whenReady().then(() => {
-  createWindow();
-  Menu.setApplicationMenu(Menu.buildFromTemplate(template));
-});
-
-
+app.whenReady().then(createWindow);
 
 app.on('window-all-closed', () => {
   if (process.platform !== 'darwin') app.quit();

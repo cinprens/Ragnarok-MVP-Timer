@@ -1,31 +1,33 @@
-import { contextBridge, ipcRenderer } from 'electron';
-import fs from 'node:fs';
-import path from 'node:path';
+const { contextBridge, ipcRenderer } = require('electron');
+const fs = require('fs');
+const path = require('path');
 
-const base = process.cwd();
-const gifDir = path.join(base, 'user_gifs');
-if (!fs.existsSync(gifDir)) fs.mkdirSync(gifDir, { recursive: true });
+// mvpData.json, asar icinde olabilecegi icin kosullu yol
+const dataPath = path.join(process.resourcesPath, 'mvpData.json');
+const userPath = path.join(process.env.APPDATA || process.env.HOME, 'Ragnarok-MVP-Timer', 'customMvps.json');
 
-function saveGif(src) {
-  const name = Date.now() + '_' + path.basename(src);
-  const dest = path.join(gifDir, name);
-  fs.copyFileSync(src, dest);
-  return dest.replace(/\\/g, '/');
-}
-function readData() {
-  const p = path.join(base, 'user_mvp.json');
-  if (!fs.existsSync(p)) return [];
-  try { return JSON.parse(fs.readFileSync(p, 'utf8')); } catch { return []; }
-}
-function saveData(d) {
-  const p = path.join(base, 'user_mvp.json');
-  fs.writeFileSync(p, JSON.stringify(d, null, 2));
+function readJson(file) {
+  try {
+    return JSON.parse(fs.readFileSync(file, 'utf-8'));
+  } catch {
+    return [];
+  }
 }
 
 contextBridge.exposeInMainWorld('api', {
-  saveGif,
-  readData,
-  saveData,
-  send(channel, data){ ipcRenderer.send(channel, data); },
-  on(channel, func){ ipcRenderer.on(channel, (e, ...args)=>func(...args)); },
+  getMvps() {
+    const stock = readJson(dataPath);
+    const custom = readJson(userPath);
+    return [...stock, ...custom];
+  },
+  openOptions() {
+    ipcRenderer.invoke('open-options');
+  },
+  saveCustom(data) {
+    fs.mkdirSync(path.dirname(userPath), { recursive: true });
+    fs.writeFileSync(userPath, JSON.stringify(data, null, 2));
+  },
+  onTimer(cb) {
+    ipcRenderer.on('timer‑tick', (_, t) => cb(t));
+  }
 });
