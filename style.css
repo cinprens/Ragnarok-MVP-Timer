@@ -72,20 +72,23 @@ html,body{height:100%;overflow:hidden;margin:0;padding:0;box-sizing:border-box;}
 
 
 #wrapper{
-  /* Ekranı komple kapla */
   position:fixed; inset:0;
   display:grid;
-  /* 1. satır: left | lres | mid | rres | right   /   2. satır: kills */
+
+  /* 1. satır →  left | lres |  mid  | rres | right
+     2. satır →  left | lres | kills | rres | right   ← YENİ */
   grid-template-areas:
-      "left lres mid rres right"
-      "kills kills kills kills kills";
+      "left lres mid   rres right"
+      "left lres kills rres right";
+
   grid-template-columns:
       minmax(180px,var(--left-w,var(--left-panel-width)))
       4px
       1fr
       4px
       minmax(180px,var(--right-w,var(--right-panel-width)));
-  grid-template-rows:1fr auto;
+
+  grid-template-rows: 1fr auto;   /* üst kısım esnek, kills satırı auto */
   margin:0;
   border-radius:12px;
   overflow:hidden;
@@ -171,18 +174,22 @@ button, select, input{
 .scroll-up { top: 0; }
 .scroll-down { bottom: 0; }
 
-#mid {
-  min-height: 0;
-  flex: 1 1 auto; /* shrinkable içerik */
+/* === MID SÜTUNUNU ALTA YASLA ===================================== */
+#mid{
+  display:flex;            /* sütun‑flex konteyner */
+  flex-direction:column;
+  min-height:0;
 }
 
-/* Panelin kendisi ekran ortasında dursun */
-#mid-panel{
-  flex:1;
-  display:flex;
-  align-items:center;
-  justify-content:center;
+#mid-panel {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-end; /* içeriği aşağıya it */
+  margin: 0 !important;      /* bütün margin’leri sıfırla */
+  padding: 0 !important;     /* varsa boşlukları kaldır */
 }
+
 
 /* MVP yığını */
 .mvp-stack{
@@ -364,14 +371,21 @@ ul { list-style: none; margin: 0; padding: 0; }
 
 /* ===== Kill Panel Alta Sabitleme & İkonlu Görünüm ================= */
 
-#killsWrapper{
-  background:#151515;
-  padding:14px 22px;
-  border-top:2px solid #444;
-  display:flex;
-  flex-direction:column;
-  gap:10px;
+#killsWrapper {
+  grid-area: kills;
+  width: 100%;
+  background: rgba(20, 20, 20, 0.6);    /* yarı şeffaf gri */
+  backdrop-filter: blur(6px);          /* cam efekti */
+  border-top: 1px solid rgba(255,255,255,0.05);
+  padding: 16px 32px;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  box-sizing: border-box;
 }
+
+
 #killsTitle{
   font-size:1.4rem;
   color:var(--flash);

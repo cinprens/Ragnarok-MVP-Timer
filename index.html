@@ -11,6 +11,7 @@
 <img class="banner-bottom" src="Logo/Banner1.png" alt="">
 <img class="banner-left" src="Logo/Banner2.png" alt="">
 <img class="banner-right" src="Logo/Banner2.png" alt="">
+
 <div id="wrapper">
   <div id="left">
     <button class="scroll-up" data-target="positiveList">▲</button>
@@ -27,36 +28,39 @@
       <div id="currentTime"></div>
       <div id="tzOffset"></div>
       <button id="bannerToggle">Hide Banners</button>
+
       <div class="mvp-stack">
         <div id="mvpName" class="mvp-name"></div>
-        <img id="mvpGif" class="mvp-sprite" alt="">
+        <img  id="mvpGif" class="mvp-sprite" alt="">
         <div id="mvpTime" class="timer"></div>
-        <img id="mvpMap" class="mvp-map" alt="">
+        <img  id="mvpMap" class="mvp-map"   alt="">
         <div id="mapName"></div>
-      <div class="mvp-controls">
-        <div class="option-timer">
-          <div class="box-title">Opsiyonel Timer (Dakika / Saniye)</div>
-          <div id="controls">
-            <input id="minInput" type="number" placeholder="min" min="0" />
-            <input id="secInput" type="number" placeholder="sec" min="0" max="59" />
-            <button id="setBtn">Set</button>
-            <button id="startBtn">Start</button>
-            <button id="stopBtn">Stop</button>
-          </div>
-        </div>
-        <div class="tomb-time">
-          <div class="box-title">Tomb Zamanı (Saat / Dakika / Saniye)</div>
-          <div id="tombForm">
-            <input id="tombHour" type="number" placeholder="hh" min="0" max="23">
-            <input id="tombMin" type="number" placeholder="mm" min="0" max="59">
-            <input id="tombSec" type="number" placeholder="ss" min="0" max="59">
-            <button id="tombBtn">Tomb</button>
-          </div>
-        </div>
-      </div>
-    </div>
-    </div>
 
+        <div class="mvp-controls">
+          <div class="option-timer">
+            <div class="box-title">Opsiyonel Timer (Dakika / Saniye)</div>
+            <div id="controls">
+              <input id="minInput" type="number" placeholder="min" min="0">
+              <input id="secInput" type="number" placeholder="sec" min="0" max="59">
+              <button id="setBtn">Set</button>
+              <button id="startBtn">Start</button>
+              <button id="stopBtn">Stop</button>
+            </div>
+          </div>
+
+          <div class="tomb-time">
+            <div class="box-title">Tomb Zamanı (Saat / Dakika / Saniye)</div>
+            <div id="tombForm">
+              <input id="tombHour" type="number" placeholder="hh" min="0" max="23">
+              <input id="tombMin"  type="number" placeholder="mm" min="0" max="59">
+              <input id="tombSec"  type="number" placeholder="ss" min="0" max="59">
+              <button id="tombBtn">Tomb</button>
+            </div>
+          </div>
+        </div><!-- /.mvp-controls -->
+      </div><!-- /.mvp-stack -->
+    </div><!-- /#mid-panel -->
+  </div><!-- /#mid -->
 
   <div class="resizer" data-side="right"></div>
 
@@ -65,13 +69,15 @@
     <button class="scroll-up" data-target="negativeList">▲</button>
     <ul id="negativeList"></ul>
     <button class="scroll-down" data-target="negativeList">▼</button>
-  </div> <!-- /right -->
+  </div>
+
   <!-- Ben Kestim paneli üç kolonun altına oturacak -->
   <div id="killsWrapper">
     <h3 id="killsTitle">Ben Kestim (0)</h3>
     <div id="killsPanel"></div>
   </div>
 </div><!-- /wrapper -->
+
 <script>
 function savePanelWidths(){
   const lw=getComputedStyle(document.documentElement).getPropertyValue('--left-w');
@@ -87,6 +93,7 @@ function loadPanelWidths(){
 }
 document.addEventListener('DOMContentLoaded',loadPanelWidths);
 </script>
+
 <script src="luxon.js"></script>
 <script src="timeUtils.js"></script>
 <script type="module" src="app.js"></script>
