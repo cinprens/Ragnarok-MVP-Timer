@@ -45,7 +45,15 @@ body::before{
 }
 
 html,body{height:100%;overflow:hidden;margin:0;padding:0;box-sizing:border-box;}
-#left,#mid,#right{height:100%;overflow-y:auto;}
+#left,#mid,#right{height:100%;overflow-y:auto;}   /* scroll her panelde */
+
+/* Grid‑area atamaları */
+#left              { grid-area:left;  }
+.resizer[data-side="left"]  { grid-area:lres; }
+#mid               { grid-area:mid;   }
+.resizer[data-side="right"] { grid-area:rres; }
+#right             { grid-area:right; }
+#killsWrapper      { grid-area:kills; }
 
 #wrapper::before{
   content:"";
@@ -60,14 +68,20 @@ html,body{height:100%;overflow:hidden;margin:0;padding:0;box-sizing:border-box;}
 /* ------------------------------------------------ END NEW ---------- */
 
 
-#wrapper {
-  position:fixed;
-  top:0;
-  left:0;
-  width:100%;
-  height:100vh;
+#wrapper{
+  /* Ekranı komple kapla */
+  position:fixed; inset:0;
   display:grid;
-  grid-template-columns:minmax(180px,var(--left-w,var(--left-panel-width))) 4px 1fr 4px minmax(180px,var(--right-w,var(--right-panel-width)));
+  /* 1. satır: left | lres | mid | rres | right   /   2. satır: kills */
+  grid-template-areas:
+      "left lres mid rres right"
+      "kills kills kills kills kills";
+  grid-template-columns:
+      minmax(180px,var(--left-w,var(--left-panel-width)))
+      4px
+      1fr
+      4px
+      minmax(180px,var(--right-w,var(--right-panel-width)));
   grid-template-rows:1fr auto;
   margin:0;
   border-radius:12px;
@@ -342,9 +356,6 @@ ul { list-style: none; margin: 0; padding: 0; }
 }
 
 /* ===== Kill Panel Alta Sabitleme & İkonlu Görünüm ================= */
-.grid-span{
-  grid-column:1 / -1;
-}
 
 #killsWrapper{
   background:#151515;

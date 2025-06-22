@@ -468,3 +468,30 @@ if(bannerBtn){
 if(typeof window!=="undefined"){window.loadTimers=loadTimers;window.saveTimers=saveTimers;}
 if(typeof module!=="undefined")module.exports={UI,MVP_LIST,resetMvp,nowTz,step};
 loadTimers&&updateKillPanel();
+
+/* === ÇİFT YÖNLÜ RESIZER === */
+document.querySelectorAll('.resizer').forEach(resizer=>{
+  const side=resizer.dataset.side; // 'left' | 'right'
+  let startX,startW;
+  resizer.addEventListener('mousedown',e=>{
+    startX=e.clientX;
+    startW=parseInt(getComputedStyle(document.documentElement)
+             .getPropertyValue(side==='left'?'--left-w':'--right-w')
+             || (side==='left'
+                 ?getComputedStyle(e.target.previousElementSibling).width
+                 :getComputedStyle(e.target.nextElementSibling).width));
+    function onMove(ev){
+      const delta=ev.clientX-startX;
+      const newW=side==='left'?startW+delta:startW-delta;
+      document.documentElement
+              .style.setProperty(side==='left'?'--left-w':'--right-w',`${newW}px`);
+    }
+    function onUp(){
+      savePanelWidths();               // index.html’de tanımlı helper
+      window.removeEventListener('mousemove',onMove);
+      window.removeEventListener('mouseup',onUp);
+    }
+    window.addEventListener('mousemove',onMove);
+    window.addEventListener('mouseup',onUp);
+  });
+});
