@@ -28,26 +28,23 @@ function send(){
   window.api.send('mvp-update',arr);
 }
 
-function load(){
-  fetch('mvpData.json')
-    .then(r=>r.json())
-    .then(arr=>{
-      list=arr.map(d=>({
-        id:d.name,
-        file:d.img.replace('MVP_Giff/',''),
-        map:d.map,
-        respawn:d.respawn/60,
-        spritePath:`./${d.img}`,
-        mapPath:`./${d.mapImg}`,
-        builtIn:true
-      }));
-      userData=window.api.readData();
-      userData.forEach((u,i)=>{
-        list.push({id:u.id,file:'',map:u.map,respawn:u.respawn,spritePath:`./${u.sprite}`,mapPath:`./${u.mapGif}`,builtIn:false,userIndex:i});
-      });
-      render();
-      send();
-    });
+async function load(){
+  const arr=await fetch('mvpData.json').then(r=>r.json());
+  list=arr.map(d=>({
+    id:d.name,
+    file:d.img.replace('MVP_Giff/',''),
+    map:d.map,
+    respawn:d.respawn/60,
+    spritePath:`./${d.img}`,
+    mapPath:`./${d.mapImg}`,
+    builtIn:true
+  }));
+  userData=window.api.readData();
+  userData.forEach((u,i)=>{
+    list.push({id:u.id,file:'',map:u.map,respawn:u.respawn,spritePath:`./${u.sprite}`,mapPath:`./${u.mapGif}`,builtIn:false,userIndex:i});
+  });
+  render();
+  send();
 }
 
 listEl.addEventListener('click',e=>{
@@ -104,16 +101,10 @@ document.getElementById('formSave').onclick=()=>{
 
 document.getElementById('formCancel').onclick=()=>{window.close();};
 
-document.getElementById('resetAll').onclick=()=>{
+document.getElementById('resetAll').onclick=async()=>{
   userData=[];
-
   window.api.saveData(userData);
-  load();
-
-  list=list.filter(x=>x.builtIn);
-  send();
-  render();
-
+  await load();
 };
 
 load();
