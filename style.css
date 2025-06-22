@@ -106,6 +106,7 @@ html,body{ height:100%; overflow:hidden; }
   position: relative;
   -ms-overflow-style: none;
   scrollbar-width: none;
+  min-height: 0;
 }
 #left::-webkit-scrollbar,
 #right::-webkit-scrollbar { display: none; }
@@ -136,6 +137,8 @@ html,body{ height:100%; overflow:hidden; }
   gap: 12px;
   padding: 20px;
   position: relative;
+  overflow-y: auto;
+  min-height: 0;
 }
 
 #usageNotes {
