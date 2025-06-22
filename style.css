@@ -204,7 +204,8 @@ button, select, input{
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: flex-end; /* içeriği aşağıya it */
+  justify-content: center; /* içeriği ortala */
+  flex: 1;
   margin: 0 !important;      /* bütün margin’leri sıfırla */
   padding: 0 !important;     /* varsa boşlukları kaldır */
 }
@@ -220,7 +221,7 @@ button, select, input{
   flex:1;
   background:#2a2a2a;
   width:100%;
-  max-width:520px;
+  max-width:480px;
   border-radius:12px;
   border:1px solid var(--panel-border);
   box-shadow:0 6px 18px rgba(0,0,0,.55);
