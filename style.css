@@ -41,8 +41,8 @@ body::before{
   z-index:-2;
 }
 
-html,body{ height:100%; overflow:hidden; }
-#left,#right{ overflow-y:auto; }
+html,body{height:100%;overflow:hidden;margin:0;padding:0;box-sizing:border-box;}
+#left,#mid,#right{height:100%;overflow-y:auto;}
 
 #wrapper::before{
   content:"";
@@ -58,12 +58,15 @@ html,body{ height:100%; overflow:hidden; }
 
 
 #wrapper {
-  display: grid;
-  grid-template-columns: minmax(180px, var(--left-w, var(--left-panel-width))) 4px 1fr 4px minmax(180px, var(--right-w, var(--right-panel-width)));
+  position:fixed;
+  top:0;
+  left:0;
+  width:100%;
+  height:100vh;
+  display:grid;
+  grid-template-columns:minmax(180px,var(--left-w,var(--left-panel-width))) 4px 1fr 4px minmax(180px,var(--right-w,var(--right-panel-width)));
   grid-template-rows:1fr auto;
-  height:90vh;
-  width:90%;
-  margin:auto;
+  margin:0;
   border-radius:12px;
   overflow:hidden;
   box-shadow:0 0 18px rgba(0,0,0,.8);
@@ -131,22 +134,9 @@ html,body{ height:100%; overflow:hidden; }
 
 #mid {
   min-height: 0;
-  overflow: hidden;
   flex: 1 1 auto; /* shrinkable içerik */
 }
-body, html {
-  height: 100%;
-  margin: 0;
-  padding: 0;
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-end; /* Sayfanın altına yasla */
-}
 
-#wrapper {
-  height: 90vh;
-  margin: 0 auto;
-}
 
 #usageNotes {
   color: #ccc;
