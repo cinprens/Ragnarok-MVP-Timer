@@ -211,15 +211,12 @@ function makeLi(m, positive) {
     timeBox.append(sd);
   }
 
-  /* Tomb-Time */
-  const tombTime   = document.createElement('div');
-  tombTime.className = 'tomb-time';
-  tombTime.textContent = m.tombTime;
-
-  /* Tomb Icon */
-  const tombI  = new Image();
-  tombI.className = 'tomb';
-  tombI.src = './MVP_Giff/MOB_TOMB.gif';
+  if (m.tombTime) {
+    const tombTime = document.createElement('div');
+    tombTime.className = 'tomb-time';
+    tombTime.textContent = m.tombTime;
+    timeBox.append(tombTime);
+  }
 
   /* Start/Stop or Reset  */
   const btn = document.createElement('button');
@@ -249,7 +246,7 @@ function makeLi(m, positive) {
   btnKill.textContent = 'I KILL';
   btnKill.onclick = e => { e.stopPropagation(); markKilled(m); };
 
-  li.append(img, info, mapT, timeBox, tombTime, tombI, btn, btnKill);
+  li.append(img, info, mapT, timeBox, btn, btnKill);
   return li;
 }
 

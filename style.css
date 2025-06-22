@@ -290,7 +290,7 @@ button, select, input{
 ul { list-style: none; margin: 0; padding: 0; }
 .mvp-row {
   display: grid;
-  grid-template-columns: var(--sprite) 1fr var(--thumb) 90px 70px 24px 60px;
+  grid-template-columns: var(--sprite) 1fr var(--thumb) 90px 60px 60px;
   align-items: center;
   gap: 8px;
   min-height: var(--row-h);
@@ -306,13 +306,6 @@ ul { list-style: none; margin: 0; padding: 0; }
 }
 .mvp-row img.sprite { width: var(--sprite); height: var(--sprite); image-rendering: pixelated; }
 .mvp-mapThumb { width: var(--thumb); height: var(--thumb); border-radius: 4px; object-fit: cover; }
-.mvp-row img.tomb {
-  width: 20px;
-  height: 20px;
-  justify-self: end;
-  pointer-events: none;
-  opacity: 0.6;
-}
 .mvp-row.positive .mvp-timer { color: var(--pos); }
 .mvp-row.negative .mvp-timer { color: var(--neg); }
 .mvp-row .mvp-timer {
@@ -324,7 +317,6 @@ ul { list-style: none; margin: 0; padding: 0; }
 }
 .spawn-date { text-align: right; font-size: 0.85rem; color: #ccc; }
 .tomb-time { text-align: right; font-size: 0.85rem; color: #ccc; }
-.mvp-row.tomb-active img.tomb { filter: drop-shadow(0 0 4px #a277ff); }
 .mvp-row button { width: 100%; height: 28px; }
 .negative{
   background:#662222;
