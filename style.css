@@ -21,21 +21,51 @@
   }
 }
 
-body {
-  margin: 0;
-  height: 100vh;
-  background: var(--bg);
-  color: var(--fg);
-  font: 14px Helvetica, Arial, sans-serif;
-  overflow-x: hidden;
-  overflow-y: auto;
+/* ===== ÇİFT KATMAN ARKA PLAN + SCROLL FIX ========================= */
+/* ---------- NEW --------------------------------------------------- */
+
+body{
+  margin:0;
+  color:var(--fg);
+  font:14px Helvetica, Arial, sans-serif;
+  overflow-x:hidden;
+  background: url("./Backgrounds/ragnarok_bg.jpg") center/cover no-repeat fixed;
 }
+body::before{
+  content:"";
+  position:fixed;inset:0;
+  background:inherit;
+  opacity:.9;
+  pointer-events:none;
+  z-index:-2;
+}
+
+html,body{ height:100%; overflow:hidden; }
+#left,#right{ overflow-y:auto; }
+
+#wrapper::before{
+  content:"";
+  position:absolute;inset:0;
+  background: url("./Backgrounds/ragnarok_bg.jpg") center/cover no-repeat fixed;
+  opacity:.2;
+  pointer-events:none;
+  z-index:-1;
+  border-radius:12px;
+}
+
+/* ------------------------------------------------ END NEW ---------- */
+
 
 #wrapper {
   display: grid;
   grid-template-columns: minmax(180px, var(--left-w, var(--left-panel-width))) 4px 1fr 4px minmax(180px, var(--right-w, var(--right-panel-width)));
   height: 100vh;
+  height: 90%;
+  width: 90%;
+  margin: auto;
+  border-radius: 12px;
   overflow: hidden;
+  box-shadow: 0 0 18px rgba(0,0,0,.8);
 }
 
 @media (max-width: 600px) {
