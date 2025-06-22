@@ -114,15 +114,23 @@ const UI={
   left:$("#positiveList"),
   right:$("#right #negativeList"),
   render(){
-    const pos=MVP_LIST.filter(m=>m.remaining>=0).sort((a,b)=>a.remaining-b.remaining);
-    const neg=MVP_LIST.filter(m=>m.remaining<0).sort((a,b)=>a.remaining-b.remaining);
-    this.left.innerHTML="";pos.forEach(m=>this.left.append(makeLi(m,true)));
-    this.right.innerHTML="";neg.forEach(m=>this.right.append(makeLi(m,false)));
+    const pos=MVP_LIST.filter(m=>m.remaining>=0)
+                      .sort((a,b)=>a.remaining-b.remaining);
+    const neg=MVP_LIST.filter(m=>m.remaining<0)
+                      .sort((a,b)=>a.remaining-b.remaining);
+
+    this.left.innerHTML="";
+    this.right.innerHTML="";
+
+    pos.forEach(m=>this.left.append(makeLi(m,true)));
+    neg.forEach(m=>this.right.append(makeLi(m,false)));
+
     if(selected){
       this.setCurrent(selected);
+    }else if(pos[0]){
+      this.setCurrent(pos[0]);
     }else{
-      pos[0]?this.setCurrent(pos[0]):this.clearCurrent();
-      selected=null;
+      this.clearCurrent();
     }
   },
   setCurrent(m){
