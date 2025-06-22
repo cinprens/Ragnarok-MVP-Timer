@@ -67,5 +67,5 @@ test('zaman dilimi seciminde gosterim',()=>{
   const div=document.getElementById('currentTZ');
   sel.value='Asia/Tokyo';
   sel.dispatchEvent(new Event('change'));
-  expect(div.textContent.startsWith('Asia/Tokyo')).toBe(true);
+  expect(div.textContent).toBe('Asia/Tokyo');
 });
