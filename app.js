@@ -273,6 +273,9 @@ function flashRow(m) {
 }
 
 function blinkRow(m){
+
+  if(!blinkEnabled) return;
+
   const li=[...document.querySelectorAll('.mvp-row')]
             .find(el=>el.textContent.includes(m.id));
   if(li) li.classList.add('blink');
@@ -292,12 +295,14 @@ function stopBlink(m){
   }
 }
 
+
 function applyBlink(){
   MVP_LIST.forEach(m=>{
     if(!blinkEnabled) m.blink=false;
     if(m.blink) blinkRow(m); else stopBlink(m);
   });
 }
+
 
 function markKilled(m) {
   TOTAL_KILL++;
@@ -343,8 +348,13 @@ function step() {
   MVP_LIST.forEach(m => {
     if (m.running) {
       m.remaining--;
+
       if (m.remaining === 59) m.blink = true;
       if (m.remaining === 49 || m.remaining === -1) m.blink = false;
+
+      if (m.remaining === 59) blinkRow(m);
+      if (m.remaining === 49 || m.remaining === -1) stopBlink(m);
+
       if (m.remaining === 180 && SOUND) SOUND.play();
       if (m.remaining === -1 &&
           typeof Notification !== 'undefined' &&
@@ -647,7 +657,9 @@ if(blinkBtn){
     blinkEnabled=!blinkEnabled;
     localStorage.setItem(BLINK_KEY, blinkEnabled ? '0':'1');
     setBlinkState();
+
     applyBlink();
+
   });
   setBlinkState();
 }
