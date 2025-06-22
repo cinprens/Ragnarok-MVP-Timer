@@ -46,9 +46,13 @@ body::before{
 }
 
 html,body{height:100%;overflow:hidden;margin:0;padding:0;box-sizing:border-box;}
-#left,#mid,#right{
+#left,#right{
   height:100%;
   overflow-y:auto;      /* her panel kendi içinde kaydırılsın */
+}
+#mid{
+  height:100%;
+  overflow:hidden;      /* orta panel kaymasın */
 }
 
 /* Grid‑area atamaları */
@@ -213,8 +217,7 @@ button, select, input{
   align-items:center;
   gap:10px;
   padding:20px 15px;
-  max-height:78vh;
-  overflow:auto;
+  flex:1;
   background:#2a2a2a;
   width:100%;
   max-width:520px;
