@@ -6,7 +6,7 @@
   --flash: #ff79c6;
   --sprite: 64px;
   --thumb: 64px;
-  --row-h: 72px;
+  --row-h: 68px;
   --left-panel-width: 320px;
   --right-panel-width: 320px;
   --highlight: #0ff;
@@ -243,7 +243,19 @@ button, select, input{
 
 #timerBox{display:flex; flex-direction:row; flex-wrap:wrap; justify-content:center; align-items:center; gap:12px; width:100%; border:1px solid #555; padding:12px; border-radius:8px; background:#333;}
 
-.mvp-controls{display:flex; flex-direction:row; gap:16px; justify-content:center; width:100%;}
+.mvp-controls {
+  display: flex;
+  flex-wrap: nowrap;
+  gap: 12px;
+  justify-content: center;
+  width: 100%;
+}
+@media(max-width:700px){
+  .mvp-controls {
+    flex-direction: column;
+    align-items: stretch;
+  }
+}
 .option-timer,.tomb-time{
   display:flex;
   flex-direction:column;
@@ -260,7 +272,13 @@ button, select, input{
 .tomb-time{ border-color:#ff8552; }
 .box-title { font-weight:bold; letter-spacing:.3px; }
 #mvpTime { font-size: 2rem; color: var(--pos); }
-#tombImg{ width:40px; height:40px; display:none; object-fit:contain; image-rendering:pixelated; }
+#tombImg {
+  width: 32px;
+  height: 32px;
+  display: inline-block;
+  object-fit: contain;
+  image-rendering: pixelated;
+}
 #tombRemain{ font-size:1rem; color:#ff8552; display:none; }
 
 #controls { display: flex; flex-wrap: wrap; gap: 6px; }
@@ -318,21 +336,25 @@ ul { list-style: none; margin: 0; padding: 0; }
   text-align: center;
   font-variant-numeric: tabular-nums;
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
+  gap: 4px;
   align-items: center;
   overflow: hidden;
-
+  min-height: 24px;
   width: 100%;
   box-sizing: border-box;
   padding: 4px;
   border: 1px solid #555;
   border-radius: 4px;
-  gap: 2px;
-
 }
 .spawn-date { text-align: right; font-size: 0.85rem; color: #ccc; }
 .tomb-time { text-align: right; font-size: 0.85rem; color: #ccc; }
-.tomb-thumb{ width:20px; height:20px; object-fit:contain; image-rendering:pixelated; }
+.tomb-thumb {
+  width: 16px;
+  height: 16px;
+  object-fit: contain;
+  image-rendering: pixelated;
+}
 .mvp-row button { width: 100%; height: 28px; }
 .negative{
   background:#662222;
