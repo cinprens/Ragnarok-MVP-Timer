@@ -60,6 +60,8 @@ let timezone = localStorage.getItem('timezone') ||
                Intl.DateTimeFormat().resolvedOptions().timeZone;
 
 const SOUND = typeof Audio !== 'undefined' ? new Audio('./Sound/sound.wav') : null;
+const BLINK_KEY = 'blinkOff';
+let blinkEnabled = localStorage.getItem(BLINK_KEY) !== '1';
 const fmt   = s => `${s < 0 ? '-' : ''}${String(Math.floor(Math.abs(s) / 60)).padStart(2, '0')}:${String(Math.abs(s) % 60).padStart(2, '0')}`;
 
 function getOffsetStr(zone) {
@@ -269,6 +271,27 @@ function flashRow(m) {
   }, 20);
 }
 
+function blinkRow(m){
+  if(!blinkEnabled) return;
+  const li=[...document.querySelectorAll('.mvp-row')]
+            .find(el=>el.textContent.includes(m.id));
+  if(li) li.classList.add('blink');
+  if(UI.current===m){
+    const box=document.querySelector('#mid-panel .mvp-stack');
+    if(box) box.classList.add('blink');
+  }
+}
+
+function stopBlink(m){
+  const li=[...document.querySelectorAll('.mvp-row')]
+            .find(el=>el.textContent.includes(m.id));
+  if(li) li.classList.remove('blink');
+  if(UI.current===m){
+    const box=document.querySelector('#mid-panel .mvp-stack');
+    if(box) box.classList.remove('blink');
+  }
+}
+
 function markKilled(m) {
   TOTAL_KILL++;
   m.kills++;
@@ -313,6 +336,8 @@ function step() {
   MVP_LIST.forEach(m => {
     if (m.running) {
       m.remaining--;
+      if (m.remaining === 59) blinkRow(m);
+      if (m.remaining === 49 || m.remaining === -1) stopBlink(m);
       if (m.remaining === 180 && SOUND) SOUND.play();
       if (m.remaining === -1 &&
           typeof Notification !== 'undefined' &&
@@ -590,6 +615,7 @@ document.querySelectorAll('#left, #right').forEach(panel => {
 
 /* ———————————————————  BANNER GİZLE / GÖSTER  ——————————————————— */
 const bannerBtn = $('#bannerToggle');
+const blinkBtn  = $('#blinkToggle');
 function setBannerState() {
   const hidden = localStorage.getItem('bannerHidden') === '1';
   document.body.classList.toggle('banners-hidden', hidden);
@@ -602,6 +628,19 @@ if (bannerBtn) {
     bannerBtn.textContent = now ? 'Show Banners' : 'Hide Banners';
   });
   setBannerState();
+}
+
+function setBlinkState(){
+  if(!blinkBtn) return;
+  blinkBtn.textContent = blinkEnabled ? 'Disable Blink' : 'Enable Blink';
+}
+if(blinkBtn){
+  blinkBtn.addEventListener('click', ()=>{
+    blinkEnabled=!blinkEnabled;
+    localStorage.setItem(BLINK_KEY, blinkEnabled ? '0':'1');
+    setBlinkState();
+  });
+  setBlinkState();
 }
 
 if (typeof module !== 'undefined') {
