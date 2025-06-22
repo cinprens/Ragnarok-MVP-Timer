@@ -272,14 +272,6 @@ button, select, input{
 .tomb-time{ border-color:#ff8552; }
 .box-title { font-weight:bold; letter-spacing:.3px; }
 #mvpTime { font-size: 2rem; color: var(--pos); }
-#tombImg {
-  width: 32px;
-  height: 32px;
-  display: inline-block;
-  object-fit: contain;
-  image-rendering: pixelated;
-}
-#tombRemain{ font-size:1rem; color:#ff8552; display:none; }
 
 #controls { display: flex; flex-wrap: wrap; gap: 6px; }
 #controls input,
@@ -349,12 +341,6 @@ ul { list-style: none; margin: 0; padding: 0; }
 }
 .spawn-date { text-align: right; font-size: 0.85rem; color: #ccc; }
 .tomb-time { text-align: right; font-size: 0.85rem; color: #ccc; }
-.tomb-thumb {
-  width: 16px;
-  height: 16px;
-  object-fit: contain;
-  image-rendering: pixelated;
-}
 .mvp-row button { width: 100%; height: 28px; }
 .negative{
   background:#662222;

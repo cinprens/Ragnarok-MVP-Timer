@@ -103,11 +103,6 @@ function renderMid(m) {
   UI.name.textContent = m.id;
   UI.gif.src          = m.sprite();
   UI.time.textContent = fmt(m.remaining);
-  if (UI.tombImg) UI.tombImg.style.display = m.tomb ? 'block' : 'none';
-  if (UI.tombRemain) {
-    UI.tombRemain.style.display = m.tombTime ? 'block' : 'none';
-    UI.tombRemain.textContent   = m.tombTime;
-  }
   UI.map.src          = m.mapImg();
   UI.mapName.textContent = 'Map: ' + m.map;
 }
@@ -117,8 +112,6 @@ const UI = {
   gif     : $('#mvpGif'),
   name    : $('#mvpName'),
   time    : $('#mvpTime'),
-  tombImg : $('#tombImg'),
-  tombRemain: $('#tombRemain'),
   map     : $('#mvpMap'),
   mapName : $('#mapName'),
   left    : $('#positiveList'),
@@ -161,11 +154,6 @@ const UI = {
     this.name.textContent = '';
     this.gif .src         = '';
     this.time.textContent = '';
-    if (this.tombImg) this.tombImg.style.display = 'none';
-    if (this.tombRemain) {
-      this.tombRemain.textContent = '';
-      this.tombRemain.style.display = 'none';
-    }
     this.map .src         = '';
     this.mapName.textContent = '';
   }
@@ -196,7 +184,7 @@ function makeLi(m, positive) {
   const li = document.createElement('li');
 
   /* Sınıfları sıfırdan kur: */
-  li.className = 'mvp-row' + (m.tomb ? ' tomb-active' : '');
+  li.className = 'mvp-row';
   li.classList.add(m.remaining >= 0 ? 'positive' : 'negative');
   if (selected === m) li.classList.add('selected');
 
@@ -214,17 +202,7 @@ function makeLi(m, positive) {
   const timeBox = document.createElement('div'); timeBox.className = 'mvp-timer';
   const remain  = document.createElement('div'); remain.textContent = fmt(m.remaining);
 
-  if (m.tombTime) {
-    const tombImg  = new Image();
-    tombImg.className = 'tomb-thumb';
-    tombImg.src  = './MVP_Giff/MOB_TOMB.gif';
-    const tombTime = document.createElement('div');
-    tombTime.className = 'tomb-time';
-    tombTime.textContent = m.tombTime;
-    timeBox.append(tombImg, remain, tombTime);
-  } else {
-    timeBox.append(remain);
-  }
+  timeBox.append(remain);
 
   if (m.remaining < 0) {
     const next   = m.spawnDate;
