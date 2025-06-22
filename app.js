@@ -27,7 +27,7 @@ if (typeof window !== 'undefined') {
 
 /* ———————————————————  VERİ YAPISI  ——————————————————— */
 class MVP {
-  constructor({ id, file, map, respawnMin }) {
+  constructor({ id, file, map, respawnMin, spritePath, mapPath }) {
     this.id       = id;
     this.file     = file;
     this.map      = map;
@@ -39,9 +39,11 @@ class MVP {
     this.running   = false;
     this.kills     = 0;
     this.blink     = false;
+    this.spritePath = spritePath || null;
+    this.mapPath    = mapPath || null;
   }
-  sprite() { return `./MVP_Giff/${this.file}`; }
-  mapImg() { return `./Maps/${this.map}.gif`; }
+  sprite() { return this.spritePath || `./MVP_Giff/${this.file}`; }
+  mapImg() { return this.mapPath || `./Maps/${this.map}.gif`; }
 }
 
 /* ———————————————————  GLOBAL DEĞİŞKENLER  ——————————————————— */
@@ -668,4 +670,4 @@ if(blinkBtn){
   setBlinkState();
 }
 
-export { MVP_LIST, UI, step, resetMvp, nowTz, markKilled, toggleTomb };
+export { MVP_LIST, UI, step, resetMvp, nowTz, markKilled, toggleTomb, MVP, saveTimers, loadTimers, updateSpawnDates, updateKillPanel };
