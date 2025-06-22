@@ -481,24 +481,39 @@ document.querySelectorAll('#left, #right').forEach(panel => {
 })();
 
 (() => {
-  const mid = $('#mid');
-  const bar = document.querySelector('.v-resizer');
+  const mid   = $('#mid');
+  const kills = $('#killsWrapper');
+  const bar   = document.querySelector('.v-resizer');
   if (!bar) return;
+  function sync() {
+    const wrap = document.getElementById('wrapper');
+    if (!wrap || !mid || !kills) return;
+    const kh = wrap.clientHeight - mid.getBoundingClientRect().height;
+    document.documentElement.style.setProperty('--kills-h', kh + 'px');
+  }
+  sync();
+  window.addEventListener('resize', sync);
   bar.addEventListener('mousedown', start);
   bar.addEventListener('touchstart', e => start(e.touches[0]));
   function start(e) {
-    const startY = e.clientY;
-    const startH = mid.getBoundingClientRect().height;
+    const startY  = e.clientY;
+    const startM  = mid.getBoundingClientRect().height;
+    const startK  = kills.getBoundingClientRect().height;
+    const total   = startM + startK;
     function move(ev) {
-      const dy = ev.clientY - startY;
-      const newH = Math.max(100, startH + dy);
-      document.documentElement.style.setProperty('--mid-h', newH + 'px');
+      const dy   = ev.clientY - startY;
+      let mH     = Math.max(100, startM + dy);
+      let kH     = total - mH;
+      if (kH < 100) { kH = 100; mH = total - 100; }
+      document.documentElement.style.setProperty('--mid-h', mH + 'px');
+      document.documentElement.style.setProperty('--kills-h', kH + 'px');
     }
     function stop() {
       window.removeEventListener('mousemove', move);
       window.removeEventListener('mouseup',   stop);
       window.removeEventListener('touchmove', tmv);
       window.removeEventListener('touchend',  stop);
+      sync();
       if (window.savePanelHeights) window.savePanelHeights();
     }
     const tmv = ev => move(ev.touches[0]);
