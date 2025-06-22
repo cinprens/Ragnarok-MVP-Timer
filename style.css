@@ -137,6 +137,27 @@ html,body{height:100%;overflow:hidden;margin:0;padding:0;box-sizing:border-box;}
   flex: 1 1 auto; /* shrinkable içerik */
 }
 
+/* Panelin kendisi ekran ortasında dursun */
+#mid-panel{
+  flex:1;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+}
+
+/* MVP yığını */
+.mvp-stack{
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  gap:12px;
+}
+
+.mvp-name   {font-size:24px; margin:0;}
+.timer      {font-size:22px; color:#4caf50;}
+.mvp-sprite {width:180px; height:auto;}
+.mvp-map    {width:180px; display:block;}
+
 
 #usageNotes {
   color: #ccc;

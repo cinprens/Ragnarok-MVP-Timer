@@ -21,17 +21,18 @@
   <div class="resizer" data-side="left"></div>
 
   <div id="mid">
-    <select id="tzSelect"></select>
-    <div id="currentTZ"></div>
-    <div id="currentTime"></div>
-    <div id="tzOffset"></div>
-    <button id="bannerToggle">Hide Banners</button>
-    <p id="usageNotes">Select an MVP and set its time, then watch the timer. You can also enter the tomb time.</p>
-    <div id="currentSpawn">
-      <div id="mvpName"></div>
-      <img id="mvpGif" alt="">
-      <div id="mvpTime"></div>
-      <img id="mvpMap" alt="">
+    <div id="mid-panel">
+      <select id="tzSelect"></select>
+      <div id="currentTZ"></div>
+      <div id="currentTime"></div>
+      <div id="tzOffset"></div>
+      <button id="bannerToggle">Hide Banners</button>
+      <p id="usageNotes">Select an MVP and set its time, then watch the timer. You can also enter the tomb time.</p>
+      <div id="currentSpawn" class="mvp-stack">
+        <div id="mvpName" class="mvp-name"></div>
+        <img id="mvpGif" class="mvp-sprite" alt="">
+        <div id="mvpTime" class="timer"></div>
+        <img id="mvpMap" class="mvp-map" alt="">
       <div id="mapName"></div>
       <div id="timerBox">
         <div class="optBox">
@@ -56,6 +57,7 @@
       </div>
     </div>
     </div>
+  </div>
 
 
   <div class="resizer" data-side="right"></div>
