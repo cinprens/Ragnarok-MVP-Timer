@@ -177,6 +177,19 @@ button, select, input{
   border:1px solid rgba(255,255,255,0.2);
 }
 
+#tzSelect,
+#currentTZ,
+#currentTime,
+#tzOffset{
+  background:#333;
+  color:var(--fg);
+  border:1px solid #555;
+  padding:4px 8px;
+  border-radius:4px;
+  margin-bottom:4px;
+  text-align:center;
+}
+
 .scroll-up,
 .scroll-down {
   position: absolute;
