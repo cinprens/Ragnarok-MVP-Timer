@@ -65,12 +65,12 @@
     <div id="log"></div>
     <ul id="negativeList"></ul>
     <button class="scroll-down" data-target="negativeList">▼</button>
+  </div> <!-- /right -->
+  <div id="killsWrapper" class="grid-span">
+    <h3 id="killsTitle">Ben Kestim (0)</h3>
+    <div id="killsPanel"></div>
   </div>
-</div>
-<div id="killsWrapper" class="grid-span">
-  <h3 id="killsTitle">Ben Kestim (0)</h3>
-  <div id="killsPanel"></div>
-</div>
+</div><!-- /wrapper -->
 <script>
 function savePanelWidths(){
   const lw=getComputedStyle(document.documentElement).getPropertyValue('--left-w');
