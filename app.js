@@ -317,6 +317,18 @@ function flashRow(m){
   }, 20);
 }
 
+function updateRow(row, diff){
+  /* mevcut kodun devamı */
+
+  /* === YENİ: süre sıfırı geçtiyse sağ listeye taşı === */
+  if(diff <= 0 && row.parentElement.id !== 'negativeList'){
+    const negativeList = document.getElementById('negativeList');
+    row.classList.remove('positive');
+    row.classList.add('negative');
+    negativeList.appendChild(row);
+  }
+}
+
 $("#setBtn").onclick=()=>{
   if(!selected){alert('Önce bir MVP seç');return;}
   const dk=parseInt($("#minInput").value||0,10);

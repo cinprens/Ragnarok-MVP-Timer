@@ -45,7 +45,10 @@ body::before{
 }
 
 html,body{height:100%;overflow:hidden;margin:0;padding:0;box-sizing:border-box;}
-#left,#mid,#right{height:100%;overflow-y:auto;}   /* scroll her panelde */
+#left,#mid,#right{
+  height:100%;
+  overflow-y:auto;      /* her panel kendi içinde kaydırılsın */
+}
 
 /* Grid‑area atamaları */
 #left              { grid-area:left;  }
@@ -139,7 +142,11 @@ html,body{height:100%;overflow:hidden;margin:0;padding:0;box-sizing:border-box;}
 }
 #left::-webkit-scrollbar,
 #right::-webkit-scrollbar { display: none; }
-#right { border-left: 1px solid var(--panel-border); }
+#right{
+  border-left:1px solid var(--panel-border);
+  /* negatif panel, sol ile simetrik olsun */
+  background:var(--panel-bg);
+}
 #positiveList,
 #negativeList{padding-bottom:44px;}
 
