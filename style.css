@@ -52,7 +52,7 @@ html,body{height:100%;overflow:hidden;margin:0;padding:0;box-sizing:border-box;}
 }
 #mid{
   height:100%;
-  overflow:hidden;      /* orta panel kaymasın */
+  overflow-y:auto;      /* içeriği kaydır */
 }
 
 /* Grid‑area atamaları */
@@ -217,7 +217,7 @@ button, select, input{
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center; /* içeriği ortala */
+  justify-content: flex-start; /* üste hizala */
   flex: 1;
   margin: 0 !important;      /* bütün margin’leri sıfırla */
   padding: 0 !important;     /* varsa boşlukları kaldır */
