@@ -496,34 +496,12 @@ function buildList(list){
   });
 }
 
-function loadAll(){
-  fetch('mvpData.json')
-    .then(r=>r.json())
-    .then(arr=>{
-      const base=arr.map(d=>({
-        id:d.name,
-        file:d.img.replace('MVP_Giff/',''),
-        map:d.map,
-        respawn:d.respawn/60,
-        spritePath:`./${d.img}`,
-        mapPath:`./${d.mapImg}`,
-        builtIn:true
-      }));
-      const usr=window.api.readData();
-      usr.forEach(u=>base.push({
-        id:u.id,
-        file:'',
-        map:u.map,
-        respawn:u.respawn,
-        spritePath:`./${u.sprite}`,
-        mapPath:`./${u.mapGif}`,
-        builtIn:false
-      }));
-      buildList(base);
-      MVP_LIST.forEach(m=>m.running=false);
-      loadTimers();
-      updateKillPanel();
-    });
+async function loadAll(){
+  const base = await window.api.getMvps();
+  buildList(base);
+  MVP_LIST.forEach(m=>m.running=false);
+  loadTimers();
+  updateKillPanel();
 }
 
 window.api.on('mvp-update',list=>{
