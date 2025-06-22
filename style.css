@@ -18,6 +18,7 @@
 }
 
 *{box-sizing:border-box;}
+.hidden{display:none;}
 
 @media (min-width: 1280px) {
   :root {
@@ -474,3 +475,12 @@ ul { list-style: none; margin: 0; padding: 0; }
   #app{ flex-direction: column; }
   #mid-panel{ order:2; }               /* istersek orta paneli alta itebiliriz */
 }
+
+#optionsPanel{position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.8);display:none;justify-content:center;align-items:center;z-index:1000;}
+#optionsPanel.show{display:flex;}
+#optionsPanel .opt-inner{background:#222;border:1px solid #555;padding:20px;max-height:90%;overflow:auto;color:var(--fg);border-radius:8px;}
+#optionsPanel input{display:block;margin-bottom:6px;width:100%;}
+#optionsPanel .prevs{display:flex;gap:10px;margin-bottom:6px;}
+#optionsPanel .prevs img{width:60px;height:60px;object-fit:contain;}
+#optionsPanel ul{list-style:none;padding:0;margin:10px 0;}
+#optionsPanel li{display:flex;gap:6px;align-items:center;margin-bottom:4px;}
