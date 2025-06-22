@@ -179,8 +179,7 @@ button, select, input{
 
 #tzSelect,
 #currentTZ,
-#currentTime,
-#tzOffset{
+#currentTime{
   background:#333;
   color:var(--fg);
   border:1px solid #555;

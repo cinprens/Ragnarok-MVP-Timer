@@ -55,7 +55,6 @@ const $        = s => document.querySelector(s);
 const tzSel    = $('#tzSelect');
 const tzDiv    = $('#currentTZ');
 const timeDiv  = $('#currentTime');
-const offsetDiv = $('#tzOffset');
 
 let timezone = localStorage.getItem('timezone') ||
                Intl.DateTimeFormat().resolvedOptions().timeZone;
@@ -82,13 +81,8 @@ function getOffsetStr(zone) {
 /* ———————————————————  ZAMAN / TZ   ——————————————————— */
 function nowTz() { return new Date(new Date().toLocaleString('en-US', { timeZone: timezone })); }
 function updateCurrent()  { if (timeDiv) timeDiv.textContent = nowTz().toLocaleTimeString(); }
-function updateOffset() {
-  if (!offsetDiv) return;
-  offsetDiv.textContent = getOffsetStr(timezone);
-}
 setInterval(updateCurrent, 1000);
 updateCurrent();
-updateOffset();
 
 /* Spawn tarihlerini canlı tut */
 function updateSpawnDates() {
@@ -373,7 +367,6 @@ function loadTimers() {
   if (tz) timezone = tz;
 
   if (tzDiv) tzDiv.textContent = `${timezone} (${getOffsetStr(timezone)})`;
-  updateOffset();
 
   const kl = localStorage.getItem('killLog');
   const tk = localStorage.getItem('totalKill');
@@ -428,7 +421,6 @@ function handleZoneChange() {
     timezone = tzSel.value;
   }
   if (tzDiv) tzDiv.textContent = `${timezone} (${getOffsetStr(timezone)})`;
-  updateOffset();
   updateSpawnDates();
   UI.render();
   saveTimers();
