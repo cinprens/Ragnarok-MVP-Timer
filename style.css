@@ -88,7 +88,7 @@ html,body{height:100%;overflow:hidden;margin:0;padding:0;box-sizing:border-box;}
       4px
       minmax(180px,var(--right-w,var(--right-panel-width)));
 
-  grid-template-rows: 1fr auto;   /* üst kısım esnek, kills satırı auto */
+  grid-template-rows: var(--mid-h,1fr) auto;   /* üst kısım esnek, kills satırı auto */
   margin:0;
   border-radius:12px;
   overflow:hidden;
@@ -104,6 +104,7 @@ html,body{height:100%;overflow:hidden;margin:0;padding:0;box-sizing:border-box;}
     grid-template-columns: 1fr;
   }
   .resizer { display: none; }
+  .v-resizer { display: none; }
   .banner-top,
   .banner-bottom,
   .banner-left,
@@ -123,6 +124,17 @@ html,body{height:100%;overflow:hidden;margin:0;padding:0;box-sizing:border-box;}
 .resizer:hover { background: #666; }
 @media (hover:none) {
   .resizer { width: 6px; }
+}
+.v-resizer {
+  width: 100%;
+  height: 4px;
+  background: #444;
+  cursor: row-resize;
+  z-index: 10;
+}
+.v-resizer:hover { background: #666; }
+@media (hover:none) {
+  .v-resizer { height: 6px; }
 }
 
 .left-panel,

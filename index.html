@@ -58,8 +58,9 @@
             </div>
           </div>
         </div><!-- /.mvp-controls -->
-      </div><!-- /.mvp-stack -->
+    </div><!-- /.mvp-stack -->
     </div><!-- /#mid-panel -->
+    <div class="v-resizer"></div>
   </div><!-- /#mid -->
 
   <div class="resizer" data-side="right"></div>
@@ -91,7 +92,15 @@ function loadPanelWidths(){
   if(lw)document.documentElement.style.setProperty('--left-w',lw);
   if(rw)document.documentElement.style.setProperty('--right-w',rw);
 }
-document.addEventListener('DOMContentLoaded',loadPanelWidths);
+function savePanelHeights(){
+  const mh=getComputedStyle(document.documentElement).getPropertyValue('--mid-h');
+  localStorage.setItem('midHeight',mh);
+}
+function loadPanelHeights(){
+  const mh=localStorage.getItem('midHeight');
+  if(mh)document.documentElement.style.setProperty('--mid-h',mh);
+}
+document.addEventListener('DOMContentLoaded',()=>{loadPanelWidths();loadPanelHeights();});
 </script>
 
 <script src="luxon.js"></script>

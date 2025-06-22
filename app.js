@@ -472,6 +472,35 @@ document.querySelectorAll('#left, #right').forEach(panel => {
       window.removeEventListener('touchend',  stop);
       if (window.savePanelWidths) window.savePanelWidths();
     }
+  const tmv = ev => move(ev.touches[0]);
+  window.addEventListener('mousemove', move);
+  window.addEventListener('mouseup',   stop);
+  window.addEventListener('touchmove', tmv);
+  window.addEventListener('touchend',  stop);
+  }
+})();
+
+(() => {
+  const mid = $('#mid');
+  const bar = document.querySelector('.v-resizer');
+  if (!bar) return;
+  bar.addEventListener('mousedown', start);
+  bar.addEventListener('touchstart', e => start(e.touches[0]));
+  function start(e) {
+    const startY = e.clientY;
+    const startH = mid.getBoundingClientRect().height;
+    function move(ev) {
+      const dy = ev.clientY - startY;
+      const newH = Math.max(100, startH + dy);
+      document.documentElement.style.setProperty('--mid-h', newH + 'px');
+    }
+    function stop() {
+      window.removeEventListener('mousemove', move);
+      window.removeEventListener('mouseup',   stop);
+      window.removeEventListener('touchmove', tmv);
+      window.removeEventListener('touchend',  stop);
+      if (window.savePanelHeights) window.savePanelHeights();
+    }
     const tmv = ev => move(ev.touches[0]);
     window.addEventListener('mousemove', move);
     window.addEventListener('mouseup',   stop);
