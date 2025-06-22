@@ -93,12 +93,17 @@ function loadPanelWidths(){
   if(rw)document.documentElement.style.setProperty('--right-w',rw);
 }
 function savePanelHeights(){
-  const mh=getComputedStyle(document.documentElement).getPropertyValue('--mid-h');
+  const st=getComputedStyle(document.documentElement);
+  const mh=st.getPropertyValue('--mid-h');
+  const kh=st.getPropertyValue('--kills-h');
   localStorage.setItem('midHeight',mh);
+  localStorage.setItem('killsHeight',kh);
 }
 function loadPanelHeights(){
   const mh=localStorage.getItem('midHeight');
+  const kh=localStorage.getItem('killsHeight');
   if(mh)document.documentElement.style.setProperty('--mid-h',mh);
+  if(kh)document.documentElement.style.setProperty('--kills-h',kh);
 }
 document.addEventListener('DOMContentLoaded',()=>{loadPanelWidths();loadPanelHeights();});
 </script>

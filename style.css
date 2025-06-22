@@ -13,6 +13,7 @@
   --panel-alpha: 0.75;                  /* tek satırdan şeffaflık ayarı */
   --panel-bg: rgba(24,24,24,var(--panel-alpha));
   --panel-border: rgba(255,255,255,0.08);
+  --kills-h: auto;
 }
 
 *{box-sizing:border-box;}
@@ -88,7 +89,7 @@ html,body{height:100%;overflow:hidden;margin:0;padding:0;box-sizing:border-box;}
       4px
       minmax(180px,var(--right-w,var(--right-panel-width)));
 
-  grid-template-rows: var(--mid-h,1fr) auto;   /* üst kısım esnek, kills satırı auto */
+  grid-template-rows: var(--mid-h,1fr) var(--kills-h,1fr);
   margin:0;
   border-radius:12px;
   overflow:hidden;
@@ -102,6 +103,7 @@ html,body{height:100%;overflow:hidden;margin:0;padding:0;box-sizing:border-box;}
   }
   #wrapper {
     grid-template-columns: 1fr;
+    grid-template-rows: auto auto;
   }
   .resizer { display: none; }
   .v-resizer { display: none; }
@@ -386,6 +388,8 @@ ul { list-style: none; margin: 0; padding: 0; }
 #killsWrapper {
   grid-area: kills;
   width: 100%;
+  height: 100%;
+  overflow-y: auto;
   background: rgba(20, 20, 20, 0.6);    /* yarı şeffaf gri */
   backdrop-filter: blur(6px);          /* cam efekti */
   border-top: 1px solid rgba(255,255,255,0.05);
