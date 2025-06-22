@@ -4,17 +4,16 @@
   "type": "module",
   "main": "main.js",
   "scripts": {
-    "dev": "NODE_ENV=development electron .",
+    "dev": "cross-env NODE_ENV=development electron .",
     "build": "electron-builder",
     "start": "electron .",
     "lint": "eslint ."
   },
-  "dependencies": {
-    "electron": "^29.0.0",
-    "luxon": "^3.4.4"
-  },
   "devDependencies": {
-    "electron-reloader": "^3.3.0",
+    "cross-env": "^7.0.3",
+    "electron": "^29.0.0",
+    "electron-builder": "^24.13.1",
+    "electron-reloader": "^1.2.2",
     "eslint": "^8.53.0"
   }
 }
