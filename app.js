@@ -1,6 +1,7 @@
 /**********************************************************************
  *  RAGNAROK MVP TIMER   – UPDATED (eksiye düşenler sağ panele gider) *
  *********************************************************************/
+import { DateTime } from 'luxon';
 
 if (typeof Notification !== 'undefined' && Notification.permission === 'default') {
   Notification.requestPermission();
@@ -12,11 +13,10 @@ function ozelZamanaGoreKalan(minutes = 0, seconds = 0) {
 }
 function mezarSaatineGoreKalan(tombStr, tz = 'Asia/Kuching', respawnSec = 3600) {
   const [h, m, s] = tombStr.split(':').map(Number);
-  const now  = new Date(new Date().toLocaleString('en-US', { timeZone: tz }));
-  const tomb = new Date(now);
-  tomb.setHours(h, m, s, 0);
-  if (tomb > now) tomb.setDate(tomb.getDate() - 1);
-  const elapsed   = (now - tomb) / 1000;
+  const now = DateTime.now().setZone(tz);
+  let tomb = now.set({ hour: h, minute: m, second: s, millisecond: 0 });
+  if (tomb > now) tomb = tomb.minus({ days: 1 });
+  const elapsed = now.diff(tomb, 'seconds').seconds;
   const remaining = respawnSec - (elapsed % respawnSec);
   return Math.floor(remaining);
 }
@@ -82,7 +82,9 @@ function getOffsetStr(zone) {
   return `GMT${sgn}${h}:${mnt}`;
 }
 /* ———————————————————  ZAMAN / TZ   ——————————————————— */
-function nowTz() { return new Date(new Date().toLocaleString('en-US', { timeZone: timezone })); }
+function nowTz() {
+  return DateTime.now().setZone(timezone).toJSDate();
+}
 function updateCurrent()  { if (timeDiv) timeDiv.textContent = nowTz().toLocaleTimeString(); }
 setInterval(updateCurrent, 1000);
 updateCurrent();
