@@ -106,9 +106,14 @@ document.getElementById('formCancel').onclick=()=>{window.close();};
 
 document.getElementById('resetAll').onclick=()=>{
   userData=[];
+
+  window.api.saveData(userData);
+  load();
+
   list=list.filter(x=>x.builtIn);
   send();
   render();
+
 };
 
 load();
