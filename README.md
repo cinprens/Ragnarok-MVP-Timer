@@ -21,9 +21,20 @@ files are merged with the base list when the app loads.
 npm install
 npm run dev
 ```
+Running `npm install` once also sets up `node_modules` so that
+`npm test` can execute without module errors.
 
 ## Packaging
 ```bash
 npm run make
 ```
+
+## Testing
+Install dependencies if you haven't already and then run Jest:
+
+```bash
+npm install
+npm test
+```
+If `node_modules` is missing, tests will fail to start.
 
