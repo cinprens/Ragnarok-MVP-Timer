@@ -62,10 +62,13 @@ const timeDiv  = $('#currentTime');
 let timezone = localStorage.getItem('timezone') ||
                Intl.DateTimeFormat().resolvedOptions().timeZone;
 
+let soundEnabled = localStorage.getItem('soundEnabled') !== '0';
 const SOUND = typeof Audio !== 'undefined' ? new Audio('./Sound/sound.wav') : null;
 const BLINK_KEY = 'blinkOff';
 let blinkEnabled = localStorage.getItem(BLINK_KEY) !== '1';
 const fmt   = s => `${s < 0 ? '-' : ''}${String(Math.floor(Math.abs(s) / 60)).padStart(2, '0')}:${String(Math.abs(s) % 60).padStart(2, '0')}`;
+
+applyTheme();
 
 // Renderer icin saglanan API mevcut degilse basit bir yedek tanimla
 const API = window.api || {
@@ -91,6 +94,11 @@ function getOffsetStr(zone) {
   const h    = String(Math.floor(val / 60)).padStart(2, '0');
   const mnt  = String(val % 60).padStart(2, '0');
   return `GMT${sgn}${h}:${mnt}`;
+}
+
+function applyTheme(){
+  const t = localStorage.getItem('theme') || 'dark';
+  document.body.classList.toggle('light', t === 'light');
 }
 /* ———————————————————  ZAMAN / TZ   ——————————————————— */
 function nowTz() { return new Date(new Date().toLocaleString('en-US', { timeZone: timezone })); }
@@ -370,7 +378,7 @@ function step() {
       if (m.remaining === 59) blinkRow(m);
       if (m.remaining === 49 || m.remaining === -1) stopBlink(m);
 
-      if (m.remaining === 180 && SOUND) SOUND.play();
+      if (m.remaining === 180 && SOUND && soundEnabled) SOUND.play();
       if (m.remaining === -1 &&
           typeof Notification !== 'undefined' &&
           Notification.permission === 'granted') {
@@ -738,5 +746,17 @@ if(optionsBtn){
     }
   });
 }
+
+window.addEventListener('storage', e => {
+  if(e.key === 'theme') applyTheme();
+  if(e.key === 'soundEnabled') soundEnabled = e.newValue !== '0';
+  if(e.key === 'timezone') {
+    timezone = e.newValue || timezone;
+    if (tzDiv) tzDiv.textContent = `${timezone} (${getOffsetStr(timezone)})`;
+    updateSpawnDates();
+    UI.render();
+    saveTimers();
+  }
+});
 
 export { MVP_LIST, UI, step, resetMvp, nowTz, markKilled, toggleTomb, MVP, saveTimers, loadTimers, updateSpawnDates, updateKillPanel };
