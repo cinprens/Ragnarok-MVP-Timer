@@ -59,11 +59,11 @@ test("sag panel secimi orta panelde gosterir", async () => {
   expect(mod.UI.time.textContent).toBe("-00:05");
 });
 
-test("zaman dilimi seciminde gosterim", async () => {
+test("zaman dilimi secicisi ana sayfada yok", async () => {
   document.body.innerHTML=html;
   global.fetch=()=>Promise.resolve({json:()=>Promise.resolve([])});
   await import("../app.js");
-  expect(document.getElementById("tzSelect")).not.toBeNull();
+  expect(document.getElementById("tzSelect")).toBeNull();
 });
 
 test("I KILL butonu secimde gorunur", async () => {
