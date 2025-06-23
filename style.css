@@ -26,6 +26,8 @@
   --card-scale: 0.78;             /* mid panel kartının taban ölçeği (30% büyütüldü) */
   --card-scale-x: var(--card-scale);
   --card-scale-y: var(--card-scale);
+  --row-scale-x: 0.8;             /* liste kartı yatay daralma */
+  --row-scale-y: 1.35;            /* liste kartı dikey büyüme */
 }
 
 body.light {
@@ -407,39 +409,59 @@ button, select, input{
 
 ul { list-style: none; margin: 0; padding: 0; }
 .mvp-row {
-  display: grid;
-  grid-template-columns: var(--sprite) 1fr var(--thumb) 90px 60px;
+  display: flex;
+  flex-direction: column;
   align-items: center;
-  gap: 8px;
-  min-height: var(--row-h);
-  padding: 4px 6px;
+  gap: 6px;
+  width: 80%;
+  margin: 6px auto;
+  min-height: calc(var(--row-h) * 1.35);
+  padding: 8px;
   border-bottom: 1px solid #333;
-  font-size: 1.2rem;
+  font-size: 0.9rem;
   cursor: pointer;
   position: relative;
+  transform: scale(var(--row-scale-x), var(--row-scale-y));
+  transform-origin: top center;
 }
 .mvp-row.selected {
   box-shadow: 0 0 0 2px var(--highlight);
   outline: 2px solid var(--highlight);
 }
-.mvp-row img.sprite { width: var(--sprite); height: var(--sprite); image-rendering: pixelated; }
-.mvp-mapThumb { width: var(--thumb); height: var(--thumb); border-radius: 4px; object-fit: cover; }
+.mvp-row img.sprite {
+  width: calc(var(--sprite) * 0.9);
+  height: auto;
+  image-rendering: pixelated;
+}
+.mvp-mapThumb {
+  width: 18px;
+  height: 18px;
+  border-radius: 4px;
+  object-fit: cover;
+}
 .mvp-row.positive .mvp-timer { color: var(--pos); }
 .mvp-row.negative .mvp-timer { color: var(--neg); }
 .mvp-row .mvp-timer {
   text-align: center;
   font-variant-numeric: tabular-nums;
   display: flex;
-  flex-direction: row;
-  gap: 4px;
   align-items: center;
+  gap: 4px;
   overflow: hidden;
-  min-height: 24px;
-  width: 100%;
-  box-sizing: border-box;
-  padding: 4px;
+  min-height: 20px;
+  padding: 2px 4px;
   border: 1px solid #555;
   border-radius: 4px;
+  font-size: 0.85rem;
+}
+.info-row {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+.row-name { font-weight: bold; margin-right: 4px; }
+@media(max-width:768px){
+  .info-row{ flex-direction: column; }
 }
 .spawn-date { text-align: right; font-size: 0.85rem; color: #ccc; }
 .tomb-time { text-align: right; font-size: 0.85rem; color: #ccc; }
