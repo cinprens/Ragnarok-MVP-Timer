@@ -767,19 +767,6 @@ document.querySelectorAll("#left, #right").forEach(panel => {
   }
 })();
 
-/* ———————————————————  OPTIONS BUTTON  ——————————————————— */
-const blinkBtn  = null;
-const optionsBtn = $("#optionsBtn");
-
-
-if(optionsBtn){
-  if (!window.api) optionsBtn.disabled = true;
-  optionsBtn.addEventListener("click", () => {
-    if(API && API.openOptions){
-      API.openOptions();
-    }
-  });
-}
 
 window.addEventListener("storage", e => {
   if(e.key === "theme") applyTheme();

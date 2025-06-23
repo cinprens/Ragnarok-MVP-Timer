@@ -389,17 +389,6 @@ ul { list-style: none; margin: 0; padding: 0; }
 
 
 
-#optionsBtn{
-  position:absolute;
-  top:8px;
-  left:8px;
-  z-index:1101;
-  background:#444;
-  color:var(--fg);
-  border:none;
-  padding:4px 8px;
-  cursor:pointer;
-}
 
 /* ===== Kill Panel Alta Sabitleme & İkonlu Görünüm ================= */
 
