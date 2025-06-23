@@ -5,9 +5,15 @@
   --neg: #ff5555;
   --flash: #ff79c6;
   --blink: #0ff;
-  --sprite: clamp(48px, 6vmin, 64px);
-  --thumb: clamp(48px, 6vmin, 64px);
-  --row-h: clamp(60px, 7vmin, 72px);
+  /* Genel liste kartları için ölçekleme */
+  --list-scale: 0.85;
+  --sprite-base: clamp(48px, 6vmin, 64px);
+  --thumb-base: clamp(48px, 6vmin, 64px);
+  --row-h-base: clamp(60px, 7vmin, 72px);
+  --sprite: calc(var(--sprite-base) * var(--list-scale));
+  --thumb: calc(var(--thumb-base) * var(--list-scale));
+  --row-h: calc(var(--row-h-base) * var(--list-scale));
+  --rank-scale: 0.85;
   --left-panel-width: clamp(180px, 20vw, 25%);
   --right-panel-width: clamp(180px, 20vw, 25%);
   --mid-width: 640px;
@@ -17,7 +23,9 @@
   --panel-border: rgba(64,224,208,0.6);
   --kills-h: auto;
   --ui-scale: 1;
-  --card-scale: 0.5; /* mid paneldeki kart ölçeği */
+  --card-scale: 0.5;             /* mid panel kartının taban ölçeği */
+  --card-scale-x: var(--card-scale);
+  --card-scale-y: var(--card-scale);
 }
 
 body.light {
@@ -120,7 +128,7 @@ html,body{
   grid-template-columns:
       minmax(180px,var(--left-w,var(--left-panel-width)))
       clamp(4px,0.4vw,6px)
-      var(--mid-width)
+      minmax(var(--mid-width), 1fr)
       clamp(4px,0.4vw,6px)
       minmax(180px,var(--right-w,var(--right-panel-width)));
 
@@ -265,8 +273,14 @@ button, select, input{
   border-radius:12px;
   border:1px solid var(--panel-border);
   box-shadow:0 6px 18px rgba(0,0,0,.55);
-  transform: scale(var(--card-scale));
+  transform: scale(var(--card-scale-x), var(--card-scale-y));
   transform-origin: top center;
+  transition: transform 0.2s ease;
+}
+
+.mvp-stack.active{
+  --card-scale-x: calc(var(--card-scale) * 1.4);
+  --card-scale-y: calc(var(--card-scale) * 1.2);
 }
 
 .mvp-name   {font-size:1.5rem; margin:0;}
@@ -520,9 +534,9 @@ ul { list-style: none; margin: 0; padding: 0; }
 .podium-slot.first  { order:2; }
 .podium-slot.second { order:1; }
 .podium-slot.third  { order:3; }
-.podium-slot.first  img{ width:120px; height:120px; }
-.podium-slot.second img{ width:110px; height:110px; }
-.podium-slot.third  img{ width:90px; height:90px; }
+.podium-slot.first  img{ width:calc(120px * var(--rank-scale)); height:calc(120px * var(--rank-scale)); }
+.podium-slot.second img{ width:calc(110px * var(--rank-scale)); height:calc(110px * var(--rank-scale)); }
+.podium-slot.third  img{ width:calc(90px * var(--rank-scale)); height:calc(90px * var(--rank-scale)); }
 .podium-slot .medal{
   position:absolute;
   top:-10px;
@@ -531,8 +545,8 @@ ul { list-style: none; margin: 0; padding: 0; }
   background:#ff0;      /* default gold for 1st */
   color:#000;
   border-radius:50%;
-  width:24px;
-  height:24px;
+  width:calc(24px * var(--rank-scale));
+  height:calc(24px * var(--rank-scale));
   display:flex;
   justify-content:center;
   align-items:center;
@@ -542,8 +556,8 @@ ul { list-style: none; margin: 0; padding: 0; }
 .podium-slot.second .medal{ background:#c0c0c0; }
 /* Bronze medal for 3rd place */
 .podium-slot.third  .medal{ background:#cd7f32; }
-.podium-slot .pname{margin-top:4px;font-size:1.1rem;}
-.podium-slot .pcount{font-size:1.1rem;color:var(--pos);font-weight:bold;}
+.podium-slot .pname{margin-top:4px;font-size:calc(1.1rem * var(--rank-scale));}
+.podium-slot .pcount{font-size:calc(1.1rem * var(--rank-scale));color:var(--pos);font-weight:bold;}
 .kill-row{
   display:flex;
   align-items:center;
@@ -551,20 +565,22 @@ ul { list-style: none; margin: 0; padding: 0; }
   background:#222;
   padding:6px 10px;
   border-radius:6px;
+  font-size:calc(1rem * var(--rank-scale));
 }
 .kill-row img{
-  width:32px;
-  height:32px;
+  width:calc(32px * var(--rank-scale));
+  height:calc(32px * var(--rank-scale));
   image-rendering:pixelated;
 }
 .kill-row .kname{ flex:1; }
-.kill-row .kcount{ color:var(--pos); font-weight:700; }
+.kill-row .kcount{ color:var(--pos); font-weight:700; font-size:calc(1rem * var(--rank-scale)); }
 /* Rank number for rows below top 3 */
 .kill-row .kindex{
-  width:20px;
+  width:calc(20px * var(--rank-scale));
   text-align:center;
   font-weight:bold;
   color:var(--flash);
+  font-size:calc(1rem * var(--rank-scale));
 }
 
 @media(max-width:600px){
