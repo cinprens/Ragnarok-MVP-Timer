@@ -302,25 +302,16 @@ function makeLi(m, positive) {
   li.onclick = () => selectMvp(m);
 
   /* İçerik */
-  const img   = new Image();
-  img.className = "sprite";
-  img.src = m.sprite();
+  const img   = new Image(); img.className = "sprite"; img.src = m.sprite();
+  const info  = document.createElement("div");
+  info.className = "mvp-info";
+  info.innerHTML = `<strong>${m.id}</strong><span>${m.map}</span>`;
+  const mapT  = new Image(); mapT.className = "mvp-mapThumb"; mapT.src = m.mapImg();
 
-  const bottom = document.createElement("div");
-  bottom.className = "info-row";
+  /* Sayaç + sonraki spawn bilgisi */
+  const timeBox = document.createElement("div"); timeBox.className = "mvp-timer";
+  const remain  = document.createElement("div"); remain.textContent = fmt(m.remaining);
 
-  const name = document.createElement("span");
-  name.className = "row-name";
-  name.textContent = m.id;
-
-  const mapT  = new Image();
-  mapT.className = "mvp-mapThumb";
-  mapT.src = m.mapImg();
-
-  const timeBox = document.createElement("div");
-  timeBox.className = "mvp-timer";
-  const remain  = document.createElement("div");
-  remain.textContent = fmt(m.remaining);
   timeBox.append(remain);
 
   if (m.remaining < 0) {
@@ -331,9 +322,7 @@ function makeLi(m, positive) {
     timeBox.append(sd);
   }
 
-  bottom.append(name, mapT, timeBox);
-
-  li.append(img, bottom);
+  li.append(img, info, mapT, timeBox);
   return li;
 }
 
