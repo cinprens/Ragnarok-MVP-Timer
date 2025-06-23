@@ -170,7 +170,11 @@ const UI = {
   stack   : document.querySelector("#mid-panel .mvp-stack"),
   left    : $("#positiveList"),
   right   : $("#right #negativeList"),
+  actions : $("#midActions"),
   killBtn : $("#killBtn"),
+  start   : $("#startSel"),
+  stop    : $("#stopSel"),
+  reset   : $("#resetSel"),
 
   render() {
     const pos = MVP_LIST.filter(m => m.remaining >= 0)
@@ -184,12 +188,15 @@ const UI = {
     if (selected) {
       // Önceden seçilmiş bir MVP varsa, süresi dolmuş olsa bile göster
       renderMid(selected);
+      if(this.actions) this.actions.classList.remove("hidden");
     } else if (pos[0]) {
       selected = pos[0];
       renderMid(pos[0]);
+      if(this.actions) this.actions.classList.remove("hidden");
     } else {
       selected = null;
       this.clearCurrent();
+      if(this.actions) this.actions.classList.add("hidden");
     }
   },
 
@@ -209,6 +216,7 @@ const UI = {
     this.killBtn.classList.add("show");
     this.killBtn.classList.remove("hidden");
   }
+  if(this.actions) this.actions.classList.remove("hidden");
   },
 
   clearCurrent() {
@@ -225,6 +233,7 @@ const UI = {
       this.killBtn.classList.add("hidden");
       this.killBtn.onclick = null;
     }
+    if(this.actions) this.actions.classList.add("hidden");
   }
 };
 
@@ -313,30 +322,7 @@ function makeLi(m, positive) {
     timeBox.append(sd);
   }
 
-  /* Start/Stop or Reset  */
-  const btn = document.createElement("button");
-  if (m.remaining < 0) {
-    btn.textContent = "Reset";
-    btn.onclick = e => { e.stopPropagation(); resetMvp(m); };
-  } else {
-    btn.textContent = m.running ? "Stop" : "Start";
-    btn.onclick = e => {
-      e.stopPropagation();
-      if (m.running) {
-        m.remaining = Math.floor((m.spawnUTC - Date.now()) / 1000);
-        m.running   = false;
-        if (!anyRunning()) stopTimers();
-      } else {
-        m.spawnUTC = Date.now() + m.remaining * 1000;
-        m.running  = true;
-        startTimers();
-      }
-      UI.render();
-      saveTimers();
-    };
-  }
-
-  li.append(img, info, mapT, timeBox, btn);
+  li.append(img, info, mapT, timeBox);
   return li;
 }
 
@@ -348,6 +334,7 @@ function selectMvp(m) {
   clearTimeout(autoReturnId);
   autoReturnId = setTimeout(() => { selected = null; UI.render(); }, 600000);
   UI.render();
+  if(UI.actions) UI.actions.classList.remove("hidden");
 }
 function flashRow(m) {
   setTimeout(() => {
@@ -407,6 +394,31 @@ function markKilled(m) {
   updateKillPanel();
   UI.render();
   saveTimers();
+}
+
+function startSelected(){
+  if(!selected) return;
+  if(selected.running) return;
+  selected.spawnUTC = Date.now() + selected.remaining * 1000;
+  selected.running = true;
+  startTimers();
+  UI.render();
+  saveTimers();
+}
+
+function stopSelected(){
+  if(!selected) return;
+  if(!selected.running) return;
+  selected.remaining = Math.floor((selected.spawnUTC - Date.now()) / 1000);
+  selected.running = false;
+  if(!anyRunning()) stopTimers();
+  UI.render();
+  saveTimers();
+}
+
+function resetSelected(){
+  if(!selected) return;
+  resetMvp(selected);
 }
 
 function toggleTomb(m) {
@@ -715,6 +727,12 @@ const startBtn=$("#startBtn");
 if(startBtn) startBtn.onclick = startTimers;
 const stopBtn=$("#stopBtn");
 if(stopBtn) stopBtn.onclick = stopTimers;
+const startSelBtn=$("#startSel");
+if(startSelBtn) startSelBtn.onclick = startSelected;
+const stopSelBtn=$("#stopSel");
+if(stopSelBtn) stopSelBtn.onclick = stopSelected;
+const resetSelBtn=$("#resetSel");
+if(resetSelBtn) resetSelBtn.onclick = resetSelected;
 const tombBtn=$("#tombBtn");
 if(tombBtn) tombBtn.onclick = () => {
   if (!selected) { alert("Önce bir MVP seç"); return; }
