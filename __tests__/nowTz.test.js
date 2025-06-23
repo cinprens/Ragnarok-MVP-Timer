@@ -1,4 +1,6 @@
+import { jest } from "@jest/globals";
 jest.useFakeTimers().setSystemTime(new Date("2023-01-01T00:00:00Z"));
+global.fetch=()=>Promise.resolve({json:()=>Promise.resolve([])});
 test("nowTz dogru zaman dondurur", async () => {
   localStorage.setItem("timezone","Asia/Tokyo");
   const mod = await import("../app.js");

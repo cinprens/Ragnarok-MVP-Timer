@@ -28,13 +28,19 @@ function writeJson(file, data) {
   }
 }
 
+function mergeMvpLists(base=[], custom=[], edits=[]) {
+  const map = new Map();
+  base.forEach(m => map.set(m.name, m));
+  custom.forEach(m => map.set(m.name, m));
+  edits.forEach(m => map.set(m.name, m));
+  return Array.from(map.values());
+}
+
 function loadMvps() {
-  if (existsSync(editPath)) {
-    return readJson(editPath, []);
-  }
-  const base   = readJson(basePath, []);
+  const base = readJson(basePath, []);
+  const edits = readJson(editPath, []);
   const custom = readJson(customPath, []);
-  return base.concat(custom);
+  return mergeMvpLists(base, custom, edits);
 }
 
 contextBridge.exposeInMainWorld("api", {
@@ -72,3 +78,4 @@ contextBridge.exposeInMainWorld("api", {
   on: (ch, cb) => ipcRenderer.on(ch, (_e, data) => cb(data)),
   openOptions: () => ipcRenderer.invoke("open-options")
 });
+export { mergeMvpLists, loadMvps };

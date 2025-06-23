@@ -1,5 +1,7 @@
+import { jest } from "@jest/globals";
 import fs from "fs";
-const data = JSON.parse(fs.readFileSync("../mvpData.json", "utf8"));
+const data = JSON.parse(fs.readFileSync("./mvpData.json", "utf8"));
+global.fetch=()=>Promise.resolve({json:()=>Promise.resolve([])});
 const times={
   "Beelzebub":46800,
   "Maya":9000,
