@@ -133,7 +133,9 @@ function fillList(box, arr, positive) {
 }
 
 function renderMid(m) {
-  if (!m || m.remaining < 0) { UI.clearCurrent(); return; }
+  // Seçili MVP'yi orta panelde gösterir. Süre eksiye düşmüş olsa bile
+  // bilgiler ekranda yer almaya devam eder.
+  if (!m) { UI.clearCurrent(); return; }
   UI.current          = m;
   UI.name.textContent = m.id;
   UI.gif.src          = m.sprite();
@@ -161,7 +163,8 @@ const UI = {
     fillList(this.left,  pos,  true);
     fillList(this.right, neg, false);
 
-    if (selected && selected.remaining >= 0) {
+    if (selected) {
+      // Önceden seçilmiş bir MVP varsa, süresi dolmuş olsa bile göster
       renderMid(selected);
     } else if (pos[0]) {
       selected = pos[0];
