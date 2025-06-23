@@ -1,3 +1,4 @@
+import { jest } from "@jest/globals";
 import fs from "fs";
 const html=fs.readFileSync("index.html","utf8");
 
