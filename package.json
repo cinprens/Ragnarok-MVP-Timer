@@ -9,7 +9,7 @@
     "make": "electron-forge make",
     "start": "electron-forge start",
     "lint": "eslint .",
-    "test": "jest",
+    "test": "node --experimental-vm-modules node_modules/jest/bin/jest.js",
     "prepare": "husky install"
   },
   "config": {
