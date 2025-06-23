@@ -15,6 +15,7 @@
   --panel-bg: rgba(24,24,24,var(--panel-alpha));
   --panel-border: rgba(64,224,208,0.6);
   --kills-h: auto;
+  --ui-scale: 1;
 }
 
 body.light {
@@ -42,6 +43,10 @@ body{
   font:14px Helvetica,Arial,sans-serif;
   overflow-x:hidden;
   background: var(--bg) url("./Backgrounds/ragnarok_bg.png") center/cover no-repeat fixed;
+  width:calc(100vw / var(--ui-scale));
+  height:calc(100vh / var(--ui-scale));
+  transform-origin:top left;
+  transform:scale(var(--ui-scale));
 }
 body::before{
   content:"";
@@ -53,7 +58,14 @@ body::before{
   z-index:-2;
 }
 
-html,body{height:100%;overflow:hidden;margin:0;padding:0;box-sizing:border-box;}
+html,body{
+  height:100%;
+  overflow:hidden;
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
+}
+
 #left,#right{
   height:100%;
   overflow-y:auto;      /* her panel kendi içinde kaydırılsın */

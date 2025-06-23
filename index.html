@@ -114,5 +114,13 @@ document.addEventListener('DOMContentLoaded',()=>{loadPanelWidths();loadPanelHei
 
   <script src="timeUtils.js" type="module"></script>
   <script type="module" src="app.js"></script>
+  <script>
+    function updateScale(){
+      const s=Math.min(window.innerWidth/1200, window.innerHeight/800);
+      document.documentElement.style.setProperty('--ui-scale',s);
+    }
+    window.addEventListener('resize',updateScale);
+    updateScale();
+  </script>
   </body>
 </html>
