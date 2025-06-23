@@ -482,7 +482,7 @@ ul { list-style: none; margin: 0; padding: 0; }
   top:-10px;
   left:50%;
   transform:translateX(-50%);
-  background:#ff0;
+  background:#ff0;      /* default gold for 1st */
   color:#000;
   border-radius:50%;
   width:24px;
@@ -492,6 +492,10 @@ ul { list-style: none; margin: 0; padding: 0; }
   align-items:center;
   font-weight:bold;
 }
+/* Silver medal for 2nd place */
+.podium-slot.second .medal{ background:#c0c0c0; }
+/* Bronze medal for 3rd place */
+.podium-slot.third  .medal{ background:#cd7f32; }
 .podium-slot .pname{margin-top:4px;font-size:1.1rem;}
 .podium-slot .pcount{font-size:1.1rem;color:var(--pos);font-weight:bold;}
 .kill-row{
@@ -509,6 +513,13 @@ ul { list-style: none; margin: 0; padding: 0; }
 }
 .kill-row .kname{ flex:1; }
 .kill-row .kcount{ color:var(--pos); font-weight:700; }
+/* Rank number for rows below top 3 */
+.kill-row .kindex{
+  width:20px;
+  text-align:center;
+  font-weight:bold;
+  color:var(--flash);
+}
 
 @media(max-width:600px){
   #killsPanel{ flex-direction:column; }
@@ -580,3 +591,4 @@ body.light .podium-slot,
 body.light .kill-row { background:#f0f0f0; color:#222; border:1px solid #ccc; }
 body.light .kill-row .kcount,
 body.light .podium-slot .pcount { color:var(--pos); }
+body.light .kill-row .kindex { color: var(--flash); }
