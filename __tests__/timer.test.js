@@ -25,7 +25,13 @@ const times={
   "Drake":9000,
   "Turtle General":4500,
   "Stormy Knight":9000,
-  "Garm":9000
+  "Garm":9000,
+  "Vesper":120,
+  "Samurai":95,
+  "RSX 0806":125,
+  "Kiel":120,
+  "Ifrit":660,
+  "Lord of Death ":133
 };
 
 test("json verisi bos degil",()=>{

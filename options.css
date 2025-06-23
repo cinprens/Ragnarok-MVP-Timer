@@ -26,12 +26,10 @@ body {
 
 #scale-wrapper {
   padding: 20px;
-  width: calc(100vw / var(--ui-scale));
-  height: calc(100vh / var(--ui-scale));
+  width: 100vw;
+  height: 100vh;
   min-width: 600px;
   min-height: 700px;
-  transform-origin: top left;
-  transform: scale(var(--ui-scale));
 }
 body::before {
   content: "";
