@@ -20,6 +20,15 @@ const mvpInput  = document.getElementById("mvpImg");
 let data = [];
 let editIndex = -1;
 
+async function applyAutoResolution() {
+  const size = await (window.api?.getScreenSize?.());
+  if (size) {
+    widthInp.value = size.width;
+    heightInp.value = size.height;
+    window.api.setWindowSize && window.api.setWindowSize(size.width, size.height);
+  }
+}
+
 // ----- Helper functions -----
 function fillForm(m = {}) {
   document.getElementById("name").value = m.name || "";
@@ -148,11 +157,17 @@ function loadSettings() {
   blinkTog.checked = localStorage.getItem("blinkOff") !== "1";
   tzSel.value = localStorage.getItem("timezone") || Intl.DateTimeFormat().resolvedOptions().timeZone;
   const res = localStorage.getItem("resolution") || "1920x1080";
-  resSel.value = res;
-  const [w, h] = res.split("x").map(Number);
-  widthInp.value = w;
-  heightInp.value = h;
-  if (window.api && window.api.setWindowSize) window.api.setWindowSize(w, h);
+  if (res === "auto") {
+    resSel.value = "auto";
+    applyAutoResolution();
+  } else {
+    const match = Array.from(resSel.options).some(o => o.value === res);
+    resSel.value = match ? res : "custom";
+    const [w, h] = res.split("x").map(Number);
+    widthInp.value = w;
+    heightInp.value = h;
+    if (window.api && window.api.setWindowSize) window.api.setWindowSize(w, h);
+  }
 }
 
 themeSel.addEventListener("change", () => {
@@ -171,12 +186,20 @@ tzSel.addEventListener("change", () => {
   localStorage.setItem("timezone", tzSel.value);
 });
 
-resSel.addEventListener("change", () => {
-  localStorage.setItem("resolution", resSel.value);
-  const [w, h] = resSel.value.split("x").map(Number);
-  widthInp.value = w;
-  heightInp.value = h;
-  if (window.api && window.api.setWindowSize) window.api.setWindowSize(w, h);
+resSel.addEventListener("change", async () => {
+  const val = resSel.value;
+  if (val === "auto") {
+    localStorage.setItem("resolution", "auto");
+    await applyAutoResolution();
+  } else if (val === "custom") {
+    localStorage.setItem("resolution", `${widthInp.value}x${heightInp.value}`);
+  } else {
+    localStorage.setItem("resolution", val);
+    const [w, h] = val.split("x").map(Number);
+    widthInp.value = w;
+    heightInp.value = h;
+    if (window.api && window.api.setWindowSize) window.api.setWindowSize(w, h);
+  }
 });
 
 applyBtn.addEventListener("click", () => {
@@ -189,7 +212,7 @@ applyBtn.addEventListener("click", () => {
   const val = `${w}x${h}`;
   localStorage.setItem("resolution", val);
   const match = Array.from(resSel.options).find(o => o.value === val);
-  if (match) resSel.value = val;
+  resSel.value = match ? val : "custom";
   if (window.api && window.api.setWindowSize) window.api.setWindowSize(w, h);
 });
 
