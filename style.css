@@ -277,6 +277,7 @@ button, select, input{
   transform-origin: top center;
   transition: transform 0.2s ease;
 }
+#mid-panel .mvp-stack{align-self:flex-start;margin-top:4px;}
 
 .mvp-stack.active{
   --card-scale-x: calc(var(--card-scale) * 1.4);
@@ -311,6 +312,7 @@ button, select, input{
   border-radius:8px;
   background:#333;
 }
+.timer-map-row{display:flex;align-items:flex-start;gap:12px;flex-wrap:wrap;justify-content:center;width:100%;}
 
 .mvp-controls {
   display: flex;
@@ -519,11 +521,11 @@ ul { list-style: none; margin: 0; padding: 0; }
 }
 #killBtn.show{opacity:1;transform:scale(1);}
 
-#midActions{display:flex;gap:8px;flex-wrap:wrap;justify-content:center;margin-top:8px;}
-#midActions.hidden{display:none;}
-#midActions button{background:#444;color:var(--fg);border:none;padding:6px 12px;cursor:pointer;}
-#midActions button:hover{background:#666;}
-#midActions button:active{transform:scale(0.95);}
+.control-bar{display:flex;flex-direction:column;align-items:flex-end;gap:6px;align-self:flex-end;margin-bottom:4px;}
+.control-bar.hidden{display:none;}
+.control-bar button{background:#444;color:var(--fg);border:none;padding:6px 12px;cursor:pointer;}
+.control-bar button:hover{background:#666;}
+.control-bar button:active{transform:scale(0.95);}
 #resetTimersBtn:hover{ background:#666; }
 #rankResetBtn:hover{ background:#666; }
 #killsPanel{
@@ -671,8 +673,8 @@ body.light #resetTimersBtn{ background:#ddd; color:#222; border:1px solid #bbb; 
 body.light #resetTimersBtn:hover{ background:#eee; }
 body.light #killBtn{ background:#faa; color:#222; border:1px solid #bbb; }
 body.light #killBtn:hover{ background:#fcc; }
-body.light #midActions button{ background:#ddd; color:#222; border:1px solid #bbb; }
-body.light #midActions button:hover{ background:#eee; }
+body.light .control-bar button{ background:#ddd; color:#222; border:1px solid #bbb; }
+body.light .control-bar button:hover{ background:#eee; }
 body.light .scroll-up,
 body.light .scroll-down { background:#e0e0e0; color:#222; border:1px solid #ccc; }
 body.light .podium-slot,

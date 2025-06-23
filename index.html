@@ -20,6 +20,15 @@
 
   <div id="mid">
     <div id="mid-panel">
+      <div id="midActions" class="control-bar hidden">
+        <div class="btn-row">
+          <button id="startSel">▶️ Start</button>
+          <button id="stopSel">⏸️ Stop</button>
+          <button id="resetSel">🔄 Reset</button>
+          <button id="resetTimersBtn">🧹 Reset All</button>
+        </div>
+        <button id="killBtn">☠️ I KILL</button>
+      </div>
       <select id="tzSelect"></select>
       <div id="currentTZ"></div>
       <div id="currentTime"></div>
@@ -30,46 +39,37 @@
         <div id="timerBox">
           <div id="mvpTime" class="timer"></div>
         </div>
-        <img  id="mvpMap" class="mvp-map"   alt="">
-        <div id="mapName"></div>
-
-          <div class="mvp-controls">
-            <div class="option-timer">
+        <div class="timer-map-row">
+          <div class="option-timer">
             <div class="box-title">Optional Timer (Minutes / Seconds)</div>
-              <div id="controls">
-                <div class="time-inputs">
-                  <input id="minInput" type="number" placeholder="min" min="0">
-                  <input id="secInput" type="number" placeholder="sec" min="0" max="59">
-                </div>
-                <div class="btn-group">
-                  <button id="setBtn">Set</button>
-                  <button id="startBtn">Start</button>
-                  <button id="stopBtn">Stop</button>
-                </div>
+            <div id="controls">
+              <div class="time-inputs">
+                <input id="minInput" type="number" placeholder="min" min="0">
+                <input id="secInput" type="number" placeholder="sec" min="0" max="59">
+              </div>
+              <div class="btn-group">
+                <button id="setBtn">Set</button>
+                <button id="startBtn">Start</button>
+                <button id="stopBtn">Stop</button>
               </div>
             </div>
-
-            <div class="tomb-time">
-              <div class="box-title">Tomb Time (Hour / Minute / Second)</div>
-              <div id="tombForm">
-                <div class="time-inputs">
-                  <input id="tombHour" type="number" placeholder="hh" min="0" max="23">
-                  <input id="tombMin"  type="number" placeholder="mm" min="0" max="59">
-                  <input id="tombSec"  type="number" placeholder="ss" min="0" max="59">
-                </div>
-                <div class="btn-group">
-                  <button id="tombBtn">Tomb</button>
-                </div>
-              </div>
-            </div>
-          </div><!-- /.mvp-controls -->
-          <div id="midActions" class="hidden">
-            <button id="startSel">▶️ Start</button>
-            <button id="stopSel">⏸️ Stop</button>
-            <button id="resetSel">🔄 Reset</button>
-            <button id="killBtn">☠️ I KILL</button>
-            <button id="resetTimersBtn">🧹 Reset All</button>
           </div>
+          <img  id="mvpMap" class="mvp-map"   alt="">
+          <div class="tomb-time">
+            <div class="box-title">Tomb Time (Hour / Minute / Second)</div>
+            <div id="tombForm">
+              <div class="time-inputs">
+                <input id="tombHour" type="number" placeholder="hh" min="0" max="23">
+                <input id="tombMin"  type="number" placeholder="mm" min="0" max="59">
+                <input id="tombSec"  type="number" placeholder="ss" min="0" max="59">
+              </div>
+              <div class="btn-group">
+                <button id="tombBtn">Tomb</button>
+              </div>
+            </div>
+          </div>
+        </div><!-- /.timer-map-row -->
+        <div id="mapName"></div>
     </div><!-- /.mvp-stack -->
     </div><!-- /#mid-panel -->
     <div class="v-resizer"></div>
