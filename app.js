@@ -134,6 +134,7 @@ function updateSpawnDates() {
 
 /* ———————————————————  PANEL YARDIMCILARI ——————————————————— */
 function fillList(box, arr, positive) {
+  if(!box) return;
   box.innerHTML = "";
   const frag = document.createDocumentFragment();
   arr.forEach(m => frag.append(makeLi(m, positive)));
@@ -145,12 +146,12 @@ function renderMid(m) {
   // bilgiler ekranda yer almaya devam eder.
   if (!m) { UI.clearCurrent(); return; }
   UI.current          = m;
-  UI.name.textContent = m.id;
-  UI.gif.src          = m.sprite();
-  UI.time.textContent = fmt(m.remaining);
+  if(UI.name) UI.name.textContent = m.id;
+  if(UI.gif)  UI.gif.src = m.sprite();
+  if(UI.time) UI.time.textContent = fmt(m.remaining);
   updateTimeColor(m.remaining);
-  UI.map.src          = m.mapImg();
-  UI.mapName.textContent = "Map: " + m.map;
+  if(UI.map) UI.map.src = m.mapImg();
+  if(UI.mapName) UI.mapName.textContent = "Map: " + m.map;
 }
 
 /* ———————————————————  UI NESNESİ  ——————————————————— */
@@ -189,22 +190,22 @@ const UI = {
     if (m.remaining < 0) { this.clearCurrent(); return; }
 
     this.current          = m;
-    this.name.textContent = m.id;
-    this.gif .src         = m.sprite();
-    this.time.textContent = fmt(m.remaining);
+    if(this.name) this.name.textContent = m.id;
+    if(this.gif)  this.gif.src = m.sprite();
+    if(this.time) this.time.textContent = fmt(m.remaining);
     updateTimeColor(m.remaining);
-    this.map .src         = m.mapImg();
-    this.mapName.textContent = "Map: " + m.map;
+    if(this.map) this.map.src = m.mapImg();
+    if(this.mapName) this.mapName.textContent = "Map: " + m.map;
   },
 
   clearCurrent() {
     this.current       = null;
-    this.name.textContent = "";
-    this.gif .src         = "";
-    this.time.textContent = "";
+    if(this.name) this.name.textContent = "";
+    if(this.gif)  this.gif.src = "";
+    if(this.time) this.time.textContent = "";
     updateTimeColor(0);
-    this.map .src         = "";
-    this.mapName.textContent = "";
+    if(this.map) this.map.src = "";
+    if(this.mapName) this.mapName.textContent = "";
   }
 };
 
@@ -286,8 +287,8 @@ function makeLi(m, positive) {
   timeBox.append(remain);
 
   if (m.remaining < 0) {
-    const next   = m.spawnDate;
-    const sd     = document.createElement("div");
+    const next = m.spawnDate || new Date();
+    const sd = document.createElement("div");
     sd.className = "spawn-date";
     sd.textContent = next.toLocaleString();
     timeBox.append(sd);
@@ -502,6 +503,14 @@ function resetAll() {
   saveTimers();
 }
 
+function resetRank(){
+  KILL_LOG.length = 0;
+  TOTAL_KILL = 0;
+  MVP_LIST.forEach(m => { m.kills = 0; });
+  updateKillPanel();
+  saveTimers();
+}
+
 /* ———————————————————  VERİ YÜKLE / KAYDET  ——————————————————— */
 function saveTimers() {
   const data = MVP_LIST.map(m => ({
@@ -576,7 +585,7 @@ function loadTimers() {
     }
   }
 
-  if (tzDiv) tzDiv.textContent = `${timezone} (${getOffsetStr(timezone)})`;
+  if (tzDiv) tzDiv.textContent = timezone;
   updateSpawnDates();
   UI.render();
   updateKillPanel();
@@ -588,7 +597,7 @@ function populateTimeZones() {
   zones.forEach(z => {
     const o      = document.createElement("option");
     o.value      = z;
-    o.textContent = `${z} (${getOffsetStr(z)})`;
+    o.textContent = z;
     if (z === timezone) o.selected = true;
     tzSel.append(o);
   });
@@ -604,7 +613,7 @@ function handleZoneChange() {
   } else {
     timezone = tzSel.value;
   }
-  if (tzDiv) tzDiv.textContent = `${timezone} (${getOffsetStr(timezone)})`;
+  if (tzDiv) tzDiv.textContent = timezone;
   updateSpawnDates();
   UI.render();
   saveTimers();
@@ -668,7 +677,8 @@ API.on("window-vis",state=>handleVisibility(state));
 
 
 /* ———————————————————  BUTON BAĞLANTILARI  ——————————————————— */
-$("#setBtn"  ).onclick = () => {
+const setBtn = $("#setBtn");
+if(setBtn) setBtn.onclick = () => {
   if (!selected) { alert("Önce bir MVP seç"); return; }
   const dk = parseInt($("#minInput").value || 0, 10);
   const sn = parseInt($("#secInput").value || 0, 10);
@@ -682,11 +692,18 @@ $("#setBtn"  ).onclick = () => {
   UI.render();
   saveTimers();
 };
-$("#startBtn").onclick = startTimers;
-$("#stopBtn" ).onclick = stopTimers;
-$("#tombBtn" ).onclick = () => {
+const startBtn=$("#startBtn");
+if(startBtn) startBtn.onclick = startTimers;
+const stopBtn=$("#stopBtn");
+if(stopBtn) stopBtn.onclick = stopTimers;
+const tombBtn=$("#tombBtn");
+if(tombBtn) tombBtn.onclick = () => {
   if (!selected) { alert("Önce bir MVP seç"); return; }
   toggleTomb(selected);
+};
+const resetRankBtn = document.getElementById("rankResetBtn");
+if(resetRankBtn) resetRankBtn.onclick = () => {
+  if(confirm("MVP Rank sıfırlansın mı?")) resetRank();
 };
 
 function autoTab(curr, next){
@@ -823,11 +840,11 @@ window.addEventListener("storage", e => {
   }
   if(e.key === "timezone") {
     timezone = e.newValue || timezone;
-    if (tzDiv) tzDiv.textContent = `${timezone} (${getOffsetStr(timezone)})`;
+    if (tzDiv) tzDiv.textContent = timezone;
     updateSpawnDates();
     UI.render();
     saveTimers();
   }
 });
 
-export { MVP_LIST, UI, step, resetMvp, nowTz, markKilled, toggleTomb, MVP, saveTimers, loadTimers, updateSpawnDates, updateKillPanel };
+export { MVP_LIST, UI, step, resetMvp, nowTz, markKilled, toggleTomb, resetRank, MVP, saveTimers, loadTimers, updateSpawnDates, updateKillPanel };
