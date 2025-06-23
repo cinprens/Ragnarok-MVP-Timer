@@ -514,10 +514,6 @@ window.api.on('mvp-update',list=>{
 
 loadAll();
 
-document.addEventListener('DOMContentLoaded', async () => {
-  const data = await window.api.getMvps();   // preload üzerinden güvenli çağrı
-  renderTable(data);                         // zaten mevcut fonksiyonun
-});
 
 /* ———————————————————  BUTON BAĞLANTILARI  ——————————————————— */
 $('#setBtn'  ).onclick = () => {
