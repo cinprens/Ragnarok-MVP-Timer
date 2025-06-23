@@ -81,6 +81,10 @@ const API = window.api || {
   writeTimers: () => {}
 };
 
+if (!window.api) {
+  console.warn("Preload API missing: options menu will not open");
+}
+
 function getOffsetStr(zone) {
   const str = new Intl.DateTimeFormat("en-US", { timeZone: zone, timeZoneName: "short" }).format(new Date());
   const m = str.match(/GMT([+-]\d+)/);
@@ -769,6 +773,7 @@ const optionsBtn = $("#optionsBtn");
 
 
 if(optionsBtn){
+  if (!window.api) optionsBtn.disabled = true;
   optionsBtn.addEventListener("click", () => {
     if(API && API.openOptions){
       API.openOptions();
