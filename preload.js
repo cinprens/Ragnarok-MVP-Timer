@@ -1,9 +1,10 @@
-import { contextBridge, ipcRenderer, app } from "electron";
+import { contextBridge, ipcRenderer } from "electron";
 import { readFileSync, writeFileSync, existsSync } from "fs";
 import path from "path";
 
 const basePath   = path.join(__dirname, "mvpData.json");
-const userDir    = app.getPath("userData");
+// Kullanıcı verileri dizini ana süreçten alınır
+const userDir    = await ipcRenderer.invoke("get-user-data-path");
 const customPath = path.join(userDir, "customMvps.json");
 const timersPath = path.join(userDir, "timers.json");
 
