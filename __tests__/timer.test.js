@@ -1,4 +1,4 @@
-const data = require('../mvpData.json');
+const data = require("../mvpData.json");
 const times={
   "Beelzebub":46800,
   "Maya":9000,
@@ -25,7 +25,7 @@ const times={
   "Garm":9000
 };
 
-test('json verisi bos degil',()=>{
+test("json verisi bos degil",()=>{
   expect(Array.isArray(data)).toBe(true);
   data.forEach(d=>{
     expect(d.img).toBeTruthy();
@@ -34,7 +34,7 @@ test('json verisi bos degil',()=>{
 
 jest.useFakeTimers();
 
-test('sayac azalir',()=>{
+test("sayac azalir",()=>{
   const m={remaining:3};
   const id=setInterval(()=>{m.remaining--;},1000);
   jest.advanceTimersByTime(2000);
@@ -42,15 +42,15 @@ test('sayac azalir',()=>{
   expect(m.remaining).toBe(1);
 });
 
-test('step fonksiyonu sayaci azaltir',()=>{
-  const mod=require('../app.js');
+test("step fonksiyonu sayaci azaltir",()=>{
+  const mod=require("../app.js");
   mod.MVP_LIST.length=0;
-  mod.MVP_LIST.push({id:'X',file:'',map:'',respawn:60,remaining:5,running:true,tomb:false,tombTime:'',spawnUTC:Date.now()+5000});
+  mod.MVP_LIST.push({id:"X",file:"",map:"",respawn:60,remaining:5,running:true,tomb:false,tombTime:"",spawnUTC:Date.now()+5000});
   mod.step();
   expect(mod.MVP_LIST[0].remaining).toBe(4);
 });
 
-test('dogus sureleri',()=>{
+test("dogus sureleri",()=>{
   data.forEach(d=>{
     expect(d.respawn).toBe(times[d.name]);
   });
