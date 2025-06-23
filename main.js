@@ -1,7 +1,7 @@
 import { app, BrowserWindow, Menu, ipcMain, screen } from "electron";
 import { fileURLToPath } from "url";
 import path from "node:path";
-import { promises as fs } from "node:fs";
+import { promises as fs, readFileSync, existsSync } from "node:fs";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -19,10 +19,29 @@ if (process.env.NODE_ENV === "development") {
 
 let mainWin;
 let optionsWin;
+function loadSettings() {
+  try {
+    const p = path.join(app.getPath("userData"), "userSettings.json");
+    if (existsSync(p)) return JSON.parse(readFileSync(p, "utf-8"));
+  } catch (e) {
+    console.error("Failed to read settings", e);
+  }
+  return { resolution: "auto" };
+}
 const createWindow = () => {
+  const settings = loadSettings();
+  let width = 1920;
+  let height = 1080;
+  if (settings.resolution && settings.resolution !== "auto") {
+    const [w, h] = settings.resolution.split("x").map(Number);
+    if (w && h) { width = w; height = h; }
+  } else {
+    const { width: sw, height: sh } = screen.getPrimaryDisplay().workAreaSize;
+    width = sw; height = sh;
+  }
   mainWin = new BrowserWindow({
-    width: 1920,
-    height: 1080,
+    width,
+    height,
     minWidth: 1024,
     minHeight: 640,
     webPreferences: { preload: path.join(__dirname, "preload.js"), contextIsolation: true }
