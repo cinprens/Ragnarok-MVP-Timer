@@ -55,7 +55,18 @@ function createMenu() {
       accelerator: "Ctrl+,",
       click: () => openOptions()
     },
-    { label: "Help", submenu: [{ label: "GitHub", click: () => require("electron").shell.openExternal("https://github.com/") }] }
+    {
+      label: "Help",
+      submenu: [
+        {
+          label: "GitHub",
+          click: () =>
+            require("electron").shell.openExternal(
+              "https://github.com/cinprens/Ragnarok-MVP-Timer"
+            )
+        }
+      ]
+    }
   ];
   Menu.setApplicationMenu(Menu.buildFromTemplate(template));
 }
