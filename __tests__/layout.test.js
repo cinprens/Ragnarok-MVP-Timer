@@ -1,4 +1,4 @@
-const fs=require("fs");
+import fs from "fs";
 let css;
 beforeAll(()=>{css=fs.readFileSync("style.css","utf8");});
 
