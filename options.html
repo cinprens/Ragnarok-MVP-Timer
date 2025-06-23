@@ -6,6 +6,7 @@
 <link rel="stylesheet" href="options.css" />
 </head>
 <body>
+<div id="scale-wrapper">
 <div class="tabs">
   <button data-tab="edit">Add/Edit MVP</button>
   <button data-tab="settings">Application Settings</button>
@@ -47,11 +48,14 @@
 <script type="module" src="options.js"></script>
 <script>
   function updateScale(){
-    const s=Math.min(window.innerWidth/600, window.innerHeight/700);
-    document.documentElement.style.setProperty('--ui-scale',s);
+    const wRatio = window.innerWidth / 600;
+    const hRatio = window.innerHeight / 700;
+    const s = Math.min(wRatio, hRatio);
+    document.documentElement.style.setProperty('--ui-scale', s);
   }
   window.addEventListener('resize',updateScale);
   updateScale();
 </script>
+</div><!-- /scale-wrapper -->
 </body>
 </html>

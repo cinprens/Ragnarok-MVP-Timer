@@ -46,8 +46,13 @@ body{
   font:1rem Helvetica,Arial,sans-serif;
   overflow-x:hidden;
   background: var(--bg) url("./Backgrounds/ragnarok_bg.png") center/cover no-repeat fixed;
+}
+
+#scale-wrapper {
   width:calc(100vw / var(--ui-scale));
   height:calc(100vh / var(--ui-scale));
+  min-width:1920px;
+  min-height:1080px;
   transform-origin:top left;
   transform:scale(var(--ui-scale));
 }
