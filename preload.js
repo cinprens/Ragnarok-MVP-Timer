@@ -9,6 +9,7 @@ const customPath = path.join(userDir, "customMvps.json");
 const editPath   = path.join(userDir, "mvpDataEdit.json");
 const timersPath = path.join(userDir, "timers.json");
 const userMaps   = path.join(userDir, "Maps");
+const userMvps   = path.join(userDir, "MVP_Giff");
 
 function readJson(file, defVal) {
   try {
@@ -53,6 +54,17 @@ contextBridge.exposeInMainWorld("api", {
       return dest;
     } catch (err) {
       console.error("Failed to copy map", err);
+      return null;
+    }
+  },
+  copyMvp: (src, name) => {
+    try {
+      if (!existsSync(userMvps)) mkdirSync(userMvps, { recursive: true });
+      const dest = path.join(userMvps, name);
+      copyFileSync(src, dest);
+      return dest;
+    } catch (err) {
+      console.error("Failed to copy MVP image", err);
       return null;
     }
   },
