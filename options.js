@@ -7,6 +7,7 @@ const themeSel  = document.getElementById("themeSelect");
 const soundTog  = document.getElementById("soundToggle");
 const tzSel     = document.getElementById("tzSelectOpt");
 const blinkTog  = document.getElementById("blinkToggleOpt");
+const resSel    = document.getElementById("resSelect");
 const listBox   = document.getElementById("mvpList");
 const mapInput  = document.getElementById("mapImg");
 const mvpInput  = document.getElementById("mvpImg");
@@ -143,6 +144,9 @@ function loadSettings() {
   soundTog.checked = localStorage.getItem("soundEnabled") !== "0";
   blinkTog.checked = localStorage.getItem("blinkOff") !== "1";
   tzSel.value = localStorage.getItem("timezone") || Intl.DateTimeFormat().resolvedOptions().timeZone;
+  resSel.value = localStorage.getItem("resolution") || "1920x1080";
+  const [w, h] = resSel.value.split("x").map(Number);
+  if (window.api && window.api.setWindowSize) window.api.setWindowSize(w, h);
 }
 
 themeSel.addEventListener("change", () => {
@@ -159,6 +163,12 @@ blinkTog.addEventListener("change", () => {
 
 tzSel.addEventListener("change", () => {
   localStorage.setItem("timezone", tzSel.value);
+});
+
+resSel.addEventListener("change", () => {
+  localStorage.setItem("resolution", resSel.value);
+  const [w, h] = resSel.value.split("x").map(Number);
+  if (window.api && window.api.setWindowSize) window.api.setWindowSize(w, h);
 });
 
 populateZones();
