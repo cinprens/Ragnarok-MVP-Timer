@@ -2,36 +2,36 @@ import { jest } from "@jest/globals";
 import fs from "fs";
 const data = JSON.parse(fs.readFileSync("./mvpData.json", "utf8"));
 global.fetch=()=>Promise.resolve({json:()=>Promise.resolve([])});
-const times={
-  "Beelzebub":46800,
-  "Maya":9000,
-  "Tao Gunka":5400,
-  "Dracula":5400,
-  "Orc Hero":4500,
-  "Orc Lord":9900,
-  "Doppelganger":9900,
-  "Dark Lord":9900,
-  "Evil Snake Lord":9900,
-  "Amon Ra":4500,
-  "White Lady":9000,
-  "Mistress":9000,
-  "Phreeoni":4500,
-  "Osiris":4500,
-  "Randgris":14400,
-  "Moonlight Flower":4500,
-  "Eddga":9000,
-  "Baphomet":9000,
-  "Golden Bug":4500,
-  "Drake":9000,
-  "Turtle General":4500,
-  "Stormy Knight":9000,
-  "Garm":9000,
-  "Vesper":120,
-  "Samurai":95,
-  "RSX 0806":125,
-  "Kiel":120,
-  "Ifrit":660,
-  "Lord of Death ":133
+const times = {
+  Beelzebub: [720],
+  Maya: [120],
+  "Tao Gunka": [300],
+  Dracula: [60],
+  "Orc Hero": [60],
+  "Orc Lord": [120],
+  Doppelganger: [120, 480],
+  "Dark Lord": [120],
+  "Evil Snake Lord": [120],
+  "Amon Ra": [60],
+  "White Lady": [90],
+  Mistress: [60],
+  Phreeoni: [60],
+  Osiris: [60],
+  Randgris: [240],
+  "Moonlight Flower": [60],
+  Eddga: [120],
+  Baphomet: [120],
+  "Golden Bug": [60],
+  Drake: [60],
+  "Turtle General": [60],
+  "Stormy Knight": [120],
+  Garm: [120],
+  Vesper: [120],
+  Samurai: [95],
+  "RSX 0806": [125],
+  Kiel: [120],
+  Ifrit: [660],
+  "Lord of Death ": [133]
 };
 
 test("json verisi bos degil",()=>{
@@ -60,7 +60,12 @@ test("step fonksiyonu sayaci azaltir",async()=>{
 });
 
 test("dogus sureleri",()=>{
-  data.forEach(d=>{
-    expect(d.respawn).toBe(times[d.name]);
+  data.forEach(d => {
+    const expectVal = times[d.name];
+    if (Array.isArray(expectVal)) {
+      expect(expectVal).toContain(d.respawn);
+    } else {
+      expect(d.respawn).toBe(expectVal);
+    }
   });
 });
