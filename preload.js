@@ -68,6 +68,7 @@ contextBridge.exposeInMainWorld("api", {
       return null;
     }
   },
+  updateMvps: data => ipcRenderer.send("mvp-update", data),
   on: (ch, cb) => ipcRenderer.on(ch, (_e, data) => cb(data)),
   openOptions: () => ipcRenderer.invoke("open-options")
 });
