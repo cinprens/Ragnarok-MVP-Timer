@@ -16,5 +16,6 @@ function loadMvps() {
 contextBridge.exposeInMainWorld('api', {
   getMvps: () => loadMvps(),
   on: (ch, cb) => ipcRenderer.on(ch, (_e, data) => cb(data)),
-  saveCustom: data => ipcRenderer.invoke('save-custom', data)
+  saveCustom: data => ipcRenderer.invoke('save-custom', data),
+  openOptions: () => ipcRenderer.invoke('open-options')
 });
