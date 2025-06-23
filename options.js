@@ -7,9 +7,15 @@ const themeSel  = document.getElementById("themeSelect");
 const soundTog  = document.getElementById("soundToggle");
 const tzSel     = document.getElementById("tzSelectOpt");
 const blinkTog  = document.getElementById("blinkToggleOpt");
+const scaleSel  = document.getElementById("scaleSelect");
 const listBox   = document.getElementById("mvpList");
 const mapInput  = document.getElementById("mapImg");
 const mvpInput  = document.getElementById("mvpImg");
+
+function applyScale(){
+  const sc = parseFloat(localStorage.getItem("uiScale") || "1");
+  document.documentElement.style.setProperty("--ui-scale", sc);
+}
 
 // 'data' holds the merged list currently displayed. Custom creations are saved
 // to customMvps.json while edits overwrite mvpDataEdit.json.
@@ -143,6 +149,8 @@ function loadSettings() {
   soundTog.checked = localStorage.getItem("soundEnabled") !== "0";
   blinkTog.checked = localStorage.getItem("blinkOff") !== "1";
   tzSel.value = localStorage.getItem("timezone") || Intl.DateTimeFormat().resolvedOptions().timeZone;
+  scaleSel.value = localStorage.getItem("uiScale") || "1";
+  applyScale();
 }
 
 themeSel.addEventListener("change", () => {
@@ -159,6 +167,11 @@ blinkTog.addEventListener("change", () => {
 
 tzSel.addEventListener("change", () => {
   localStorage.setItem("timezone", tzSel.value);
+});
+
+scaleSel.addEventListener("change", () => {
+  localStorage.setItem("uiScale", scaleSel.value);
+  applyScale();
 });
 
 populateZones();
