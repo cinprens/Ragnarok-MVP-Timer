@@ -76,6 +76,9 @@ ipcMain.handle("save-custom", async (_e, data) => {
   }
 });
 
+// Renderer'a userData dizini yolunu döndürür
+ipcMain.handle("get-user-data-path", () => app.getPath("userData"));
+
 
 ipcMain.on("mvp-update", (_e, data) => {
   if (mainWin) mainWin.webContents.send("mvp-update", data);
