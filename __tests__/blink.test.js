@@ -2,19 +2,6 @@ import { jest } from "@jest/globals";
 import fs from "fs";
 const html=fs.readFileSync("index.html","utf8");
 
-global.window = window;
-window.api = {
-  getSettings: () => ({ resolution: "auto" }),
-  getScreenSize: () => Promise.resolve({ width: 1920, height: 1080 }),
-  setWindowSize: () => {},
-  getMvps: () => [],
-  updateMvps: () => {},
-  on: () => {},
-  openOptions: () => {},
-  readTimers: () => null,
-  writeTimers: () => {}
-};
-
 jest.useFakeTimers();
 
 test("blink efekti", async () => {

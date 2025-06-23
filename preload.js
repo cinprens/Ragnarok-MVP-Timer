@@ -10,7 +10,6 @@ const editPath   = path.join(userDir, "mvpDataEdit.json");
 const timersPath = path.join(userDir, "timers.json");
 const userMaps   = path.join(userDir, "Maps");
 const userMvps   = path.join(userDir, "MVP_Giff");
-const settingsPath = path.join(userDir, "userSettings.json");
 
 function readJson(file, defVal) {
   try {
@@ -83,8 +82,6 @@ contextBridge.exposeInMainWorld("api", {
   on: (ch, cb) => ipcRenderer.on(ch, (_e, data) => cb(data)),
   openOptions: () => ipcRenderer.invoke("open-options"),
   setWindowSize: (w, h) => ipcRenderer.send("set-window-size", { width: w, height: h }),
-  getScreenSize: () => ipcRenderer.invoke("get-screen-size"),
-  getSettings: () => readJson(settingsPath, { resolution: "auto" }),
-  saveSettings: data => writeJson(settingsPath, data)
+  getScreenSize: () => ipcRenderer.invoke("get-screen-size")
 });
 export { mergeMvpLists, loadMvps };
