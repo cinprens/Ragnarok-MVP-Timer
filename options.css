@@ -1,0 +1,77 @@
+:root {
+  --bg: #1e1e1e;
+  --fg: #f0f0f0;
+  --panel-bg: rgba(24,24,24,0.8);
+  --panel-border: rgba(64,224,208,0.6);
+  --highlight: #0ff;
+}
+
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  padding: 20px;
+  font: 14px Helvetica,Arial,sans-serif;
+  color: var(--fg);
+  background: url("./Backgrounds/ragnarok_bg.png") center/cover no-repeat fixed;
+}
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  background: inherit;
+  filter: grayscale(1) brightness(.65);
+  opacity: .85;
+  pointer-events: none;
+  z-index: -1;
+}
+
+.tabs {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 10px;
+}
+.tabs button {
+  flex: 1;
+  padding: 6px 12px;
+  background: var(--panel-bg);
+  color: var(--fg);
+  border: 1px solid var(--panel-border);
+  cursor: pointer;
+}
+.tabs button.active,
+.tabs button:focus {
+  background: var(--highlight);
+  color: #000;
+}
+
+.tab {
+  display: none;
+  background: var(--panel-bg);
+  padding: 16px;
+  border: 1px solid var(--panel-border);
+  border-radius: 8px;
+}
+.tab.active { display: block; }
+
+.grid {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 6px;
+  align-items: center;
+}
+.grid label { text-align: right; }
+.grid input {
+  background: #333;
+  color: var(--fg);
+  border: 1px solid #555;
+  padding: 4px;
+}
+.grid button {
+  grid-column: span 2;
+  background: #444;
+  color: var(--fg);
+  border: 1px solid #666;
+  padding: 6px 12px;
+  cursor: pointer;
+}
+.grid button:hover { background: #666; }
