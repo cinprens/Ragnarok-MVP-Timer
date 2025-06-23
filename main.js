@@ -1,6 +1,7 @@
 import { app, BrowserWindow, Menu, ipcMain } from "electron";
 import { fileURLToPath } from "url";
 import path from "node:path";
+import { promises as fs } from "node:fs";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -62,6 +63,17 @@ ipcMain.handle('open-options', () => {
     webPreferences: { preload: path.join(__dirname, "preload.js"), contextIsolation: true },
   });
   optionsWin.loadFile('options.html');
+});
+
+ipcMain.handle('save-custom', async (_e, data) => {
+  const file = path.join(app.getPath('userData'), 'customMvps.json');
+  try {
+    await fs.writeFile(file, JSON.stringify(data, null, 2));
+    return { success: true };
+  } catch (err) {
+    console.error('Failed to save custom MVP data', err);
+    return { success: false, error: err.message };
+  }
 });
 
 
