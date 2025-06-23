@@ -8,23 +8,9 @@
 <body>
 <div id="scale-wrapper">
 <div class="tabs">
-  <button data-tab="edit">Add/Edit MVP</button>
-  <button data-tab="settings">Application Settings</button>
+  <button data-tab="settings" class="active">Application Settings</button>
   <button data-tab="about">About</button>
 </div>
-<section id="edit" class="tab active">
-  <form id="mvpForm" class="grid">
-    <label>Name</label><input id="name">
-    <label>Map</label><input id="map">
-    <label>Map Image</label><input id="mapImg" type="file" accept=".gif,.png,.jpg">
-    <label>MVP Image</label><input id="mvpImg" type="file" accept=".gif,.png,.jpg">
-    <label>Respawn (min)</label><input id="respawn">
-    <button id="saveBtn" type="button">Save</button>
-    <button id="newBtn" type="button">Add New</button>
-    <button id="resetBtn" type="button">Reset Defaults</button>
-  </form>
-  <ul id="mvpList"></ul>
-</section>
 <section id="settings" class="tab">
   <div class="grid">
     <label>Theme</label>

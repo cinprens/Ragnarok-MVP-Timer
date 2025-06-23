@@ -277,7 +277,7 @@ button, select, input{
   transform-origin: top center;
   transition: transform 0.2s ease;
 }
-#mid-panel .mvp-stack{align-self:flex-start;margin-top:4px;}
+#mid-panel .mvp-stack{align-self:center;margin-top:4px;}
 
 .mvp-stack.active{
   --card-scale-x: calc(var(--card-scale) * 1.4);
@@ -523,11 +523,12 @@ ul { list-style: none; margin: 0; padding: 0; }
   cursor:pointer;
 }
 #killBtn{
-  align-self:flex-end;
+  align-self:center;
   background:#555;
   color:var(--fg);
   border:none;
-  padding:6px 12px;
+  padding:8px 16px;
+  font-size:1.1rem;
   cursor:pointer;
   opacity:0;
   transform:scale(0.9);
@@ -535,7 +536,7 @@ ul { list-style: none; margin: 0; padding: 0; }
 }
 #killBtn.show{opacity:1;transform:scale(1);}
 
-.control-bar{display:flex;flex-direction:column;align-items:flex-end;gap:6px;align-self:flex-end;margin-bottom:4px;}
+.control-bar{display:flex;flex-direction:column;align-items:center;gap:6px;align-self:center;margin-bottom:4px;}
 .control-bar.hidden{display:none;}
 .control-bar button{background:#444;color:var(--fg);border:none;padding:6px 12px;cursor:pointer;}
 .control-bar button:hover{background:#666;}
