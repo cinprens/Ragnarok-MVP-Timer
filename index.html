@@ -6,7 +6,7 @@
 <link rel="stylesheet" href="style.css">
 </head>
 <body>
-<!-- Arka plan resmi ./Backgrounds/ragnarok_bg.png -->
+<!-- Background image ./Backgrounds/ragnarok_bg.png -->
 <img class="banner-top" src="Logo/Banner1.png" alt="">
 <img class="banner-bottom" src="Logo/Banner1.png" alt="">
 <img class="banner-left" src="Logo/banner2.png" alt="">
@@ -26,8 +26,6 @@
       <select id="tzSelect"></select>
       <div id="currentTZ"></div>
       <div id="currentTime"></div>
-      <button id="bannerToggle">Hide Banners</button>
-      <button id="blinkToggle">Disable Blink</button>
       <button id="optionsBtn">Options</button>
 
       <div class="mvp-stack">
@@ -41,7 +39,7 @@
 
         <div class="mvp-controls">
           <div class="option-timer">
-            <div class="box-title">Opsiyonel Timer (Dakika / Saniye)</div>
+          <div class="box-title">Optional Timer (Minutes / Seconds)</div>
             <div id="controls">
               <input id="minInput" type="number" placeholder="min" min="0">
               <input id="secInput" type="number" placeholder="sec" min="0" max="59">
@@ -52,7 +50,7 @@
           </div>
 
           <div class="tomb-time">
-            <div class="box-title">Tomb Zamanı (Saat / Dakika / Saniye)</div>
+            <div class="box-title">Tomb Time (Hour / Minute / Second)</div>
             <div id="tombForm">
               <input id="tombHour" type="number" placeholder="hh" min="0" max="23">
               <input id="tombMin"  type="number" placeholder="mm" min="0" max="59">
@@ -75,9 +73,9 @@
     <button class="scroll-down" data-target="negativeList">▼</button>
   </div>
 
-  <!-- Ben Kestim paneli üç kolonun altına oturacak -->
+  <!-- MVP Rank panel -->
   <div id="killsWrapper">
-    <h3 id="killsTitle">Ben Kestim (0)</h3>
+    <h3 id="killsTitle">MVP Rank (0)</h3>
     <div id="killsPanel"></div>
   </div>
 </div><!-- /wrapper -->
