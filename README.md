@@ -5,8 +5,8 @@ A desktop timer app built with Electron for tracking the respawn times of Ragnar
 ## Features
 - Real-time countdowns for MVP respawns
   driven by `requestAnimationFrame`
-- "Ben Kestim" panel for defeated bosses
-- Options window to add custom MVPs and change theme
+- "MVP Rank" panel showing kill counts
+- Options window to add custom MVPs, change theme and toggle blink effect
 - Dark theme with transparent panels
 - Hot reload in development
 

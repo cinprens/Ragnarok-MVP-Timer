@@ -2,6 +2,7 @@ const saveBtn = document.getElementById("saveBtn");
 const themeSelect = document.getElementById("themeSelect");
 const soundToggle = document.getElementById("soundToggle");
 const tzSelect = document.getElementById("tzSelectOpt");
+const blinkToggle = document.getElementById("blinkToggleOpt");
 
 // ----------------------- MVP EKLE/DÜZENLE -------------------------
 saveBtn.onclick = async () => {
@@ -41,6 +42,7 @@ function populateZones() {
 function loadSettings() {
   themeSelect.value = localStorage.getItem("theme") || "dark";
   soundToggle.checked = localStorage.getItem("soundEnabled") !== "0";
+  blinkToggle.checked = localStorage.getItem("blinkOff") !== "1";
   tzSelect.value = localStorage.getItem("timezone") || Intl.DateTimeFormat().resolvedOptions().timeZone;
 }
 
@@ -50,6 +52,10 @@ themeSelect.addEventListener("change", () => {
 
 soundToggle.addEventListener("change", () => {
   localStorage.setItem("soundEnabled", soundToggle.checked ? "1" : "0");
+});
+
+blinkToggle.addEventListener("change", () => {
+  localStorage.setItem("blinkOff", blinkToggle.checked ? "0" : "1");
 });
 
 tzSelect.addEventListener("change", () => {

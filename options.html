@@ -1,41 +1,43 @@
 <!DOCTYPE html>
-<html lang="tr">
+<html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>MVP Ayarları</title>
+<title>MVP Options</title>
 <link rel="stylesheet" href="options.css" />
 </head>
 <body>
 <div class="tabs">
-  <button data-tab="edit">MVP Ekle/Düzenle</button>
-  <button data-tab="settings">Uygulama Ayarları</button>
-  <button data-tab="about">Hakkında</button>
+  <button data-tab="edit">Add/Edit MVP</button>
+  <button data-tab="settings">Application Settings</button>
+  <button data-tab="about">About</button>
 </div>
 <section id="edit" class="tab active">
   <form id="mvpForm" class="grid">
     <label>ID</label><input id="id">
-    <label>Ad</label><input id="name">
-    <label>Harita</label><input id="map">
-    <label>Süre (dk)</label><input id="respawn">
-    <button id="saveBtn" type="button">Kaydet</button>
+    <label>Name</label><input id="name">
+    <label>Map</label><input id="map">
+    <label>Respawn (min)</label><input id="respawn">
+    <button id="saveBtn" type="button">Save</button>
   </form>
 </section>
 <section id="settings" class="tab">
   <div class="grid">
-    <label>Tema</label>
+    <label>Theme</label>
     <select id="themeSelect">
-      <option value="dark">Koyu</option>
-      <option value="light">Açık</option>
+      <option value="dark">Dark</option>
+      <option value="light">Light</option>
     </select>
-    <label>Sesli Uyarı</label>
+    <label>Sound Alert</label>
     <input type="checkbox" id="soundToggle">
-    <label>Zaman Dilimi</label>
+    <label>Blink Effect</label>
+    <input type="checkbox" id="blinkToggleOpt">
+    <label>Time Zone</label>
     <select id="tzSelectOpt"></select>
   </div>
 </section>
 <section id="about" class="tab">
   <p>Ragnarok MVP Timer v1.0</p>
-  <p>Respawn sürelerini takip etmek için geliştirilmiştir.</p>
+  <p>Track respawn times of Ragnarok Online MVP monsters.</p>
   <p><a href="https://github.com/" target="_blank">GitHub</a></p>
 </section>
 <script type="module" src="options.js"></script>

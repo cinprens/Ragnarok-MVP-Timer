@@ -195,12 +195,24 @@ const killsBox   = $("#killsPanel");
 const killsTitle = $("#killsTitle");
 function updateKillPanel() {
   if (!killsBox) return;
-  killsTitle.textContent = `Ben\u202fKestim\u202f(${TOTAL_KILL})`;
+  killsTitle.textContent = `MVP Rank (${TOTAL_KILL})`;
   const sorted = MVP_LIST.filter(x => x.kills > 0)
                          .sort((a, b) => b.kills - a.kills);
   killsBox.innerHTML = "";
+
+  if (sorted.length > 0) {
+    const top = sorted[0];
+    const topDiv = document.createElement("div");
+    topDiv.className = "top-rank";
+    topDiv.innerHTML = `
+      <img src="${top.sprite()}" alt="">
+      <div class="top-name">${top.id}</div>
+      <div class="top-count">${top.kills}</div>`;
+    killsBox.append(topDiv);
+  }
+
   const frag = document.createDocumentFragment();
-  sorted.forEach(m => {
+  sorted.slice(1).forEach(m => {
     const row = document.createElement("div");
     row.className = "kill-row";
     row.innerHTML = `
@@ -735,39 +747,10 @@ document.querySelectorAll("#left, #right").forEach(panel => {
   }
 })();
 
-/* ———————————————————  BANNER GİZLE / GÖSTER  ——————————————————— */
-const bannerBtn = $("#bannerToggle");
-const blinkBtn  = $("#blinkToggle");
+/* ———————————————————  OPTIONS BUTTON  ——————————————————— */
+const blinkBtn  = null;
 const optionsBtn = $("#optionsBtn");
-function setBannerState() {
-  const hidden = localStorage.getItem("bannerHidden") === "1";
-  document.body.classList.toggle("banners-hidden", hidden);
-  if (bannerBtn) bannerBtn.textContent = hidden ? "Show Banners" : "Hide Banners";
-}
-if (bannerBtn) {
-  bannerBtn.addEventListener("click", () => {
-    const now = document.body.classList.toggle("banners-hidden");
-    localStorage.setItem("bannerHidden", now ? "1" : "0");
-    bannerBtn.textContent = now ? "Show Banners" : "Hide Banners";
-  });
-  setBannerState();
-}
 
-function setBlinkState(){
-  if(!blinkBtn) return;
-  blinkBtn.textContent = blinkEnabled ? "Disable Blink" : "Enable Blink";
-}
-if(blinkBtn){
-  blinkBtn.addEventListener("click", ()=>{
-    blinkEnabled=!blinkEnabled;
-    localStorage.setItem(BLINK_KEY, blinkEnabled ? "0":"1");
-    setBlinkState();
-
-    applyBlink();
-
-  });
-  setBlinkState();
-}
 
 if(optionsBtn){
   optionsBtn.addEventListener("click", () => {
@@ -780,6 +763,10 @@ if(optionsBtn){
 window.addEventListener("storage", e => {
   if(e.key === "theme") applyTheme();
   if(e.key === "soundEnabled") soundEnabled = e.newValue !== "0";
+  if(e.key === BLINK_KEY) {
+    blinkEnabled = e.newValue !== "1";
+    applyBlink();
+  }
   if(e.key === "timezone") {
     timezone = e.newValue || timezone;
     if (tzDiv) tzDiv.textContent = `${timezone} (${getOffsetStr(timezone)})`;
