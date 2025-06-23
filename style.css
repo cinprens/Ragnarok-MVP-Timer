@@ -17,6 +17,7 @@
   --panel-border: rgba(64,224,208,0.6);
   --kills-h: auto;
   --ui-scale: 1;
+  --card-scale: 0.5; /* mid paneldeki kart ölçeği */
 }
 
 body.light {
@@ -259,6 +260,8 @@ button, select, input{
   border-radius:12px;
   border:1px solid var(--panel-border);
   box-shadow:0 6px 18px rgba(0,0,0,.55);
+  transform: scale(var(--card-scale));
+  transform-origin: top center;
 }
 
 .mvp-name   {font-size:1.5rem; margin:0;}
