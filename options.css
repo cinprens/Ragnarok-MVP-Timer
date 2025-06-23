@@ -13,10 +13,13 @@ body.light {
 }
 
 * { box-sizing: border-box; }
+html {
+  font-size: clamp(12px, 1.5vmin, 18px);
+}
 body {
   margin: 0;
   padding: 20px;
-  font: 14px Helvetica,Arial,sans-serif;
+  font: 1rem Helvetica,Arial,sans-serif;
   color: var(--fg);
   background: var(--bg) url("./Backgrounds/ragnarok_bg.png") center/cover no-repeat fixed;
 }
