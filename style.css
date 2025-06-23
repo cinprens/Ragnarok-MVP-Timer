@@ -502,3 +502,48 @@ ul { list-style: none; margin: 0; padding: 0; }
 #optionsPanel .prevs img{width:60px;height:60px;object-fit:contain;}
 #optionsPanel ul{list-style:none;padding:0;margin:10px 0;}
 #optionsPanel li{display:flex;gap:6px;align-items:center;margin-bottom:4px;}
+/* === Light theme overrides ====================================== */
+body.light {
+  --flash: #ff4081;
+  --blink: #333;
+  --panel-border: rgba(0,0,0,0.2);
+}
+body.light #tzSelect,
+body.light #currentTZ,
+body.light #currentTime {
+  background:#f0f0f0;
+  color:#222;
+  border:1px solid #ccc;
+}
+body.light .mvp-stack { background:#ffffff; }
+body.light #timerBox { background:#f0f0f0; border-color:#ccc; }
+body.light #mvpName { background:#e0e0e0; color:#222; }
+body.light #controls input,
+body.light #tombForm input {
+  background:#fff;
+  color:#222;
+  border:1px solid #bbb;
+}
+body.light #controls button,
+body.light #tombForm button {
+  background:#ddd;
+  color:#222;
+  border:1px solid #bbb;
+}
+body.light #left,
+body.light #right,
+body.light #killsWrapper,
+body.light #mid { background:var(--panel-bg); }
+body.light .mvp-row { background:rgba(255,255,255,0.9); border-bottom:1px solid #ccc; }
+body.light .mvp-row .mvp-timer { border-color:#bbb; }
+body.light .mvp-row.negative { background:#f8d7da; }
+body.light .mvp-row.expired { background:rgba(255,0,0,0.15); color:#222; }
+body.light .mvp-info span { color:#555; }
+body.light .spawn-date,
+body.light .tomb-time { color:#666; }
+body.light .scroll-up,
+body.light .scroll-down { background:#e0e0e0; color:#222; border:1px solid #ccc; }
+body.light .podium-slot,
+body.light .kill-row { background:#f0f0f0; color:#222; border:1px solid #ccc; }
+body.light .kill-row .kcount,
+body.light .podium-slot .pcount { color:var(--pos); }
