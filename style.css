@@ -303,7 +303,16 @@ button, select, input{
 #mvpTime.positive { color: var(--pos); }
 #mvpTime.negative { color: var(--neg); }
 
-#controls { display: flex; flex-wrap: wrap; gap: 6px; }
+#controls {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  align-items: center;
+}
+
+#controls .time-inputs { display: flex; flex-wrap: wrap; gap: 6px; }
+#controls .btn-group   { display: flex; gap: 6px; justify-content: center; }
+
 #controls input,
 #tombForm input{
   width:60px;
@@ -321,8 +330,14 @@ button, select, input{
   cursor: pointer;
 }
 #controls button:hover { background: #666; }
-
-#tombForm { display:flex; flex-wrap:wrap; gap:6px; }
+#tombForm {
+  display:flex;
+  flex-direction:column;
+  gap:6px;
+  align-items:center;
+}
+#tombForm .time-inputs { display:flex; flex-wrap:wrap; gap:6px; }
+#tombForm .btn-group   { display:flex; gap:6px; }
 #tombForm button {
   background: #444;
   color: var(--fg);
