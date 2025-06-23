@@ -28,11 +28,15 @@ function writeJson(file, data) {
   }
 }
 
-function mergeMvpLists(base=[], custom=[], edits=[]) {
+function mergeKey(m) {
+  return `${m.name}-${m.map || ""}`;
+}
+
+function mergeMvpLists(base = [], custom = [], edits = []) {
   const map = new Map();
-  base.forEach(m => map.set(m.name, m));
-  custom.forEach(m => map.set(m.name, m));
-  edits.forEach(m => map.set(m.name, m));
+  base.forEach(m => map.set(mergeKey(m), m));
+  custom.forEach(m => map.set(mergeKey(m), m));
+  edits.forEach(m => map.set(mergeKey(m), m));
   return Array.from(map.values());
 }
 

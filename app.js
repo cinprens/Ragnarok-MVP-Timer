@@ -27,8 +27,9 @@ if (typeof window !== "undefined") {
 
 /* ———————————————————  VERİ YAPISI  ——————————————————— */
 class MVP {
-  constructor({ id, file, map, respawnMin, spritePath, mapPath }) {
-    this.id       = id;
+  constructor({ id, uid, file, map, respawnMin, spritePath, mapPath }) {
+    this.id       = id;      // display name
+    this.uid      = uid;     // unique identifier
     this.file     = file;
     this.map      = map;
     this.respawn  = respawnMin * 60;
@@ -503,7 +504,7 @@ function resetAll() {
 /* ———————————————————  VERİ YÜKLE / KAYDET  ——————————————————— */
 function saveTimers() {
   const data = MVP_LIST.map(m => ({
-    id: m.id,
+    id: m.uid,
     remaining: m.remaining,
     running: m.running,
     spawnUTC: m.spawnUTC,
@@ -529,7 +530,7 @@ function loadTimers() {
     TOTAL_KILL = stored.totalKill || 0;
     try {
       (stored.timers || []).forEach(d => {
-        const m = MVP_LIST.find(x => x.id === d.id);
+        const m = MVP_LIST.find(x => x.uid === d.id);
         if (!m) return;
         m.kills   = d.kills || 0;
         m.running = !!d.running;
@@ -556,7 +557,7 @@ function loadTimers() {
     if (str) {
       try {
         JSON.parse(str).forEach(d => {
-          const m = MVP_LIST.find(x => x.id === d.id);
+          const m = MVP_LIST.find(x => x.uid === d.id);
           if (!m) return;
           m.kills   = d.kills || 0;
           m.running = !!d.running;
@@ -618,6 +619,7 @@ function buildList(list){
   list.forEach(d=>{
     const m=new MVP({
       id: d.name || d.id,
+      uid: `${d.name}-${d.map}`,
       file: d.file || d.img,
       map: d.map,
       respawnMin: d.respawn,
