@@ -641,6 +641,7 @@ async function loadAll(){
 
 API.on("mvp-update",list=>{
   buildList(list);
+  loadTimers();                 // mevcut timer ve kill verilerini tekrar yükle
   updateSpawnDates();
   UI.render();
   updateKillPanel();
