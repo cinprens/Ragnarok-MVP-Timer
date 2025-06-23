@@ -38,3 +38,6 @@ npm test
 ```
 If `node_modules` is missing, tests will fail to start.
 
+## License
+This project is released under the [MIT License](LICENSE).
+

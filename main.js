@@ -39,23 +39,23 @@ const createWindow = () => {
 
 function createMenu() {
   const template = [
-    { label: "Dosya", submenu: [{ label: "Çıkış", accelerator: "Alt+F4", role: "quit" }] },
-    { label: "Görünüm", submenu: [
-        { role: "reload", label: "Yenile" },
-        { role: "forceReload", label: "Zorla Yenile" },
+    { label: "File", submenu: [{ label: "Exit", accelerator: "Alt+F4", role: "quit" }] },
+    { label: "View", submenu: [
+        { role: "reload", label: "Reload" },
+        { role: "forceReload", label: "Force Reload" },
         { type: "separator" },
-        { role: "resetZoom", label: "Zoom Sıfırla" },
-        { role: "zoomIn", label: "Yakınlaştır" },
-        { role: "zoomOut", label: "Uzaklaştır" },
+        { role: "resetZoom", label: "Reset Zoom" },
+        { role: "zoomIn", label: "Zoom In" },
+        { role: "zoomOut", label: "Zoom Out" },
         { type: "separator" },
-        { role: "toggleDevTools", label: "Geliştirici Araçları" }
+        { role: "toggleDevTools", label: "Toggle Dev Tools" }
       ]},
     {
-      label: "Ayarlar",
+      label: "Options",
       accelerator: "Ctrl+,",
       click: () => openOptions()
     },
-    { label: "Yardım", submenu: [{ label: "GitHub", click: () => require("electron").shell.openExternal("https://github.com/") }] }
+    { label: "Help", submenu: [{ label: "GitHub", click: () => require("electron").shell.openExternal("https://github.com/") }] }
   ];
   Menu.setApplicationMenu(Menu.buildFromTemplate(template));
 }

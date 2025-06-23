@@ -459,7 +459,7 @@ function step() {
       if (m.remaining === -1 &&
           typeof Notification !== "undefined" &&
           Notification.permission === "granted") {
-        new Notification(m.id, { body: `${m.map} haritasında` });
+        new Notification(m.id, { body: `on map ${m.map}` });
       }
     }
   });
@@ -631,12 +631,12 @@ function populateTimeZones() {
   });
   const opt = document.createElement("option");
   opt.value = "custom";
-  opt.textContent = "Özel...";
+  opt.textContent = "Custom...";
   tzSel.append(opt);
 }
 function handleZoneChange() {
   if (tzSel.value === "custom") {
-    const z = prompt("Zaman Dilimi:", timezone);
+    const z = prompt("Time Zone:", timezone);
     if (z) timezone = z;
   } else {
     timezone = tzSel.value;
@@ -710,10 +710,10 @@ API.on("window-vis",state=>handleVisibility(state));
 /* ———————————————————  BUTON BAĞLANTILARI  ——————————————————— */
 const setBtn = $("#setBtn");
 if(setBtn) setBtn.onclick = () => {
-  if (!selected) { alert("Önce bir MVP seç"); return; }
+if (!selected) { alert("Please select an MVP first"); return; }
   const dk = parseInt($("#minInput").value || 0, 10);
   const sn = parseInt($("#secInput").value || 0, 10);
-  if (isNaN(dk) || isNaN(sn) || sn < 0 || sn > 59) { alert("Geçersiz süre"); return; }
+if (isNaN(dk) || isNaN(sn) || sn < 0 || sn > 59) { alert("Invalid time"); return; }
   selected.remaining = ozelZamanaGoreKalan(dk, sn);
   selected.spawnUTC  = Date.now() + selected.remaining * 1000;
   selected.tomb      = false;
@@ -735,16 +735,16 @@ const resetSelBtn=$("#resetSel");
 if(resetSelBtn) resetSelBtn.onclick = resetSelected;
 const tombBtn=$("#tombBtn");
 if(tombBtn) tombBtn.onclick = () => {
-  if (!selected) { alert("Önce bir MVP seç"); return; }
+  if (!selected) { alert("Please select an MVP first"); return; }
   toggleTomb(selected);
 };
 const resetRankBtn = document.getElementById("rankResetBtn");
 if(resetRankBtn) resetRankBtn.onclick = () => {
-  if(confirm("MVP Rank sıfırlansın mı?")) resetRank();
+  if(confirm("Reset MVP Rank?")) resetRank();
 };
 const resetTimersBtn = document.getElementById("resetTimersBtn");
 if(resetTimersBtn) resetTimersBtn.onclick = () => {
-  if(confirm("Tüm sayaçlar sıfırlansın mı?")) resetAll();
+  if(confirm("Reset all timers?")) resetAll();
 };
 
 function autoTab(curr, next){
