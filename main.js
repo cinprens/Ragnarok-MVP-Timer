@@ -25,7 +25,7 @@ const createWindow = () => {
     height: 800,
     webPreferences: { preload: path.join(__dirname, "preload.js"), contextIsolation: true }
   });
-  mainWin.loadFile("index.html");
+  mainWin.loadFile(path.join(__dirname, "index.html"));
   createMenu();
 };
 
@@ -48,7 +48,7 @@ const createOptionsWindow = () => {
     title: "MVP Ayarları",
     webPreferences: { preload: path.join(__dirname, "preload.js"), contextIsolation: true },
   });
-  win.loadFile("options.html");
+  win.loadFile(path.join(__dirname, "options.html"));
 };
 
 ipcMain.handle("open-options", () => {
@@ -62,7 +62,7 @@ ipcMain.handle("open-options", () => {
     parent: mainWin,
     webPreferences: { preload: path.join(__dirname, "preload.js"), contextIsolation: true },
   });
-  optionsWin.loadFile("options.html");
+  optionsWin.loadFile(path.join(__dirname, "options.html"));
 });
 
 ipcMain.handle("save-custom", async (_e, data) => {
