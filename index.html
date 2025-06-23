@@ -63,6 +63,7 @@
               </div>
             </div>
           </div><!-- /.mvp-controls -->
+          <button id="resetTimersBtn">Reset All</button>
     </div><!-- /.mvp-stack -->
     </div><!-- /#mid-panel -->
     <div class="v-resizer"></div>
@@ -116,16 +117,6 @@ document.addEventListener('DOMContentLoaded',()=>{loadPanelWidths();loadPanelHei
 
   <script src="timeUtils.js" type="module"></script>
   <script type="module" src="app.js"></script>
-  <script>
-    function updateScale(){
-      const wRatio = window.innerWidth / 1920;
-      const hRatio = window.innerHeight / 1080;
-      const s = Math.min(wRatio, hRatio);
-      document.documentElement.style.setProperty('--ui-scale', s);
-    }
-    window.addEventListener('resize', updateScale);
-    updateScale();
-  </script>
 </div><!-- /scale-wrapper -->
 </body>
 </html>

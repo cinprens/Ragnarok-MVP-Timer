@@ -1,6 +1,9 @@
 import { contextBridge, ipcRenderer } from "electron";
 import { readFileSync, writeFileSync, existsSync, copyFileSync, mkdirSync, unlinkSync } from "fs";
 import path from "path";
+import { fileURLToPath } from "url";
+
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
 const basePath   = path.join(__dirname, "mvpData.json");
 // Kullanıcı verileri dizini ana süreçten alınır

@@ -21,10 +21,10 @@ let mainWin;
 let optionsWin;
 const createWindow = () => {
   mainWin = new BrowserWindow({
-    width: 1920,
-    height: 1080,
-    minWidth: 1024,
-    minHeight: 640,
+    width: 1280,
+    height: 720,
+    minWidth: 960,
+    minHeight: 540,
     webPreferences: { preload: path.join(__dirname, "preload.js"), contextIsolation: true }
   });
   mainWin.loadFile(path.join(__dirname, "index.html"));

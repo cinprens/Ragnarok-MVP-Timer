@@ -10,6 +10,7 @@
   --row-h: clamp(60px, 7vmin, 72px);
   --left-panel-width: clamp(180px, 20vw, 25%);
   --right-panel-width: clamp(180px, 20vw, 25%);
+  --mid-width: 640px;
   --highlight: #0ff;
   --panel-alpha: 0.75;                  /* tek satırdan şeffaflık ayarı */
   --panel-bg: rgba(24,24,24,var(--panel-alpha));
@@ -49,12 +50,10 @@ body{
 }
 
 #scale-wrapper {
-  width:calc(100vw / var(--ui-scale));
-  height:calc(100vh / var(--ui-scale));
-  min-width:1920px;
-  min-height:1080px;
-  transform-origin:top left;
-  transform:scale(var(--ui-scale));
+  width:100vw;
+  height:100vh;
+  min-width:1280px;
+  min-height:720px;
 }
 body::before{
   content:"";
@@ -120,7 +119,7 @@ html,body{
   grid-template-columns:
       minmax(180px,var(--left-w,var(--left-panel-width)))
       clamp(4px,0.4vw,6px)
-      1fr
+      var(--mid-width)
       clamp(4px,0.4vw,6px)
       minmax(180px,var(--right-w,var(--right-panel-width)));
 
@@ -256,7 +255,7 @@ button, select, input{
   flex:none;
   background:#2a2a2a;
   width:100%;
-  max-width: clamp(320px, 50vw, 640px);
+  max-width: clamp(320px, 35vw, 540px);
   border-radius:12px;
   border:1px solid var(--panel-border);
   box-shadow:0 6px 18px rgba(0,0,0,.55);
@@ -476,6 +475,16 @@ ul { list-style: none; margin: 0; padding: 0; }
   padding:6px 12px;
   cursor:pointer;
 }
+#resetTimersBtn{
+  align-self:center;
+  background:#444;
+  color:var(--fg);
+  border:none;
+  padding:6px 12px;
+  margin-top:8px;
+  cursor:pointer;
+}
+#resetTimersBtn:hover{ background:#666; }
 #rankResetBtn:hover{ background:#666; }
 #killsPanel{
   display:flex;
@@ -616,6 +625,8 @@ body.light .mvp-row button {
 body.light .mvp-row button:hover { background:#eee; }
 body.light #rankResetBtn{ background:#ddd; color:#222; border:1px solid #bbb; }
 body.light #rankResetBtn:hover{ background:#eee; }
+body.light #resetTimersBtn{ background:#ddd; color:#222; border:1px solid #bbb; }
+body.light #resetTimersBtn:hover{ background:#eee; }
 body.light .scroll-up,
 body.light .scroll-down { background:#e0e0e0; color:#222; border:1px solid #ccc; }
 body.light .podium-slot,

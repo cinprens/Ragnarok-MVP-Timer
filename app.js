@@ -59,7 +59,7 @@ let autoReturnId = null;
 
 const $        = s => document.querySelector(s);
 const tzSel    = $("#tzSelect");
-const tzDiv    = $("#currentTZ");
+const tzDiv    = () => document.getElementById("currentTZ");
 const timeDiv  = $("#currentTime");
 
 let timezone = localStorage.getItem("timezone") ||
@@ -585,7 +585,8 @@ function loadTimers() {
     }
   }
 
-  if (tzDiv) tzDiv.textContent = timezone;
+  const div = tzDiv();
+  if (div) div.textContent = timezone;
   updateSpawnDates();
   UI.render();
   updateKillPanel();
@@ -593,7 +594,8 @@ function loadTimers() {
 
 /* ———————————————————  ZAMAN DİLİMİ SEÇİCİ  ——————————————————— */
 function populateTimeZones() {
-  const zones = Intl.supportedValuesOf("timeZone");
+  const zones = typeof Intl.supportedValuesOf === "function" ?
+    Intl.supportedValuesOf("timeZone") : ["UTC", "Asia/Tokyo"];
   zones.forEach(z => {
     const o      = document.createElement("option");
     o.value      = z;
@@ -613,7 +615,8 @@ function handleZoneChange() {
   } else {
     timezone = tzSel.value;
   }
-  if (tzDiv) tzDiv.textContent = timezone;
+  const div = tzDiv();
+  if (div) div.textContent = timezone;
   updateSpawnDates();
   UI.render();
   saveTimers();
@@ -659,6 +662,8 @@ API.on("mvp-update",list=>{
 });
 
 loadAll();
+const tzInit = tzDiv();
+if (tzInit) tzInit.textContent = timezone;
 
 // Pencere görünürlüğü değiştiğinde zamanlayıcıları ayarla
 function handleVisibility(v){
@@ -704,6 +709,10 @@ if(tombBtn) tombBtn.onclick = () => {
 const resetRankBtn = document.getElementById("rankResetBtn");
 if(resetRankBtn) resetRankBtn.onclick = () => {
   if(confirm("MVP Rank sıfırlansın mı?")) resetRank();
+};
+const resetTimersBtn = document.getElementById("resetTimersBtn");
+if(resetTimersBtn) resetTimersBtn.onclick = () => {
+  if(confirm("Tüm sayaçlar sıfırlansın mı?")) resetAll();
 };
 
 function autoTab(curr, next){
@@ -840,7 +849,8 @@ window.addEventListener("storage", e => {
   }
   if(e.key === "timezone") {
     timezone = e.newValue || timezone;
-    if (tzDiv) tzDiv.textContent = timezone;
+    const div = tzDiv();
+    if (div) div.textContent = timezone;
     updateSpawnDates();
     UI.render();
     saveTimers();
