@@ -81,6 +81,7 @@ contextBridge.exposeInMainWorld("api", {
   updateMvps: data => ipcRenderer.send("mvp-update", data),
   on: (ch, cb) => ipcRenderer.on(ch, (_e, data) => cb(data)),
   openOptions: () => ipcRenderer.invoke("open-options"),
-  setWindowSize: (w, h) => ipcRenderer.send("set-window-size", { width: w, height: h })
+  setWindowSize: (w, h) => ipcRenderer.send("set-window-size", { width: w, height: h }),
+  getScreenSize: () => ipcRenderer.invoke("get-screen-size")
 });
 export { mergeMvpLists, loadMvps };

@@ -1,4 +1,4 @@
-import { app, BrowserWindow, Menu, ipcMain } from "electron";
+import { app, BrowserWindow, Menu, ipcMain, screen } from "electron";
 import { fileURLToPath } from "url";
 import path from "node:path";
 import { promises as fs } from "node:fs";
@@ -82,6 +82,11 @@ ipcMain.on("set-window-size", (_e, size) => {
   if (mainWin && size?.width && size?.height) {
     mainWin.setSize(size.width, size.height);
   }
+});
+
+ipcMain.handle("get-screen-size", () => {
+  const { width, height } = screen.getPrimaryDisplay().workAreaSize;
+  return { width, height };
 });
 
 // Renderer'a userData dizini yolunu döndürür
