@@ -23,6 +23,8 @@ const createWindow = () => {
   mainWin = new BrowserWindow({
     width: 1920,
     height: 1080,
+    minWidth: 1024,
+    minHeight: 640,
     webPreferences: { preload: path.join(__dirname, "preload.js"), contextIsolation: true }
   });
   mainWin.loadFile(path.join(__dirname, "index.html"));
@@ -73,6 +75,12 @@ function openOptions() {
 }
 
 ipcMain.handle("open-options", () => openOptions());
+
+ipcMain.on("set-window-size", (_e, size) => {
+  if (mainWin && size?.width && size?.height) {
+    mainWin.setSize(size.width, size.height);
+  }
+});
 
 // Renderer'a userData dizini yolunu döndürür
 ipcMain.handle("get-user-data-path", () => app.getPath("userData"));

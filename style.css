@@ -7,9 +7,9 @@
   --blink: #0ff;
   --sprite: 64px;
   --thumb: 64px;
-  --row-h: 68px;
-  --left-panel-width: 320px;
-  --right-panel-width: 320px;
+  --row-h: clamp(60px, 6vh, 68px);
+  --left-panel-width: clamp(180px, 20vw, 25%);
+  --right-panel-width: clamp(180px, 20vw, 25%);
   --highlight: #0ff;
   --panel-alpha: 0.75;                  /* tek satırdan şeffaflık ayarı */
   --panel-bg: rgba(24,24,24,var(--panel-alpha));
@@ -99,9 +99,9 @@ html,body{height:100%;overflow:hidden;margin:0;padding:0;box-sizing:border-box;}
 
   grid-template-columns:
       minmax(180px,var(--left-w,var(--left-panel-width)))
-      4px
+      clamp(4px,0.4vw,6px)
       1fr
-      4px
+      clamp(4px,0.4vw,6px)
       minmax(180px,var(--right-w,var(--right-panel-width)));
 
   grid-template-rows: var(--mid-h,1fr) var(--kills-h,1fr);
@@ -126,25 +126,25 @@ html,body{height:100%;overflow:hidden;margin:0;padding:0;box-sizing:border-box;}
 }
 
 .resizer {
-  width: 4px;
+  width: clamp(4px, 0.4vw, 6px);
   background: #444;
   cursor: col-resize;
   z-index: 10;
 }
 .resizer:hover { background: #666; }
 @media (hover:none) {
-  .resizer { width: 6px; }
+  .resizer { width: clamp(6px, 0.6vw, 8px); }
 }
 .v-resizer {
   width: 100%;
-  height: 4px;
+  height: clamp(4px, 0.4vh, 6px);
   background: #444;
   cursor: row-resize;
   z-index: 10;
 }
 .v-resizer:hover { background: #666; }
 @media (hover:none) {
-  .v-resizer { height: 6px; }
+  .v-resizer { height: clamp(6px, 0.6vh, 8px); }
 }
 
 .left-panel,
@@ -236,7 +236,7 @@ button, select, input{
   flex:none;
   background:#2a2a2a;
   width:100%;
-  max-width:640px;
+  max-width: clamp(320px, 50vw, 640px);
   border-radius:12px;
   border:1px solid var(--panel-border);
   box-shadow:0 6px 18px rgba(0,0,0,.55);
@@ -244,14 +244,14 @@ button, select, input{
 
 .mvp-name   {font-size:24px; margin:0;}
 .timer      {font-size:22px; color:#4caf50;}
-.mvp-sprite {width:180px; height:auto;}
-.mvp-map    {width:180px; display:block;}
+.mvp-sprite {width:clamp(120px, 12vw, 180px); height:auto;}
+.mvp-map    {width:clamp(120px, 12vw, 180px); display:block;}
 
 
 #usageNotes{display:none !important;}
 #mvpName { background:#444; color:var(--fg); padding:4px 8px; border-radius:4px; font-size:1.6rem; text-align:center; margin-bottom:4px; }
 #mvpGif,
-#mvpMap { width:140px; height:140px; object-fit:contain; image-rendering:pixelated; }
+#mvpMap { width:clamp(100px, 10vw, 140px); height:clamp(100px, 10vw, 140px); object-fit:contain; image-rendering:pixelated; }
 #mvpMap { border-radius: 6px; }
 #mapName { font-size:1rem; color:#9e9e9e; margin-top:-4px; }
 
