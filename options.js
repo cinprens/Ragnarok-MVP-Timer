@@ -1,25 +1,98 @@
-const saveBtn = document.getElementById("saveBtn");
-const themeSelect = document.getElementById("themeSelect");
-const soundToggle = document.getElementById("soundToggle");
-const tzSelect = document.getElementById("tzSelectOpt");
-const blinkToggle = document.getElementById("blinkToggleOpt");
+// Options window logic for MVP editing and app settings
 
-// ----------------------- MVP EKLE/DÜZENLE -------------------------
+const saveBtn   = document.getElementById("saveBtn");
+const newBtn    = document.getElementById("newBtn");
+const resetBtn  = document.getElementById("resetBtn");
+const themeSel  = document.getElementById("themeSelect");
+const soundTog  = document.getElementById("soundToggle");
+const tzSel     = document.getElementById("tzSelectOpt");
+const blinkTog  = document.getElementById("blinkToggleOpt");
+const listBox   = document.getElementById("mvpList");
+const mapInput  = document.getElementById("mapImg");
+
+let data = [];
+let editIndex = -1;
+
+// ----- Helper functions -----
+function fillForm(m = {}) {
+  document.getElementById("id").value = m.id || "";
+  document.getElementById("name").value = m.name || "";
+  document.getElementById("map").value = m.map || "";
+  document.getElementById("respawn").value = m.respawn || "";
+  mapInput.value = "";
+}
+
+function renderList() {
+  listBox.innerHTML = "";
+  data.forEach((m, idx) => {
+    const li = document.createElement("li");
+    li.textContent = `${m.name} (${m.map})`;
+    const eBtn = document.createElement("button");
+    eBtn.textContent = "Edit";
+    eBtn.onclick = () => { editIndex = idx; fillForm(m); };
+    const dBtn = document.createElement("button");
+    dBtn.textContent = "Delete";
+    dBtn.onclick = () => { data.splice(idx, 1); saveData(); renderList(); };
+    li.append(eBtn, dBtn);
+    listBox.append(li);
+  });
+}
+
+function saveData() {
+  window.api.writeEdit && window.api.writeEdit(data);
+}
+
+function loadData() {
+  data = window.api.readEdit && window.api.readEdit();
+  if (!Array.isArray(data)) {
+    // fallback to base
+    data = window.api.getMvps ? window.api.getMvps() : [];
+  }
+  renderList();
+}
+
+// ----- Form actions -----
 saveBtn.onclick = async () => {
   const entry = {
-    id: document.getElementById("id").value,
-    name: document.getElementById("name").value,
-    map: document.getElementById("map").value,
-    respawn: parseInt(document.getElementById("respawn").value, 10)
+    id: document.getElementById("id").value.trim(),
+    name: document.getElementById("name").value.trim(),
+    map: document.getElementById("map").value.trim(),
+    respawn: parseInt(document.getElementById("respawn").value, 10) || 0
   };
-  if (window.api && window.api.readCustom && window.api.writeCustom) {
-    const list = window.api.readCustom() || [];
-    list.push(entry);
-    window.api.writeCustom(list);
+
+  if (mapInput.files[0]) {
+    const f = mapInput.files[0];
+    const ext = f.name.split(".").pop().toLowerCase();
+    if (!["gif", "jpg", "png"].includes(ext)) {
+      alert("Only gif, jpg or png allowed");
+      return;
+    }
+    const p = window.api.copyMap && window.api.copyMap(f.path, f.name);
+    if (p) entry.mapImg = p;
+  }
+
+  if (editIndex >= 0) {
+    data[editIndex] = entry;
+  } else {
+    data.push(entry);
+  }
+  saveData();
+  renderList();
+  fillForm();
+  editIndex = -1;
+};
+
+newBtn.onclick = () => { editIndex = -1; fillForm(); };
+
+resetBtn.onclick = () => {
+  if (confirm("Reset to default list?")) {
+    window.api.resetEdit && window.api.resetEdit();
+    loadData();
+    fillForm();
   }
 };
 
-// ----------------------- SEKME GEÇİŞİ -----------------------------
+// ----- Tabs -----
 document.querySelectorAll(".tabs button").forEach(btn => {
   btn.addEventListener("click", () => {
     document.querySelectorAll(".tabs button").forEach(b => b.classList.remove("active"));
@@ -29,38 +102,39 @@ document.querySelectorAll(".tabs button").forEach(btn => {
   });
 });
 
-// ----------------------- AYARLAR ---------------------------------
+// ----- App settings -----
 function populateZones() {
   Intl.supportedValuesOf("timeZone").forEach(z => {
     const o = document.createElement("option");
     o.value = z;
     o.textContent = z;
-    tzSelect.append(o);
+    tzSel.append(o);
   });
 }
 
 function loadSettings() {
-  themeSelect.value = localStorage.getItem("theme") || "dark";
-  soundToggle.checked = localStorage.getItem("soundEnabled") !== "0";
-  blinkToggle.checked = localStorage.getItem("blinkOff") !== "1";
-  tzSelect.value = localStorage.getItem("timezone") || Intl.DateTimeFormat().resolvedOptions().timeZone;
+  themeSel.value = localStorage.getItem("theme") || "dark";
+  soundTog.checked = localStorage.getItem("soundEnabled") !== "0";
+  blinkTog.checked = localStorage.getItem("blinkOff") !== "1";
+  tzSel.value = localStorage.getItem("timezone") || Intl.DateTimeFormat().resolvedOptions().timeZone;
 }
 
-themeSelect.addEventListener("change", () => {
-  localStorage.setItem("theme", themeSelect.value);
+themeSel.addEventListener("change", () => {
+  localStorage.setItem("theme", themeSel.value);
 });
 
-soundToggle.addEventListener("change", () => {
-  localStorage.setItem("soundEnabled", soundToggle.checked ? "1" : "0");
+soundTog.addEventListener("change", () => {
+  localStorage.setItem("soundEnabled", soundTog.checked ? "1" : "0");
 });
 
-blinkToggle.addEventListener("change", () => {
-  localStorage.setItem("blinkOff", blinkToggle.checked ? "0" : "1");
+blinkTog.addEventListener("change", () => {
+  localStorage.setItem("blinkOff", blinkTog.checked ? "0" : "1");
 });
 
-tzSelect.addEventListener("change", () => {
-  localStorage.setItem("timezone", tzSelect.value);
+tzSel.addEventListener("change", () => {
+  localStorage.setItem("timezone", tzSel.value);
 });
 
 populateZones();
 loadSettings();
+loadData();
