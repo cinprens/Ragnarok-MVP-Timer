@@ -26,6 +26,12 @@ const createWindow = () => {
     webPreferences: { preload: path.join(__dirname, "preload.js"), contextIsolation: true }
   });
   mainWin.loadFile(path.join(__dirname, "index.html"));
+  mainWin.on("minimize", () => {
+    mainWin.webContents.send("window-vis", false);
+  });
+  mainWin.on("restore", () => {
+    mainWin.webContents.send("window-vis", true);
+  });
   createMenu();
 };
 

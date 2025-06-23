@@ -473,6 +473,13 @@ function stopTimers(){
   }
 }
 
+function refreshRemaining(){
+  MVP_LIST.forEach(m=>{
+    m.remaining = Math.floor((m.spawnUTC - Date.now()) / 1000);
+  });
+  updateSpawnDates();
+}
+
 /* ———————————————————  RESET FONKSİYONLARI  ——————————————————— */
 function resetMvp(m) {
   m.remaining = m.respawn;
@@ -637,6 +644,21 @@ API.on("mvp-update",list=>{
 });
 
 loadAll();
+
+// Pencere görünürlüğü değiştiğinde zamanlayıcıları ayarla
+function handleVisibility(v){
+  if(!v){
+    stopTimers();
+  }else{
+    refreshRemaining();
+    UI.render();
+    if(anyRunning()) startTimers();
+  }
+}
+document.addEventListener("visibilitychange",()=>{
+  handleVisibility(!document.hidden);
+});
+API.on("window-vis",state=>handleVisibility(state));
 
 
 /* ———————————————————  BUTON BAĞLANTILARI  ——————————————————— */
