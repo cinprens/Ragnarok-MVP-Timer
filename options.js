@@ -7,10 +7,6 @@ const themeSel  = document.getElementById("themeSelect");
 const soundTog  = document.getElementById("soundToggle");
 const tzSel     = document.getElementById("tzSelectOpt");
 const blinkTog  = document.getElementById("blinkToggleOpt");
-const resSel    = document.getElementById("resSelect");
-const widthInp  = document.getElementById("widthInput");
-const heightInp = document.getElementById("heightInput");
-const applyBtn  = document.getElementById("applyResBtn");
 const listBox   = document.getElementById("mvpList");
 const mapInput  = document.getElementById("mapImg");
 const mvpInput  = document.getElementById("mvpImg");
@@ -19,15 +15,6 @@ const mvpInput  = document.getElementById("mvpImg");
 // to customMvps.json while edits overwrite mvpDataEdit.json.
 let data = [];
 let editIndex = -1;
-
-async function applyAutoResolution() {
-  const size = await (window.api?.getScreenSize?.());
-  if (size) {
-    widthInp.value = size.width;
-    heightInp.value = size.height;
-    window.api.setWindowSize && window.api.setWindowSize(size.width, size.height);
-  }
-}
 
 // ----- Helper functions -----
 function fillForm(m = {}) {
@@ -155,19 +142,8 @@ function loadSettings() {
   themeSel.value = localStorage.getItem("theme") || "dark";
   soundTog.checked = localStorage.getItem("soundEnabled") !== "0";
   blinkTog.checked = localStorage.getItem("blinkOff") !== "1";
-  tzSel.value = localStorage.getItem("timezone") || Intl.DateTimeFormat().resolvedOptions().timeZone;
-  const res = localStorage.getItem("resolution") || "1920x1080";
-  if (res === "auto") {
-    resSel.value = "auto";
-    applyAutoResolution();
-  } else {
-    const match = Array.from(resSel.options).some(o => o.value === res);
-    resSel.value = match ? res : "custom";
-    const [w, h] = res.split("x").map(Number);
-    widthInp.value = w;
-    heightInp.value = h;
-    if (window.api && window.api.setWindowSize) window.api.setWindowSize(w, h);
-  }
+  tzSel.value = localStorage.getItem("timezone") ||
+                Intl.DateTimeFormat().resolvedOptions().timeZone;
 }
 
 themeSel.addEventListener("change", () => {
@@ -184,36 +160,6 @@ blinkTog.addEventListener("change", () => {
 
 tzSel.addEventListener("change", () => {
   localStorage.setItem("timezone", tzSel.value);
-});
-
-resSel.addEventListener("change", async () => {
-  const val = resSel.value;
-  if (val === "auto") {
-    localStorage.setItem("resolution", "auto");
-    await applyAutoResolution();
-  } else if (val === "custom") {
-    localStorage.setItem("resolution", `${widthInp.value}x${heightInp.value}`);
-  } else {
-    localStorage.setItem("resolution", val);
-    const [w, h] = val.split("x").map(Number);
-    widthInp.value = w;
-    heightInp.value = h;
-    if (window.api && window.api.setWindowSize) window.api.setWindowSize(w, h);
-  }
-});
-
-applyBtn.addEventListener("click", () => {
-  const w = parseInt(widthInp.value, 10);
-  const h = parseInt(heightInp.value, 10);
-  if (Number.isNaN(w) || Number.isNaN(h) || w < 1024 || h < 640) {
-    alert("Minimum resolution is 1024x640");
-    return;
-  }
-  const val = `${w}x${h}`;
-  localStorage.setItem("resolution", val);
-  const match = Array.from(resSel.options).find(o => o.value === val);
-  resSel.value = match ? val : "custom";
-  if (window.api && window.api.setWindowSize) window.api.setWindowSize(w, h);
 });
 
 populateZones();

@@ -78,16 +78,6 @@ function openOptions() {
 
 ipcMain.handle("open-options", () => openOptions());
 
-ipcMain.on("set-window-size", (_e, size) => {
-  if (mainWin && size?.width && size?.height) {
-    mainWin.setSize(size.width, size.height);
-  }
-});
-
-ipcMain.handle("get-screen-size", () => {
-  const { width, height } = screen.getPrimaryDisplay().workAreaSize;
-  return { width, height };
-});
 
 // Renderer'a userData dizini yolunu döndürür
 ipcMain.handle("get-user-data-path", () => app.getPath("userData"));
