@@ -33,25 +33,24 @@ function createMenu() {
   const template = [
     { label: "Dosya", submenu: [{ label: "Çıkış", accelerator: "Alt+F4", role: "quit" }] },
     { label: "Görünüm", submenu: [
-        { label: "Yenile", accelerator: "Ctrl+R", role: "reload" },
-        { label: "Geliştirici Araçları", accelerator: "Ctrl+Shift+I", role: "toggleDevTools" }
+        { role: "reload", label: "Yenile" },
+        { role: "forceReload", label: "Zorla Yenile" },
+        { type: "separator" },
+        { role: "resetZoom", label: "Zoom Sıfırla" },
+        { role: "zoomIn", label: "Yakınlaştır" },
+        { role: "zoomOut", label: "Uzaklaştır" },
+        { type: "separator" },
+        { role: "toggleDevTools", label: "Geliştirici Araçları" }
+      ]},
+    { label: "Ayarlar", submenu: [
+        { label: "Seçenekler", accelerator: "Ctrl+,", click: () => openOptions() }
       ]},
     { label: "Yardım", submenu: [{ label: "GitHub", click: () => require("electron").shell.openExternal("https://github.com/") }] }
   ];
   Menu.setApplicationMenu(Menu.buildFromTemplate(template));
 }
 
-const createOptionsWindow = () => {
-  const win = new BrowserWindow({
-    width: 600,
-    height: 700,
-    title: "MVP Ayarları",
-    webPreferences: { preload: path.join(__dirname, "preload.js"), contextIsolation: true },
-  });
-  win.loadFile(path.join(__dirname, "options.html"));
-};
-
-ipcMain.handle("open-options", () => {
+function openOptions() {
   if (optionsWin && !optionsWin.isDestroyed()) {
     optionsWin.focus();
     return;
@@ -63,7 +62,9 @@ ipcMain.handle("open-options", () => {
     webPreferences: { preload: path.join(__dirname, "preload.js"), contextIsolation: true },
   });
   optionsWin.loadFile(path.join(__dirname, "options.html"));
-});
+}
+
+ipcMain.handle("open-options", () => openOptions());
 
 ipcMain.handle("save-custom", async (_e, data) => {
   const file = path.join(app.getPath("userData"), "customMvps.json");
