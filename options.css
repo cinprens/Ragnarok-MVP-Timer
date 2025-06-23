@@ -4,7 +4,6 @@
   --panel-bg: rgba(24,24,24,0.8);
   --panel-border: rgba(64,224,208,0.6);
   --highlight: #0ff;
-  --ui-scale: 1;
 }
 
 body.light {
@@ -14,16 +13,15 @@ body.light {
 }
 
 * { box-sizing: border-box; }
+html {
+  font-size: clamp(12px, 1.5vmin, 18px);
+}
 body {
   margin: 0;
   padding: 20px;
-  font: 14px Helvetica,Arial,sans-serif;
+  font: 1rem Helvetica,Arial,sans-serif;
   color: var(--fg);
   background: var(--bg) url("./Backgrounds/ragnarok_bg.png") center/cover no-repeat fixed;
-  width: calc(100vw / var(--ui-scale));
-  height: calc(100vh / var(--ui-scale));
-  transform-origin: top left;
-  transform: scale(var(--ui-scale));
 }
 body::before {
   content: "";
