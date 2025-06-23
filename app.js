@@ -51,7 +51,9 @@ let MVP_LIST    = [];
 let KILL_LOG    = [];
 let TOTAL_KILL  = 0;
 let selected    = null;
-let timerId     = null;
+let rafId       = null;  // requestAnimationFrame döngü ID'si
+let lastFrame   = 0;     // Son frame zamanı
+let accum       = 0;     // Biriken süre (saniye)
 let autoReturnId = null;
 
 const $        = s => document.querySelector(s);
@@ -393,8 +395,36 @@ function step() {
   applyBlink();
   if (!anyRunning()) stopTimers();
 }
-function startTimers() { if (!timerId) timerId = setInterval(step, 1000); }
-function stopTimers()  { if (timerId) { clearInterval(timerId); timerId = null; }}
+function loop(now){
+  if(!lastFrame) lastFrame = now;
+  const delta = (now - lastFrame) / 1000;
+  lastFrame = now;
+  accum += delta;
+  while(accum >= 1){
+    step();
+    accum -= 1;
+  }
+  if(anyRunning()){
+    rafId = requestAnimationFrame(loop);
+  }else{
+    stopTimers();
+  }
+}
+function startTimers(){
+  if(!rafId){
+    lastFrame = 0;
+    accum = 0;
+    rafId = requestAnimationFrame(loop);
+  }
+}
+function stopTimers(){
+  if(rafId){
+    cancelAnimationFrame(rafId);
+    rafId = null;
+    lastFrame = 0;
+    accum = 0;
+  }
+}
 
 /* ———————————————————  RESET FONKSİYONLARI  ——————————————————— */
 function resetMvp(m) {
