@@ -484,14 +484,14 @@ function buildList(list){
   MVP_LIST.length=0;
   list.forEach(d=>{
     const m=new MVP({
-      id:d.id,
-      file:d.file,
-      map:d.map,
-      respawnMin:d.respawn,
-      spritePath:d.spritePath,
-      mapPath:d.mapPath
+      id: d.name || d.id,
+      file: d.file || d.img,
+      map: d.map,
+      respawnMin: d.respawn,
+      spritePath: d.img || d.spritePath,
+      mapPath: d.mapImg || d.mapPath
     });
-    m.builtIn=d.builtIn;
+    m.builtIn = d.builtIn;
     MVP_LIST.push(m);
   });
 }
