@@ -1,4 +1,4 @@
-const fs=require("fs");
+import fs from "fs";
 let html;
 beforeAll(()=>{html=fs.readFileSync("index.html","utf8");});
 test("ana paneller mevcut",()=>{

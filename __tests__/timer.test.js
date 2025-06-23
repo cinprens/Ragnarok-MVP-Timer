@@ -1,4 +1,5 @@
-const data = require("../mvpData.json");
+import fs from "fs";
+const data = JSON.parse(fs.readFileSync("../mvpData.json", "utf8"));
 const times={
   "Beelzebub":46800,
   "Maya":9000,
@@ -42,8 +43,8 @@ test("sayac azalir",()=>{
   expect(m.remaining).toBe(1);
 });
 
-test("step fonksiyonu sayaci azaltir",()=>{
-  const mod=require("../app.js");
+test("step fonksiyonu sayaci azaltir",async()=>{
+  const mod=await import("../app.js");
   mod.MVP_LIST.length=0;
   mod.MVP_LIST.push({id:"X",file:"",map:"",respawn:60,remaining:5,running:true,tomb:false,tombTime:"",spawnUTC:Date.now()+5000});
   mod.step();
