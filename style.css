@@ -336,7 +336,7 @@ button, select, input{
 ul { list-style: none; margin: 0; padding: 0; }
 .mvp-row {
   display: grid;
-  grid-template-columns: var(--sprite) 1fr var(--thumb) 90px 60px 60px;
+  grid-template-columns: var(--sprite) 1fr var(--thumb) 90px 60px 70px;
   align-items: center;
   gap: 8px;
   min-height: var(--row-h);
@@ -377,7 +377,8 @@ ul { list-style: none; margin: 0; padding: 0; }
   background: #444;
   color: var(--fg);
   border: none;
-  padding: 6px 12px;
+  padding: 6px 8px;
+  font-size: 0.8rem;
   cursor: pointer;
 }
 .mvp-row button:hover { background: #666; }
@@ -554,6 +555,8 @@ body.light .mvp-row button {
   background:#ddd;
   color:#222;
   border:1px solid #bbb;
+  padding:6px 8px;
+  font-size:0.8rem;
 }
 body.light .mvp-row button:hover { background:#eee; }
 body.light .scroll-up,
