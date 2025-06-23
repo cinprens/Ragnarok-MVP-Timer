@@ -32,28 +32,36 @@
         <img  id="mvpMap" class="mvp-map"   alt="">
         <div id="mapName"></div>
 
-        <div class="mvp-controls">
-          <div class="option-timer">
-          <div class="box-title">Optional Timer (Minutes / Seconds)</div>
-            <div id="controls">
-              <input id="minInput" type="number" placeholder="min" min="0">
-              <input id="secInput" type="number" placeholder="sec" min="0" max="59">
-              <button id="setBtn">Set</button>
-              <button id="startBtn">Start</button>
-              <button id="stopBtn">Stop</button>
+          <div class="mvp-controls">
+            <div class="option-timer">
+            <div class="box-title">Optional Timer (Minutes / Seconds)</div>
+              <div id="controls">
+                <div class="time-inputs">
+                  <input id="minInput" type="number" placeholder="min" min="0">
+                  <input id="secInput" type="number" placeholder="sec" min="0" max="59">
+                </div>
+                <div class="btn-group">
+                  <button id="setBtn">Set</button>
+                  <button id="startBtn">Start</button>
+                  <button id="stopBtn">Stop</button>
+                </div>
+              </div>
             </div>
-          </div>
 
-          <div class="tomb-time">
-            <div class="box-title">Tomb Time (Hour / Minute / Second)</div>
-            <div id="tombForm">
-              <input id="tombHour" type="number" placeholder="hh" min="0" max="23">
-              <input id="tombMin"  type="number" placeholder="mm" min="0" max="59">
-              <input id="tombSec"  type="number" placeholder="ss" min="0" max="59">
-              <button id="tombBtn">Tomb</button>
+            <div class="tomb-time">
+              <div class="box-title">Tomb Time (Hour / Minute / Second)</div>
+              <div id="tombForm">
+                <div class="time-inputs">
+                  <input id="tombHour" type="number" placeholder="hh" min="0" max="23">
+                  <input id="tombMin"  type="number" placeholder="mm" min="0" max="59">
+                  <input id="tombSec"  type="number" placeholder="ss" min="0" max="59">
+                </div>
+                <div class="btn-group">
+                  <button id="tombBtn">Tomb</button>
+                </div>
+              </div>
             </div>
-          </div>
-        </div><!-- /.mvp-controls -->
+          </div><!-- /.mvp-controls -->
     </div><!-- /.mvp-stack -->
     </div><!-- /#mid-panel -->
     <div class="v-resizer"></div>
