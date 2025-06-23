@@ -61,7 +61,10 @@ html,body{height:100%;overflow:hidden;margin:0;padding:0;box-sizing:border-box;}
 #mid{
   height:100%;
   overflow-y:auto;      /* içeriği kaydır */
+  -ms-overflow-style: none; /* scroll bar gizle */
+  scrollbar-width: none;
 }
+#mid::-webkit-scrollbar{display:none;}
 
 /* Grid‑area atamaları */
 #left              { grid-area:left;  }
@@ -397,6 +400,8 @@ ul { list-style: none; margin: 0; padding: 0; }
   width: 100%;
   height: 100%;
   overflow-y: auto;
+  -ms-overflow-style: none; /* scroll bar gizle */
+  scrollbar-width: none;
   background: rgba(20, 20, 20, 0.6);    /* yarı şeffaf gri */
   backdrop-filter: blur(6px);          /* cam efekti */
   border: 1px solid var(--panel-border);
@@ -407,6 +412,7 @@ ul { list-style: none; margin: 0; padding: 0; }
   gap: 16px;
   box-sizing: border-box;
 }
+#killsWrapper::-webkit-scrollbar{display:none;}
 
 
 #killsTitle{
