@@ -81,6 +81,9 @@ body::before {
   cursor: pointer;
 }
 .grid button:hover { background: #666; }
+#mvpList { margin-top: 12px; padding: 0; list-style: none; }
+#mvpList li { display: flex; gap: 6px; align-items: center; margin-bottom: 4px; }
+#mvpList li button { margin-left: auto; }
 /* --- Light theme overrides --- */
 body.light {
   --panel-border: rgba(0,0,0,0.2);
