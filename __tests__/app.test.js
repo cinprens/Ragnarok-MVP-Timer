@@ -1,6 +1,18 @@
 import fs from "fs";
 let html;
 beforeAll(()=>{html=fs.readFileSync("index.html","utf8");});
+global.window = window;
+window.api = {
+  getSettings: () => ({ resolution: "auto" }),
+  getScreenSize: () => Promise.resolve({ width: 1920, height: 1080 }),
+  setWindowSize: () => {},
+  getMvps: () => [],
+  updateMvps: () => {},
+  on: () => {},
+  openOptions: () => {},
+  readTimers: () => null,
+  writeTimers: () => {}
+};
 test("ana paneller mevcut",()=>{
   document.body.innerHTML=html;
   expect(document.getElementById("left")).not.toBeNull();

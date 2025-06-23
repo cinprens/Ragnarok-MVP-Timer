@@ -8,6 +8,8 @@ const ipcRenderer = {
 global.window = window;
 window.api = {
   setWindowSize: (w, h) => ipcRenderer.send("set-window-size", { width: w, height: h }),
+  getSettings: () => ({ resolution: "auto" }),
+  saveSettings: jest.fn(),
   readEdit: () => [],
   getMvps: () => [],
   updateMvps: jest.fn(),

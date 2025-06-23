@@ -4,6 +4,7 @@
   --panel-bg: rgba(24,24,24,0.8);
   --panel-border: rgba(64,224,208,0.6);
   --highlight: #0ff;
+  --scale: 1;
 }
 
 body.light {
@@ -29,6 +30,13 @@ body::before {
   opacity: .85;
   pointer-events: none;
   z-index: -1;
+}
+
+.app-container {
+  transform: scale(var(--scale));
+  transform-origin: top left;
+  width: calc(100% / var(--scale));
+  height: calc(100% / var(--scale));
 }
 
 .tabs {
