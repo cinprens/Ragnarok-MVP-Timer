@@ -81,3 +81,19 @@ body::before {
   cursor: pointer;
 }
 .grid button:hover { background: #666; }
+/* --- Light theme overrides --- */
+body.light {
+  --panel-border: rgba(0,0,0,0.2);
+  --highlight: #007acc;
+}
+body.light .tabs button { border-color: var(--panel-border); }
+body.light .grid input {
+  background:#fff;
+  color:#222;
+  border:1px solid #bbb;
+}
+body.light .grid button {
+  background:#ddd;
+  color:#222;
+  border:1px solid #bbb;
+}
