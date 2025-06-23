@@ -161,6 +161,10 @@ html,body{
   background: #444;
   cursor: row-resize;
   z-index: 10;
+  position:absolute;       /* kaydırma sırasında sabit kalsın */
+  left:0;right:0;bottom:0;
+  touch-action:none;       /* mobilde daha tutarlı */
+  user-select:none;
 }
 .v-resizer:hover { background: #666; }
 @media (hover:none) {
@@ -233,6 +237,7 @@ button, select, input{
   flex-direction:column;
   min-height:0;
   border:1px solid var(--panel-border);
+  position:relative;       /* dikey tutamacı sabitle */
 }
 
 #mid-panel {
