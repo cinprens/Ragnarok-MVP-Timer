@@ -1,20 +1,22 @@
-# 🧠 Ragnarok MVP Timer
+# Ragnarok MVP Timer
 
-Bu masaüstü uygulama, **Ragnarok Online** oyunundaki MVP canavarların yeniden doğma (respawn) zamanlarını takip etmenizi sağlar.  
-Canavarları "kestim" diyerek zamanlayıcı başlatabilir, geçmişe kaydedebilir ve yeni MVP’ler tanımlayabilirsiniz.
+A desktop timer app built with Electron for tracking the respawn times of Ragnarok Online MVP monsters. Timers persist to disk and display remaining time and next spawn information.
 
----
+## Features
+- Real-time countdowns for MVP respawns
+- "Ben Kestim" panel for defeated bosses
+- Options window to add custom MVPs and change theme
+- Dark theme with transparent panels
+- Hot reload in development
 
-## 🚀 Özellikler
+## Development
+```bash
+npm install
+npm run dev
+```
 
-✅ Gerçek zamanlı zamanlayıcı ve spawn saati hesaplama  
-✅ "Ben kestim" listesi → tamamlanan timer’lar otomatik ayrılır  
-✅ Gelişmiş **Options** paneli: MVP ekle, tema ayarla, varsayılanları değiştir  
-✅ **Tomb zamanı** ve **opsiyonel timer** desteği  
-✅ Kullanıcı tanımlı MVP verileri kalıcı olarak saklanır  
-✅ Şeffaf panel görünümü ve koyu tema  
-✅ Pi Network destekli banner alanı (isteğe bağlı gizlenebilir)  
-✅ Menü bar: Dosya / Görünüm / Yardım sekmeleri  
-✅ Hot reload desteği (geliştirme modunda)  
+## Packaging
+```bash
+npm run build
+```
 
----
