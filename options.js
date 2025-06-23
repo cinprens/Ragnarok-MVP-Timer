@@ -34,7 +34,12 @@ function renderList() {
     eBtn.onclick = () => { editIndex = idx; fillForm(m); };
     const dBtn = document.createElement("button");
     dBtn.textContent = "Delete";
-    dBtn.onclick = () => { data.splice(idx, 1); saveData(); renderList(); };
+    dBtn.onclick = () => {
+      data.splice(idx, 1);
+      saveData();
+      window.api.updateMvps && window.api.updateMvps(data);
+      renderList();
+    };
     li.append(eBtn, dBtn);
     listBox.append(li);
   });
@@ -90,6 +95,7 @@ saveBtn.onclick = async () => {
     data.push(entry);
   }
   saveData();
+  window.api.updateMvps && window.api.updateMvps(data);
   renderList();
   fillForm();
   editIndex = -1;
@@ -101,6 +107,7 @@ resetBtn.onclick = () => {
   if (confirm("Reset to default list?")) {
     window.api.resetEdit && window.api.resetEdit();
     loadData();
+    window.api.updateMvps && window.api.updateMvps(data);
     fillForm();
   }
 };
