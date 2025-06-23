@@ -18,6 +18,6 @@ npm run dev
 
 ## Packaging
 ```bash
-npm run build
+npm run make
 ```
 

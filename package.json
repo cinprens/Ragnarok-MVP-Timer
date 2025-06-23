@@ -4,16 +4,24 @@
   "type": "module",
   "main": "main.js",
   "scripts": {
-    "dev": "cross-env NODE_ENV=development electron .",
-    "build": "electron-builder",
-    "start": "electron .",
+    "dev": "cross-env NODE_ENV=development electron-forge dev",
+    "build": "electron-forge package",
+    "make": "electron-forge make",
+    "start": "electron-forge start",
     "lint": "eslint .",
     "test": "jest"
   },
+  "config": {
+    "forge": "./forge.config.mjs"
+  },
   "devDependencies": {
+    "@electron-forge/cli": "^7.2.0",
+    "@electron-forge/maker-deb": "^7.2.0",
+    "@electron-forge/maker-rpm": "^7.2.0",
+    "@electron-forge/maker-squirrel": "^7.2.0",
+    "@electron-forge/maker-zip": "^7.2.0",
     "cross-env": "^7.0.3",
     "electron": "^29.0.0",
-    "electron-builder": "^24.13.1",
     "electron-reloader": "^1.2.2",
     "eslint": "^8.53.0",
     "luxon": "^3.4.2",
