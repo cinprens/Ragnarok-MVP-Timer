@@ -68,7 +68,7 @@ html,body{height:100%;overflow:hidden;margin:0;padding:0;box-sizing:border-box;}
 #wrapper::before{
   content:"";
   position:absolute;inset:0;
-  background: url("./Backgrounds/ragnarok_bg.jpg") center/cover no-repeat fixed;
+  background: url("./Backgrounds/ragnarok_bg.png") center/cover no-repeat fixed;
   opacity:.2;
   pointer-events:none;
   z-index:-1;
