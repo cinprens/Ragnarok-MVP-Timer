@@ -36,7 +36,8 @@ function renderList() {
     dBtn.onclick = () => {
       data.splice(idx, 1);
       saveData();
-      window.api.updateMvps && window.api.updateMvps(data);
+      const merged = window.api.getMvps ? window.api.getMvps() : data;
+      window.api.updateMvps && window.api.updateMvps(merged);
       renderList();
     };
     li.append(eBtn, dBtn);
@@ -50,8 +51,8 @@ function saveData() {
 
 function loadData() {
   data = window.api.readEdit && window.api.readEdit();
-  if (!Array.isArray(data)) {
-    // fallback to base
+  if (!Array.isArray(data) || data.length === 0) {
+    // No edits yet, show full list
     data = window.api.getMvps ? window.api.getMvps() : [];
   }
   renderList();
@@ -93,7 +94,8 @@ saveBtn.onclick = async () => {
     data.push(entry);
   }
   saveData();
-  window.api.updateMvps && window.api.updateMvps(data);
+  const merged = window.api.getMvps ? window.api.getMvps() : data;
+  window.api.updateMvps && window.api.updateMvps(merged);
   renderList();
   fillForm();
   editIndex = -1;
@@ -105,7 +107,8 @@ resetBtn.onclick = () => {
   if (confirm("Reset to default list?")) {
     window.api.resetEdit && window.api.resetEdit();
     loadData();
-    window.api.updateMvps && window.api.updateMvps(data);
+    const merged = window.api.getMvps ? window.api.getMvps() : data;
+    window.api.updateMvps && window.api.updateMvps(merged);
     fillForm();
   }
 };
