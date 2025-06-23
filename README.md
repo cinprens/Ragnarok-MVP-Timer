@@ -11,6 +11,11 @@ A desktop timer app built with Electron for tracking the respawn times of Ragnar
 - Dark theme with transparent panels
 - Hot reload in development
 
+### Data Files
+Custom MVPs are saved in `customMvps.json` under your Electron `userData`
+directory. Edited defaults are stored separately in `mvpDataEdit.json`. Both
+files are merged with the base list when the app loads.
+
 ## Development
 ```bash
 npm install

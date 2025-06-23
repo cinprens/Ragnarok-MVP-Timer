@@ -11,6 +11,8 @@ const listBox   = document.getElementById("mvpList");
 const mapInput  = document.getElementById("mapImg");
 const mvpInput  = document.getElementById("mvpImg");
 
+// 'data' holds the merged list currently displayed. Custom creations are saved
+// to customMvps.json while edits overwrite mvpDataEdit.json.
 let data = [];
 let editIndex = -1;
 
@@ -90,10 +92,13 @@ saveBtn.onclick = async () => {
 
   if (editIndex >= 0) {
     data[editIndex] = entry;
+    saveData();
   } else {
     data.push(entry);
+    const custom = window.api.readCustom ? window.api.readCustom() : [];
+    custom.push(entry);
+    window.api.writeCustom && window.api.writeCustom(custom);
   }
-  saveData();
   const merged = window.api.getMvps ? window.api.getMvps() : data;
   window.api.updateMvps && window.api.updateMvps(merged);
   renderList();

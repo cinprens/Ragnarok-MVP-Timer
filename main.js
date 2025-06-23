@@ -74,17 +74,6 @@ function openOptions() {
 
 ipcMain.handle("open-options", () => openOptions());
 
-ipcMain.handle("save-custom", async (_e, data) => {
-  const file = path.join(app.getPath("userData"), "customMvps.json");
-  try {
-    await fs.writeFile(file, JSON.stringify(data, null, 2));
-    return { success: true };
-  } catch (err) {
-    console.error("Failed to save custom MVP data", err);
-    return { success: false, error: err.message };
-  }
-});
-
 // Renderer'a userData dizini yolunu döndürür
 ipcMain.handle("get-user-data-path", () => app.getPath("userData"));
 
