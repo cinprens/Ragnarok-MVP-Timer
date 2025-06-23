@@ -299,7 +299,9 @@ button, select, input{
 .option-timer{ border-color:#3a7bfd; }
 .tomb-time{ border-color:#ff8552; }
 .box-title { font-weight:bold; letter-spacing:.3px; }
-#mvpTime { font-size: 2rem; color: var(--pos); }
+#mvpTime { font-size: 2rem; }
+#mvpTime.positive { color: var(--pos); }
+#mvpTime.negative { color: var(--neg); }
 
 #controls { display: flex; flex-wrap: wrap; gap: 6px; }
 #controls input,

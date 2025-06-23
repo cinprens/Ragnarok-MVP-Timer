@@ -70,6 +70,12 @@ const BLINK_KEY = "blinkOff";
 let blinkEnabled = localStorage.getItem(BLINK_KEY) !== "1";
 const fmt   = s => `${s < 0 ? "-" : ""}${String(Math.floor(Math.abs(s) / 60)).padStart(2, "0")}:${String(Math.abs(s) % 60).padStart(2, "0")}`;
 
+function updateTimeColor(rem) {
+  if (!UI.time) return;
+  UI.time.classList.toggle("negative", rem < 0);
+  UI.time.classList.toggle("positive", rem >= 0);
+}
+
 applyTheme();
 
 // Renderer icin saglanan API mevcut degilse basit bir yedek tanimla
@@ -140,6 +146,7 @@ function renderMid(m) {
   UI.name.textContent = m.id;
   UI.gif.src          = m.sprite();
   UI.time.textContent = fmt(m.remaining);
+  updateTimeColor(m.remaining);
   UI.map.src          = m.mapImg();
   UI.mapName.textContent = "Map: " + m.map;
 }
@@ -183,6 +190,7 @@ const UI = {
     this.name.textContent = m.id;
     this.gif .src         = m.sprite();
     this.time.textContent = fmt(m.remaining);
+    updateTimeColor(m.remaining);
     this.map .src         = m.mapImg();
     this.mapName.textContent = "Map: " + m.map;
   },
@@ -192,6 +200,7 @@ const UI = {
     this.name.textContent = "";
     this.gif .src         = "";
     this.time.textContent = "";
+    updateTimeColor(0);
     this.map .src         = "";
     this.mapName.textContent = "";
   }
@@ -425,7 +434,10 @@ function step() {
   });
 
   updateSpawnDates();
-  if (UI.current) UI.time.textContent = fmt(UI.current.remaining);
+  if (UI.current) {
+    UI.time.textContent = fmt(UI.current.remaining);
+    updateTimeColor(UI.current.remaining);
+  }
   UI.render();
   applyBlink();
   if (!anyRunning()) stopTimers();
