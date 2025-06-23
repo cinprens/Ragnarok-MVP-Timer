@@ -8,6 +8,7 @@
 <body>
 <!-- Background image ./Backgrounds/ragnarok_bg.png -->
 
+<div id="scale-wrapper">
 <div id="wrapper">
   <div id="left">
     <button class="scroll-up" data-target="positiveList">▲</button>
@@ -116,11 +117,14 @@ document.addEventListener('DOMContentLoaded',()=>{loadPanelWidths();loadPanelHei
   <script type="module" src="app.js"></script>
   <script>
     function updateScale(){
-      const s=Math.min(window.innerWidth/1200, window.innerHeight/800);
-      document.documentElement.style.setProperty('--ui-scale',s);
+      const wRatio = window.innerWidth / 1920;
+      const hRatio = window.innerHeight / 1080;
+      const s = Math.min(wRatio, hRatio);
+      document.documentElement.style.setProperty('--ui-scale', s);
     }
-    window.addEventListener('resize',updateScale);
+    window.addEventListener('resize', updateScale);
     updateScale();
   </script>
-  </body>
+</div><!-- /scale-wrapper -->
+</body>
 </html>

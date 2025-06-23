@@ -19,12 +19,17 @@ html {
 }
 body {
   margin: 0;
-  padding: 20px;
   font: 1rem Helvetica,Arial,sans-serif;
   color: var(--fg);
   background: var(--bg) url("./Backgrounds/ragnarok_bg.png") center/cover no-repeat fixed;
+}
+
+#scale-wrapper {
+  padding: 20px;
   width: calc(100vw / var(--ui-scale));
   height: calc(100vh / var(--ui-scale));
+  min-width: 600px;
+  min-height: 700px;
   transform-origin: top left;
   transform: scale(var(--ui-scale));
 }
