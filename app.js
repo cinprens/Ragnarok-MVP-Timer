@@ -153,6 +153,11 @@ function renderMid(m) {
   if(UI.map) UI.map.src = m.mapImg();
   if(UI.mapName) UI.mapName.textContent = "Map: " + m.map;
   if(UI.stack) UI.stack.classList.add("active");
+  if(UI.killBtn){
+    UI.killBtn.onclick = () => markKilled(m);
+    UI.killBtn.classList.add("show");
+    UI.killBtn.classList.remove("hidden");
+  }
 }
 
 /* ———————————————————  UI NESNESİ  ——————————————————— */
@@ -165,6 +170,7 @@ const UI = {
   stack   : document.querySelector("#mid-panel .mvp-stack"),
   left    : $("#positiveList"),
   right   : $("#right #negativeList"),
+  killBtn : $("#killBtn"),
 
   render() {
     const pos = MVP_LIST.filter(m => m.remaining >= 0)
@@ -193,11 +199,16 @@ const UI = {
 
     this.current          = m;
     if(this.name) this.name.textContent = m.id;
-    if(this.gif)  this.gif.src = m.sprite();
-    if(this.time) this.time.textContent = fmt(m.remaining);
-    updateTimeColor(m.remaining);
-    if(this.map) this.map.src = m.mapImg();
-    if(this.mapName) this.mapName.textContent = "Map: " + m.map;
+  if(this.gif)  this.gif.src = m.sprite();
+  if(this.time) this.time.textContent = fmt(m.remaining);
+  updateTimeColor(m.remaining);
+  if(this.map) this.map.src = m.mapImg();
+  if(this.mapName) this.mapName.textContent = "Map: " + m.map;
+  if(this.killBtn){
+    this.killBtn.onclick = () => markKilled(m);
+    this.killBtn.classList.add("show");
+    this.killBtn.classList.remove("hidden");
+  }
   },
 
   clearCurrent() {
@@ -209,6 +220,11 @@ const UI = {
     if(this.map) this.map.src = "";
     if(this.mapName) this.mapName.textContent = "";
     if(this.stack) this.stack.classList.remove("active");
+    if(this.killBtn){
+      this.killBtn.classList.remove("show");
+      this.killBtn.classList.add("hidden");
+      this.killBtn.onclick = null;
+    }
   }
 };
 
@@ -320,12 +336,7 @@ function makeLi(m, positive) {
     };
   }
 
-  /* I KILL Butonu */
-  const btnKill = document.createElement("button");
-  btnKill.textContent = "I KILL";
-  btnKill.onclick = e => { e.stopPropagation(); markKilled(m); };
-
-  li.append(img, info, mapT, timeBox, btn, btnKill);
+  li.append(img, info, mapT, timeBox, btn);
   return li;
 }
 
