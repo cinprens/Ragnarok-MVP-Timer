@@ -116,20 +116,10 @@ function applyTheme(){
 }
 
 function applyResolution(){
-  const settings = window.api.getSettings ? window.api.getSettings() : { resolution: "auto" };
-  const res = settings.resolution || "auto";
-  if(res === "auto") {
-    window.api.getScreenSize && window.api.getScreenSize().then(size => {
-      document.documentElement.style.setProperty("--scale", "1");
-      if(window.api.setWindowSize) window.api.setWindowSize(size.width, size.height);
-    });
-  } else if(res && window.api && window.api.setWindowSize){
+  const res = localStorage.getItem("resolution");
+  if(res && window.api && window.api.setWindowSize){
     const [w,h] = res.split("x").map(Number);
-    if(w && h){
-      window.api.setWindowSize(w,h);
-      const scale = Math.min(w/1920, h/1080);
-      document.documentElement.style.setProperty("--scale", String(scale));
-    }
+    if(w && h) window.api.setWindowSize(w,h);
   }
 }
 /* ———————————————————  ZAMAN / TZ   ——————————————————— */

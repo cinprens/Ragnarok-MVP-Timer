@@ -156,8 +156,7 @@ function loadSettings() {
   soundTog.checked = localStorage.getItem("soundEnabled") !== "0";
   blinkTog.checked = localStorage.getItem("blinkOff") !== "1";
   tzSel.value = localStorage.getItem("timezone") || Intl.DateTimeFormat().resolvedOptions().timeZone;
-  const settings = window.api.getSettings ? window.api.getSettings() : { resolution: "auto" };
-  const res = settings.resolution || "auto";
+  const res = localStorage.getItem("resolution") || "1920x1080";
   if (res === "auto") {
     resSel.value = "auto";
     applyAutoResolution();
@@ -190,12 +189,12 @@ tzSel.addEventListener("change", () => {
 resSel.addEventListener("change", async () => {
   const val = resSel.value;
   if (val === "auto") {
-    window.api.saveSettings && window.api.saveSettings({ resolution: "auto" });
+    localStorage.setItem("resolution", "auto");
     await applyAutoResolution();
   } else if (val === "custom") {
-    window.api.saveSettings && window.api.saveSettings({ resolution: `${widthInp.value}x${heightInp.value}` });
+    localStorage.setItem("resolution", `${widthInp.value}x${heightInp.value}`);
   } else {
-    window.api.saveSettings && window.api.saveSettings({ resolution: val });
+    localStorage.setItem("resolution", val);
     const [w, h] = val.split("x").map(Number);
     widthInp.value = w;
     heightInp.value = h;
@@ -211,7 +210,7 @@ applyBtn.addEventListener("click", () => {
     return;
   }
   const val = `${w}x${h}`;
-  window.api.saveSettings && window.api.saveSettings({ resolution: val });
+  localStorage.setItem("resolution", val);
   const match = Array.from(resSel.options).find(o => o.value === val);
   resSel.value = match ? val : "custom";
   if (window.api && window.api.setWindowSize) window.api.setWindowSize(w, h);
