@@ -5,9 +5,9 @@
   --neg: #ff5555;
   --flash: #ff79c6;
   --blink: #0ff;
-  --sprite: 64px;
-  --thumb: 64px;
-  --row-h: clamp(60px, 6vh, 68px);
+  --sprite: clamp(48px, 6vmin, 64px);
+  --thumb: clamp(48px, 6vmin, 64px);
+  --row-h: clamp(60px, 7vmin, 72px);
   --left-panel-width: clamp(180px, 20vw, 25%);
   --right-panel-width: clamp(180px, 20vw, 25%);
   --highlight: #0ff;
@@ -37,10 +37,13 @@ body.light {
 /* ===== ÇİFT KATMAN ARKA PLAN + SCROLL FIX ========================= */
 /* ---------- NEW --------------------------------------------------- */
 
+html {
+  font-size: clamp(12px, 1.5vmin, 18px);
+}
 body{
   margin:0;
   color:var(--fg);
-  font:14px Helvetica,Arial,sans-serif;
+  font:1rem Helvetica,Arial,sans-serif;
   overflow-x:hidden;
   background: var(--bg) url("./Backgrounds/ragnarok_bg.png") center/cover no-repeat fixed;
   width:calc(100vw / var(--ui-scale));
@@ -254,8 +257,8 @@ button, select, input{
   box-shadow:0 6px 18px rgba(0,0,0,.55);
 }
 
-.mvp-name   {font-size:24px; margin:0;}
-.timer      {font-size:22px; color:#4caf50;}
+.mvp-name   {font-size:1.5rem; margin:0;}
+.timer      {font-size:1.375rem; color:#4caf50;}
 .mvp-sprite {width:clamp(120px, 12vw, 180px); height:auto;}
 .mvp-map    {width:clamp(120px, 12vw, 180px); display:block;}
 
