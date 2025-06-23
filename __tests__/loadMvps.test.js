@@ -19,3 +19,13 @@ test("base entries preserved when edits exist", () => {
   expect(a.respawn).toBe(5);
   expect(res.length).toBe(3);
 });
+
+test("duplicate names with different maps remain", () => {
+  const base = [
+    { name: "Doppelganger", map: "gef_dun02" },
+    { name: "Doppelganger", map: "gl_cas01" }
+  ];
+  const res = mergeMvpLists(base, [], []);
+  const matches = res.filter(m => m.name === "Doppelganger");
+  expect(matches.length).toBe(2);
+});
