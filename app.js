@@ -661,6 +661,7 @@ document.querySelectorAll('#left, #right').forEach(panel => {
 /* ———————————————————  BANNER GİZLE / GÖSTER  ——————————————————— */
 const bannerBtn = $('#bannerToggle');
 const blinkBtn  = $('#blinkToggle');
+const optionsBtn = $('#optionsBtn');
 function setBannerState() {
   const hidden = localStorage.getItem('bannerHidden') === '1';
   document.body.classList.toggle('banners-hidden', hidden);
@@ -689,6 +690,14 @@ if(blinkBtn){
 
   });
   setBlinkState();
+}
+
+if(optionsBtn){
+  optionsBtn.addEventListener('click', () => {
+    if(window.api && window.api.openOptions){
+      window.api.openOptions();
+    }
+  });
 }
 
 export { MVP_LIST, UI, step, resetMvp, nowTz, markKilled, toggleTomb, MVP, saveTimers, loadTimers, updateSpawnDates, updateKillPanel };
