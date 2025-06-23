@@ -8,6 +8,9 @@ const soundTog  = document.getElementById("soundToggle");
 const tzSel     = document.getElementById("tzSelectOpt");
 const blinkTog  = document.getElementById("blinkToggleOpt");
 const resSel    = document.getElementById("resSelect");
+const widthInp  = document.getElementById("widthInput");
+const heightInp = document.getElementById("heightInput");
+const applyBtn  = document.getElementById("applyResBtn");
 const listBox   = document.getElementById("mvpList");
 const mapInput  = document.getElementById("mapImg");
 const mvpInput  = document.getElementById("mvpImg");
@@ -144,8 +147,11 @@ function loadSettings() {
   soundTog.checked = localStorage.getItem("soundEnabled") !== "0";
   blinkTog.checked = localStorage.getItem("blinkOff") !== "1";
   tzSel.value = localStorage.getItem("timezone") || Intl.DateTimeFormat().resolvedOptions().timeZone;
-  resSel.value = localStorage.getItem("resolution") || "1920x1080";
-  const [w, h] = resSel.value.split("x").map(Number);
+  const res = localStorage.getItem("resolution") || "1920x1080";
+  resSel.value = res;
+  const [w, h] = res.split("x").map(Number);
+  widthInp.value = w;
+  heightInp.value = h;
   if (window.api && window.api.setWindowSize) window.api.setWindowSize(w, h);
 }
 
@@ -168,6 +174,22 @@ tzSel.addEventListener("change", () => {
 resSel.addEventListener("change", () => {
   localStorage.setItem("resolution", resSel.value);
   const [w, h] = resSel.value.split("x").map(Number);
+  widthInp.value = w;
+  heightInp.value = h;
+  if (window.api && window.api.setWindowSize) window.api.setWindowSize(w, h);
+});
+
+applyBtn.addEventListener("click", () => {
+  const w = parseInt(widthInp.value, 10);
+  const h = parseInt(heightInp.value, 10);
+  if (Number.isNaN(w) || Number.isNaN(h) || w < 1024 || h < 640) {
+    alert("Minimum resolution is 1024x640");
+    return;
+  }
+  const val = `${w}x${h}`;
+  localStorage.setItem("resolution", val);
+  const match = Array.from(resSel.options).find(o => o.value === val);
+  if (match) resSel.value = val;
   if (window.api && window.api.setWindowSize) window.api.setWindowSize(w, h);
 });
 
