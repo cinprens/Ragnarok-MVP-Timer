@@ -7,6 +7,7 @@ A desktop timer app built with Electron for tracking the respawn times of Ragnar
   driven by `requestAnimationFrame`
 - "MVP Rank" panel showing kill counts
 - Options window to add custom MVPs, change theme and toggle blink effect
+- Upload custom map and MVP images in options
 - Dark theme with transparent panels
 - Hot reload in development
 

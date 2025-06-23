@@ -9,6 +9,7 @@ const tzSel     = document.getElementById("tzSelectOpt");
 const blinkTog  = document.getElementById("blinkToggleOpt");
 const listBox   = document.getElementById("mvpList");
 const mapInput  = document.getElementById("mapImg");
+const mvpInput  = document.getElementById("mvpImg");
 
 let data = [];
 let editIndex = -1;
@@ -20,6 +21,7 @@ function fillForm(m = {}) {
   document.getElementById("map").value = m.map || "";
   document.getElementById("respawn").value = m.respawn || "";
   mapInput.value = "";
+  mvpInput.value = "";
 }
 
 function renderList() {
@@ -69,6 +71,17 @@ saveBtn.onclick = async () => {
     }
     const p = window.api.copyMap && window.api.copyMap(f.path, f.name);
     if (p) entry.mapImg = p;
+  }
+
+  if (mvpInput.files[0]) {
+    const f = mvpInput.files[0];
+    const ext = f.name.split(".").pop().toLowerCase();
+    if (!["gif", "jpg", "png"].includes(ext)) {
+      alert("Only gif, jpg or png allowed");
+      return;
+    }
+    const p = window.api.copyMvp && window.api.copyMvp(f.path, f.name);
+    if (p) entry.img = p;
   }
 
   if (editIndex >= 0) {
