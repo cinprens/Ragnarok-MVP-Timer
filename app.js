@@ -197,31 +197,47 @@ function updateKillPanel() {
   if (!killsBox) return;
   killsTitle.textContent = `MVP Rank (${TOTAL_KILL})`;
   const sorted = MVP_LIST.filter(x => x.kills > 0)
-                         .sort((a, b) => b.kills - a.kills);
+    .sort((a, b) => {
+      if (b.kills !== a.kills) return b.kills - a.kills;
+      return Math.random() < 0.5 ? -1 : 1;
+    });
   killsBox.innerHTML = "";
 
   if (sorted.length > 0) {
-    const top = sorted[0];
-    const topDiv = document.createElement("div");
-    topDiv.className = "top-rank";
-    topDiv.innerHTML = `
-      <img src="${top.sprite()}" alt="">
-      <div class="top-name">${top.id}</div>
-      <div class="top-count">${top.kills}</div>`;
-    killsBox.append(topDiv);
+    const podium = document.createElement("div");
+    podium.className = "podium";
+    const top3 = sorted.slice(0, 3);
+    ["first", "second", "third"].forEach((cls, idx) => {
+      const m = top3[idx];
+      if (!m) return;
+      const slot = document.createElement("div");
+      slot.className = `podium-slot ${cls}`;
+      const medal = document.createElement("div");
+      medal.className = "medal";
+      medal.textContent = idx + 1;
+      const img = new Image();
+      img.src = m.sprite();
+      const name = document.createElement("div");
+      name.className = "pname";
+      name.textContent = m.id;
+      const cnt = document.createElement("div");
+      cnt.className = "pcount";
+      cnt.textContent = m.kills;
+      slot.append(medal, img, name, cnt);
+      podium.append(slot);
+    });
+    killsBox.append(podium);
   }
 
-  const frag = document.createDocumentFragment();
-  sorted.slice(1).forEach(m => {
+  sorted.slice(3).forEach(m => {
     const row = document.createElement("div");
     row.className = "kill-row";
     row.innerHTML = `
       <img src="${m.sprite()}" alt="">
       <span class="kname">${m.id}</span>
       <span class="kcount">${m.kills}</span>`;
-    frag.append(row);
+    killsBox.append(row);
   });
-  killsBox.append(frag);
 }
 
 /* ———————————————————  MVP SATIRI OLUŞTUR ——————————————————— */
