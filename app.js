@@ -245,10 +245,12 @@ function updateKillPanel() {
     killsBox.append(podium);
   }
 
-  sorted.slice(3).forEach(m => {
-    const row = document.createElement("div");
+  sorted.slice(3).forEach((m, idx) => {
+    const row  = document.createElement("div");
+    const rank = idx + 4; // continuing after podium
     row.className = "kill-row";
     row.innerHTML = `
+      <span class="kindex">${rank}</span>
       <img src="${m.sprite()}" alt="">
       <span class="kname">${m.id}</span>
       <span class="kcount">${m.kills}</span>`;
