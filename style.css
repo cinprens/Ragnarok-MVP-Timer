@@ -23,7 +23,7 @@
   --panel-border: rgba(64,224,208,0.6);
   --kills-h: auto;
   --ui-scale: 1;
-  --card-scale: 0.5;             /* mid panel kartının taban ölçeği */
+  --card-scale: 0.6;             /* mid panel kartının taban ölçeği */
   --card-scale-x: var(--card-scale);
   --card-scale-y: var(--card-scale);
 }
@@ -506,6 +506,18 @@ ul { list-style: none; margin: 0; padding: 0; }
   margin-top:8px;
   cursor:pointer;
 }
+#killBtn{
+  align-self:flex-end;
+  background:#555;
+  color:var(--fg);
+  border:none;
+  padding:6px 12px;
+  cursor:pointer;
+  opacity:0;
+  transform:scale(0.9);
+  transition:opacity 0.2s ease, transform 0.2s ease;
+}
+#killBtn.show{opacity:1;transform:scale(1);}
 #resetTimersBtn:hover{ background:#666; }
 #rankResetBtn:hover{ background:#666; }
 #killsPanel{
@@ -651,6 +663,8 @@ body.light #rankResetBtn{ background:#ddd; color:#222; border:1px solid #bbb; }
 body.light #rankResetBtn:hover{ background:#eee; }
 body.light #resetTimersBtn{ background:#ddd; color:#222; border:1px solid #bbb; }
 body.light #resetTimersBtn:hover{ background:#eee; }
+body.light #killBtn{ background:#faa; color:#222; border:1px solid #bbb; }
+body.light #killBtn:hover{ background:#fcc; }
 body.light .scroll-up,
 body.light .scroll-down { background:#e0e0e0; color:#222; border:1px solid #ccc; }
 body.light .podium-slot,

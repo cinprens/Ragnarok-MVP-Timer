@@ -65,3 +65,16 @@ test("zaman dilimi seciminde gosterim", async () => {
   await import("../app.js");
   expect(document.getElementById("tzSelect")).not.toBeNull();
 });
+
+test("I KILL butonu secimde gorunur", async () => {
+  document.body.innerHTML=html;
+  const mod=await import("../app.js");
+  mod.UI.left=document.getElementById("positiveList");
+  mod.UI.killBtn=document.getElementById("killBtn");
+  mod.MVP_LIST.length=0;
+  mod.MVP_LIST.push({id:"M",file:"",map:"m",respawn:60,remaining:10,running:false,tomb:false,tombTime:"",sprite(){return "";},mapImg(){return "";}});
+  mod.UI.render();
+  const li=document.querySelector("#positiveList li");
+  li.click();
+  expect(mod.UI.killBtn.classList.contains("hidden")).toBe(false);
+});
