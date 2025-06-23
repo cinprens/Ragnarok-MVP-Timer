@@ -50,9 +50,11 @@ function createMenu() {
         { type: "separator" },
         { role: "toggleDevTools", label: "Geliştirici Araçları" }
       ]},
-    { label: "Ayarlar", submenu: [
-        { label: "Seçenekler", accelerator: "Ctrl+,", click: () => openOptions() }
-      ]},
+    {
+      label: "Ayarlar",
+      accelerator: "Ctrl+,",
+      click: () => openOptions()
+    },
     { label: "Yardım", submenu: [{ label: "GitHub", click: () => require("electron").shell.openExternal("https://github.com/") }] }
   ];
   Menu.setApplicationMenu(Menu.buildFromTemplate(template));
