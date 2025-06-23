@@ -152,6 +152,7 @@ function renderMid(m) {
   updateTimeColor(m.remaining);
   if(UI.map) UI.map.src = m.mapImg();
   if(UI.mapName) UI.mapName.textContent = "Map: " + m.map;
+  if(UI.stack) UI.stack.classList.add("active");
 }
 
 /* ———————————————————  UI NESNESİ  ——————————————————— */
@@ -161,6 +162,7 @@ const UI = {
   time    : $("#mvpTime"),
   map     : $("#mvpMap"),
   mapName : $("#mapName"),
+  stack   : document.querySelector("#mid-panel .mvp-stack"),
   left    : $("#positiveList"),
   right   : $("#right #negativeList"),
 
@@ -206,6 +208,7 @@ const UI = {
     updateTimeColor(0);
     if(this.map) this.map.src = "";
     if(this.mapName) this.mapName.textContent = "";
+    if(this.stack) this.stack.classList.remove("active");
   }
 };
 
@@ -763,6 +766,7 @@ document.querySelectorAll("#left, #right").forEach(panel => {
     bar.addEventListener("touchstart", e => start(e.touches[0]));
   });
   function start(e) {
+    e.preventDefault();
     const side       = e.target.dataset.side;      // 'left' | 'right'
     const startX     = e.clientX;
     const startLeft  = left .getBoundingClientRect().width;
@@ -811,6 +815,7 @@ document.querySelectorAll("#left, #right").forEach(panel => {
   bar.addEventListener("mousedown", start);
   bar.addEventListener("touchstart", e => start(e.touches[0]));
   function start(e) {
+    e.preventDefault();
     const startY  = e.clientY;
     const startM  = mid.getBoundingClientRect().height;
     const startK  = kills.getBoundingClientRect().height;
