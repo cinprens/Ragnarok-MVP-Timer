@@ -287,7 +287,14 @@ button, select, input{
 .mvp-name   {font-size:1.5rem; margin:0;}
 .timer      {font-size:1.375rem; color:#4caf50;}
 .mvp-sprite {width:clamp(120px, 12vw, 180px); height:auto;}
-.mvp-map    {width:clamp(120px, 12vw, 180px); display:block;}
+.mvp-map{
+  width:clamp(120px, 12vw, 180px);
+  display:block;
+  border:1px solid #666;
+  border-radius:6px;
+  background:#222;
+  padding:4px;
+}
 
 
 #usageNotes{display:none !important;}
@@ -312,7 +319,14 @@ button, select, input{
   border-radius:8px;
   background:#333;
 }
-.timer-map-row{display:flex;align-items:flex-start;gap:12px;flex-wrap:wrap;justify-content:center;width:100%;}
+.timer-row{
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  flex-wrap:wrap;
+  gap:16px;
+  width:100%;
+}
 
 .mvp-controls {
   display: flex;
