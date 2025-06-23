@@ -59,8 +59,10 @@ function openOptions() {
     width: 600,
     height: 700,
     parent: mainWin,
+    modal: true,
     webPreferences: { preload: path.join(__dirname, "preload.js"), contextIsolation: true },
   });
+  optionsWin.setMenu(null); // alt pencerede menu olmasın
   optionsWin.loadFile(path.join(__dirname, "options.html"));
 }
 
