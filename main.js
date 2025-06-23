@@ -7,13 +7,13 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 // 🔁 Hot reload sadece dev modda aktif
-if (process.env.NODE_ENV === 'development') {
-  import('electron-reloader')
+if (process.env.NODE_ENV === "development") {
+  import("electron-reloader")
     .then(reloader => {
       reloader.default(module);
     })
     .catch(err => {
-      console.warn('⚠️ Hot reload modülü yüklenemedi:', err);
+      console.warn("⚠️ Hot reload modülü yüklenemedi:", err);
     });
 }
 
@@ -45,13 +45,13 @@ const createOptionsWindow = () => {
   const win = new BrowserWindow({
     width: 600,
     height: 700,
-    title: 'MVP Ayarları',
+    title: "MVP Ayarları",
     webPreferences: { preload: path.join(__dirname, "preload.js"), contextIsolation: true },
   });
-  win.loadFile('options.html');
+  win.loadFile("options.html");
 };
 
-ipcMain.handle('open-options', () => {
+ipcMain.handle("open-options", () => {
   if (optionsWin && !optionsWin.isDestroyed()) {
     optionsWin.focus();
     return;
@@ -62,27 +62,27 @@ ipcMain.handle('open-options', () => {
     parent: mainWin,
     webPreferences: { preload: path.join(__dirname, "preload.js"), contextIsolation: true },
   });
-  optionsWin.loadFile('options.html');
+  optionsWin.loadFile("options.html");
 });
 
-ipcMain.handle('save-custom', async (_e, data) => {
-  const file = path.join(app.getPath('userData'), 'customMvps.json');
+ipcMain.handle("save-custom", async (_e, data) => {
+  const file = path.join(app.getPath("userData"), "customMvps.json");
   try {
     await fs.writeFile(file, JSON.stringify(data, null, 2));
     return { success: true };
   } catch (err) {
-    console.error('Failed to save custom MVP data', err);
+    console.error("Failed to save custom MVP data", err);
     return { success: false, error: err.message };
   }
 });
 
 
-ipcMain.on('mvp-update', (_e, data) => {
-  if (mainWin) mainWin.webContents.send('mvp-update', data);
+ipcMain.on("mvp-update", (_e, data) => {
+  if (mainWin) mainWin.webContents.send("mvp-update", data);
 });
 
 app.whenReady().then(createWindow);
 
-app.on('window-all-closed', () => {
-  if (process.platform !== 'darwin') app.quit();
+app.on("window-all-closed", () => {
+  if (process.platform !== "darwin") app.quit();
 });
