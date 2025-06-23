@@ -7,13 +7,16 @@
     "dev": "cross-env NODE_ENV=development electron .",
     "build": "electron-builder",
     "start": "electron .",
-    "lint": "eslint ."
+    "lint": "eslint .",
+    "test": "jest"
   },
   "devDependencies": {
     "cross-env": "^7.0.3",
     "electron": "^29.0.0",
     "electron-builder": "^24.13.1",
     "electron-reloader": "^1.2.2",
-    "eslint": "^8.53.0"
+    "eslint": "^8.53.0",
+    "luxon": "^3.4.2",
+    "jest": "^29.7.0"
   }
 }
