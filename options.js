@@ -16,7 +16,6 @@ let editIndex = -1;
 
 // ----- Helper functions -----
 function fillForm(m = {}) {
-  document.getElementById("id").value = m.id || "";
   document.getElementById("name").value = m.name || "";
   document.getElementById("map").value = m.map || "";
   document.getElementById("respawn").value = m.respawn || "";
@@ -61,7 +60,6 @@ function loadData() {
 // ----- Form actions -----
 saveBtn.onclick = async () => {
   const entry = {
-    id: document.getElementById("id").value.trim(),
     name: document.getElementById("name").value.trim(),
     map: document.getElementById("map").value.trim(),
     respawn: parseInt(document.getElementById("respawn").value, 10) || 0
