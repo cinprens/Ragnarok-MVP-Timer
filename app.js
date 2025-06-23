@@ -679,21 +679,24 @@ autoBack($("#tombSec"), $("#tombMin"));
 autoBack($("#tombMin"), $("#tombHour"));
 
 /* ———————————————————  SCROLL BUTONLARI  ——————————————————— */
+// Scroll hızını artırmak için butonlarda ve tekerlek olayında
+// varsayılan 100px kaydırma yerine 200px uyguluyoruz.
 document.querySelectorAll(".scroll-up").forEach(b => {
   b.addEventListener("click", () => {
     const ul = document.getElementById(b.dataset.target);
-    ul.scrollTop -= 100;
+    ul.scrollTop -= 200; // 2 kat daha hızlı yukarı kaydır
   });
 });
 document.querySelectorAll(".scroll-down").forEach(b => {
   b.addEventListener("click", () => {
     const ul = document.getElementById(b.dataset.target);
-    ul.scrollTop += 100;
+    ul.scrollTop += 200; // 2 kat daha hızlı aşağı kaydır
   });
 });
 document.querySelectorAll("#left, #right").forEach(panel => {
   panel.addEventListener("wheel", e => {
-    panel.scrollBy({ top: e.deltaY, behavior: "smooth" });
+    // Fare tekeriyle kaydırırken de hızlandır
+    panel.scrollBy({ top: e.deltaY * 2, behavior: "smooth" });
   });
 });
 
