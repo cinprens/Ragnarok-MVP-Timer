@@ -15,7 +15,6 @@
   --panel-bg: rgba(24,24,24,var(--panel-alpha));
   --panel-border: rgba(64,224,208,0.6);
   --kills-h: auto;
-  --ui-scale: 1;
 }
 
 body.light {
@@ -91,10 +90,6 @@ html,body{height:100%;overflow:hidden;margin:0;padding:0;box-sizing:border-box;}
 #wrapper{
   position:fixed; inset:0;
   display:grid;
-  transform: scale(var(--ui-scale));
-  transform-origin: top left;
-  width: calc(100% / var(--ui-scale));
-  height: calc(100% / var(--ui-scale));
 
   /* 1. satır →  left | lres |  mid  | rres | right
      2. satır →  left | lres | kills | rres | right   ← YENİ */
@@ -597,6 +592,3 @@ body.light .kill-row { background:#f0f0f0; color:#222; border:1px solid #ccc; }
 body.light .kill-row .kcount,
 body.light .podium-slot .pcount { color:var(--pos); }
 body.light .kill-row .kindex { color: var(--flash); }
-
-/* Test banner positioning */
-.pi-banner { position: static; }

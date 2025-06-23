@@ -4,7 +4,6 @@
   --panel-bg: rgba(24,24,24,0.8);
   --panel-border: rgba(64,224,208,0.6);
   --highlight: #0ff;
-  --ui-scale: 1;
 }
 
 body.light {
@@ -20,10 +19,6 @@ body {
   font: 14px Helvetica,Arial,sans-serif;
   color: var(--fg);
   background: var(--bg) url("./Backgrounds/ragnarok_bg.png") center/cover no-repeat fixed;
-  transform: scale(var(--ui-scale));
-  transform-origin: top left;
-  width: calc(100% / var(--ui-scale));
-  height: calc(100% / var(--ui-scale));
 }
 body::before {
   content: "";

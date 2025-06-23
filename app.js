@@ -78,7 +78,6 @@ function updateTimeColor(rem) {
 }
 
 applyTheme();
-applyScale();
 
 // Renderer icin saglanan API mevcut degilse basit bir yedek tanimla
 const API = window.api || {
@@ -113,11 +112,6 @@ function getOffsetStr(zone) {
 function applyTheme(){
   const t = localStorage.getItem("theme") || "dark";
   document.body.classList.toggle("light", t === "light");
-}
-
-function applyScale(){
-  const sc = parseFloat(localStorage.getItem("uiScale") || "1");
-  document.documentElement.style.setProperty("--ui-scale", sc);
 }
 /* ———————————————————  ZAMAN / TZ   ——————————————————— */
 function nowTz() { return new Date(new Date().toLocaleString("en-US", { timeZone: timezone })); }
@@ -825,9 +819,6 @@ window.addEventListener("storage", e => {
   if(e.key === BLINK_KEY) {
     blinkEnabled = e.newValue !== "1";
     applyBlink();
-  }
-  if(e.key === "uiScale") {
-    applyScale();
   }
   if(e.key === "timezone") {
     timezone = e.newValue || timezone;
