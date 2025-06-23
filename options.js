@@ -7,5 +7,7 @@ saveBtn.onclick = () => {
     map: document.getElementById('map').value,
     respawn: parseInt(document.getElementById('respawn').value, 10)
   }];
-  window.api.saveCustom(data);
+  if(window.api && window.api.writeCustom){
+    window.api.writeCustom(data);
+  }
 };

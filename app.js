@@ -67,6 +67,15 @@ const BLINK_KEY = 'blinkOff';
 let blinkEnabled = localStorage.getItem(BLINK_KEY) !== '1';
 const fmt   = s => `${s < 0 ? '-' : ''}${String(Math.floor(Math.abs(s) / 60)).padStart(2, '0')}:${String(Math.abs(s) % 60).padStart(2, '0')}`;
 
+// Renderer icin saglanan API mevcut degilse basit bir yedek tanimla
+const API = window.api || {
+  getMvps: async () => fetch('./mvpData.json').then(r => r.json()).catch(() => []),
+  on: () => {},
+  openOptions: () => {},
+  readTimers: () => null,
+  writeTimers: () => {}
+};
+
 function getOffsetStr(zone) {
   const str = new Intl.DateTimeFormat('en-US', { timeZone: zone, timeZoneName: 'short' }).format(new Date());
   const m = str.match(/GMT([+-]\d+)/);
@@ -406,25 +415,26 @@ function saveTimers() {
     spawnUTC: m.spawnUTC,
     kills: m.kills
   }));
+  const payload = {
+    timers: data,
+    killLog: KILL_LOG,
+    totalKill: TOTAL_KILL,
+    timezone
+  };
+  if (API.writeTimers) API.writeTimers(payload);
   localStorage.setItem('timers',    JSON.stringify(data));
   localStorage.setItem('killLog',   JSON.stringify(KILL_LOG));
   localStorage.setItem('totalKill', TOTAL_KILL);
   localStorage.setItem('timezone',  timezone);
 }
 function loadTimers() {
-  const tz = localStorage.getItem('timezone');
-  if (tz) timezone = tz;
-
-  if (tzDiv) tzDiv.textContent = `${timezone} (${getOffsetStr(timezone)})`;
-
-  const kl = localStorage.getItem('killLog');
-  const tk = localStorage.getItem('totalKill');
-  if (kl) { KILL_LOG   = JSON.parse(kl); TOTAL_KILL = parseInt(tk || 0, 10); }
-
-  const str = localStorage.getItem('timers');
-  if (str) {
+  let stored = API.readTimers ? API.readTimers() : null;
+  if (stored) {
+    timezone  = stored.timezone || timezone;
+    KILL_LOG  = stored.killLog || [];
+    TOTAL_KILL = stored.totalKill || 0;
     try {
-      JSON.parse(str).forEach(d => {
+      (stored.timers || []).forEach(d => {
         const m = MVP_LIST.find(x => x.id === d.id);
         if (!m) return;
         m.kills   = d.kills || 0;
@@ -440,8 +450,37 @@ function loadTimers() {
       });
       if (anyRunning()) startTimers();
     } catch (_) {}
+  } else {
+    const tz = localStorage.getItem('timezone');
+    if (tz) timezone = tz;
+
+    const kl = localStorage.getItem('killLog');
+    const tk = localStorage.getItem('totalKill');
+    if (kl) { KILL_LOG   = JSON.parse(kl); TOTAL_KILL = parseInt(tk || 0, 10); }
+
+    const str = localStorage.getItem('timers');
+    if (str) {
+      try {
+        JSON.parse(str).forEach(d => {
+          const m = MVP_LIST.find(x => x.id === d.id);
+          if (!m) return;
+          m.kills   = d.kills || 0;
+          m.running = !!d.running;
+          m.spawnUTC = d.spawnUTC || Date.now() + m.remaining * 1000;
+
+          if (m.running) {
+            m.remaining = Math.floor((m.spawnUTC - Date.now()) / 1000);
+          } else if (typeof d.remaining === 'number') {
+            m.remaining = d.remaining;
+            m.spawnUTC  = Date.now() + m.remaining * 1000;
+          }
+        });
+        if (anyRunning()) startTimers();
+      } catch (_) {}
+    }
   }
 
+  if (tzDiv) tzDiv.textContent = `${timezone} (${getOffsetStr(timezone)})`;
   updateSpawnDates();
   UI.render();
   updateKillPanel();
@@ -497,14 +536,14 @@ function buildList(list){
 }
 
 async function loadAll(){
-  const base = await window.api.getMvps();
+  const base = await API.getMvps();
   buildList(base);
   MVP_LIST.forEach(m=>m.running=false);
   loadTimers();
   updateKillPanel();
 }
 
-window.api.on('mvp-update',list=>{
+API.on('mvp-update',list=>{
   buildList(list);
   updateSpawnDates();
   UI.render();
@@ -694,8 +733,8 @@ if(blinkBtn){
 
 if(optionsBtn){
   optionsBtn.addEventListener('click', () => {
-    if(window.api && window.api.openOptions){
-      window.api.openOptions();
+    if(API && API.openOptions){
+      API.openOptions();
     }
   });
 }
