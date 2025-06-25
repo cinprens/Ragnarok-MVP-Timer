@@ -12,11 +12,6 @@ A desktop timer app built with Electron for tracking the respawn times of Ragnar
 
 ---
 
-## 💖 Support the Project
-
-This app is and always will be free and offline. But if you enjoyed using it and want to support future updates, you can **buy me a coffee** or **support me here**:
-
-👉 [https://adventurecapitalist.gumroad.com/l/cpqip](https://adventurecapitalist.gumroad.com/l/cpqip)
 
 Thanks for keeping MVP hunting alive! 🏹🐺
 
