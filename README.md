@@ -1,3 +1,11 @@
+## ❤️ Support This Project
+
+If you find this project useful, consider [sponsoring me on GitHub](https://github.com/sponsors/cinprens) to help keep it maintained and improve it further.
+
+[![Sponsor](https://img.shields.io/badge/Sponsor-❤️-red)](https://github.com/sponsors/cinprens)
+
+
+
 # Ragnarok MVP Timer
 
 A desktop timer app built with Electron for tracking the respawn times of Ragnarok Online MVP monsters. Timers persist to disk and display remaining time and next spawn information.
@@ -31,6 +39,11 @@ Thanks for keeping MVP hunting alive! 🏹🐺
 
 
 
+## ❤️ Support This Project
+
+If you find this project useful, consider [sponsoring me on GitHub](https://github.com/sponsors/cinprens) to help keep it maintained and improve it further.
+
+[![Sponsor](https://img.shields.io/badge/Sponsor-❤️-red)](https://github.com/sponsors/cinprens)
 
 
 
