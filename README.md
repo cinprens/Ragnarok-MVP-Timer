@@ -1,6 +1,7 @@
-❤️ Support This Project
-If you find this project useful, consider sponsoring me on GitHub to help keep it maintained and improve it further.
+[![Become a Sponsor](https://img.shields.io/badge/Sponsor%20Me-%F0%9F%92%96-red?style=flat-square)](https://github.com/sponsors/cinprens)
 
+❤️ Support This Project  
+If you find this project useful, consider sponsoring me on GitHub to help keep it maintained and improve it further.
 
 
 
