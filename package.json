@@ -4,7 +4,7 @@
   "type": "module",
   "main": "main.js",
   "scripts": {
-    "dev": "cross-env NODE_ENV=development electron-forge dev",
+    "dev": "cross-env NODE_ENV=development electron-forge start",
     "build": "electron-forge package",
     "make": "electron-forge make",
     "start": "electron-forge start",

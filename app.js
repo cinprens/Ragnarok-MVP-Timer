@@ -115,7 +115,31 @@ function applyTheme(){
 }
 
 /* ———————————————————  ZAMAN / TZ   ——————————————————— */
-function nowTz() { return new Date(new Date().toLocaleString("en-US", { timeZone: timezone })); }
+function nowTz() {
+  // Belirtilen timeZone için duvar saati zamanını alıp UTC'ye sabitle
+  const now = new Date();
+  const fmt = new Intl.DateTimeFormat("en-US", {
+    timeZone: timezone,
+    year: "numeric",
+    month: "2-digit",
+    day: "2-digit",
+    hour: "2-digit",
+    minute: "2-digit",
+    second: "2-digit",
+    hour12: false
+  });
+  const parts = fmt.formatToParts(now).reduce((acc, p) => {
+    if (p.type !== "literal") acc[p.type] = p.value;
+    return acc;
+  }, {});
+  const y = Number(parts.year);
+  const mo = Number(parts.month);
+  const d = Number(parts.day);
+  const h = Number(parts.hour);
+  const mi = Number(parts.minute);
+  const s = Number(parts.second);
+  return new Date(Date.UTC(y, mo - 1, d, h, mi, s));
+}
 function updateCurrent()  { if (timeDiv) timeDiv.textContent = nowTz().toLocaleTimeString(); }
 setInterval(updateCurrent, 1000);
 updateCurrent();

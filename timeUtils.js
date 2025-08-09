@@ -1,13 +1,12 @@
 import { DateTime } from "luxon";
-function mezarSaatineGoreKalan(saat,zone,respawn){
-  const [h,m,s=0]=saat.split(":").map(Number);
-  const localNow=DateTime.now();
-  let tLocal=localNow.set({hour:h,minute:m,second:s,millisecond:0});
-  if(tLocal>localNow)tLocal=tLocal.minus({days:1});
-  const now=localNow.setZone(zone);
-  const t=tLocal.setZone(zone);
-  const diff=now.diff(t,"seconds").seconds;
-  return Math.round(respawn-diff);
+function mezarSaatineGoreKalan(saat, zone, respawn){
+  // Tümüyle 'zone' içinde hesapla; yerelden zone'a dönüşüm yapma
+  const [h, m, s = 0] = saat.split(":").map(Number);
+  const now = DateTime.now().setZone(zone);
+  let tomb = now.set({ hour: h, minute: m, second: s, millisecond: 0 });
+  if (tomb > now) tomb = tomb.minus({ days: 1 });
+  const diff = now.diff(tomb, "seconds").seconds; // geçen süre (saniye)
+  return Math.round(respawn - diff);
 }
 function ozelZamanaGoreKalan(dk,sn){
   return dk*60+sn;
